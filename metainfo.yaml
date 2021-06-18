@@ -1,0 +1,18 @@
+maintainer: vkrause
+description: Digital vaccination, test and recovery certificate parsing
+tier: 2
+type: functional
+platforms:
+    - name: Linux
+    - name: FreeBSD
+    - name: Windows
+    - name: MacOSX
+    - name: Android
+portingAid: false
+deprecated: false
+release: true
+libraries:
+ - cmake: KHealthCertificate
+cmakename: KHealthCertificate
+
+public_lib: true
