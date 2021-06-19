@@ -33,7 +33,7 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX ITINERARY VERSION_HEADER khealthcertif
 set(QT_MIN_VERSION 5.15)
 
 # build-time dependencies
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Core)
+find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Qml)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs)
 find_package(ZLIB REQUIRED)
 set_package_properties("ZLIB" PROPERTIES PURPOSE "Needed for decoding EU DGC data.")
