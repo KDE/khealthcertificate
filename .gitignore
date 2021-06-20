@@ -18,3 +18,5 @@ build
 .cache
 .idea
 /cmake-build*
+*.zip
+*.pyc
