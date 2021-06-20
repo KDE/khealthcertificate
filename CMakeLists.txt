@@ -28,11 +28,15 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
-ecm_setup_version(PROJECT VARIABLE_PREFIX ITINERARY VERSION_HEADER khealthcertificate_version.h)
-
-set(QT_MIN_VERSION 5.15)
+ecm_setup_version(PROJECT
+    #VARIABLE_PREFIX KHEALTHCERTIFICATE
+    VERSION_HEADER khealthcertificate_version.h
+    PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KHealthCertificateConfigVersion.cmake"
+    SOVERSION 1
+)
 
 # build-time dependencies
+set(QT_MIN_VERSION 5.15)
 find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Qml)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs)
 find_package(ZLIB REQUIRED)
