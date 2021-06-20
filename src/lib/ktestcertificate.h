@@ -9,6 +9,8 @@
 #include "khealthcertificate_export.h"
 #include "khealthcertificatetypes.h"
 
+#include <QDate>
+
 class KTestCertificatePrivate;
 
 /** A test certificate. */
@@ -16,6 +18,7 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
 {
     KHEALTHCERTIFICATE_GADGET(Test)
     KHEALTHCERTIFICATE_PROPERTY(QString, name, setName)
+    KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfBirth, setDateOfBirth)
 };
 
 Q_DECLARE_METATYPE(KTestCertificate)

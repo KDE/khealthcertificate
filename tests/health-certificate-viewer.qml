@@ -36,13 +36,29 @@ Kirigami.ApplicationWindow {
                     Kirigami.FormData.isSection: true
                 }
 
+                Kirigami.Separator {
+                    Kirigami.FormData.isSection: true
+                    Kirigami.FormData.label: "Person"
+                }
+
                 QQC2.Label {
                     text: cert.name
                     Kirigami.FormData.label: "Name:"
                 }
                 QQC2.Label {
-                    text: cert.date
-                    Kirigami.FormData.label: "Vaccination Date:"
+                    text: cert.dateOfBirth.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                    visible: cert.dateOfBirth.getTime() != 0
+                    Kirigami.FormData.label: "Date of birth:"
+                }
+
+                Kirigami.Separator {
+                    Kirigami.FormData.isSection: true
+                    Kirigami.FormData.label: "Vaccination"
+                }
+
+                QQC2.Label {
+                    text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                    Kirigami.FormData.label: "Date:"
                 }
                 QQC2.Label {
                     text: cert.vaccine

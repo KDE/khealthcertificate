@@ -17,8 +17,9 @@ class KVaccinationCertificatePrivate;
 class KHEALTHCERTIFICATE_EXPORT KVaccinationCertificate
 {
     KHEALTHCERTIFICATE_GADGET(Vaccination)
-    KHEALTHCERTIFICATE_PROPERTY(QDate, date, setDate)
     KHEALTHCERTIFICATE_PROPERTY(QString, name, setName)
+    KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfBirth, setDateOfBirth)
+    KHEALTHCERTIFICATE_PROPERTY(QDate, date, setDate)
     KHEALTHCERTIFICATE_PROPERTY(QString, vaccine, setVaccine)
     KHEALTHCERTIFICATE_PROPERTY(QString, manufacturer, setManufacturer)
     KHEALTHCERTIFICATE_PROPERTY(int, dose, setDose)

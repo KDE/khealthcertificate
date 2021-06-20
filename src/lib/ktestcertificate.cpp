@@ -10,9 +10,11 @@ class KTestCertificatePrivate : public QSharedData
 {
 public:
     QString name;
+    QDate dateOfBirth;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Test)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, name, setName)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QDate, dateOfBirth, setDateOfBirth)
 
 #include "moc_ktestcertificate.moc"

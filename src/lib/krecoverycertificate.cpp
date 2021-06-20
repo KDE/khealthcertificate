@@ -10,9 +10,11 @@ class KRecoveryCertificatePrivate : public QSharedData
 {
 public:
     QString name;
+    QDate dateOfBirth;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Recovery)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, name, setName)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, dateOfBirth, setDateOfBirth)
 
 #include "moc_krecoverycertificate.cpp"

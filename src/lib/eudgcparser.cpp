@@ -144,6 +144,10 @@ QVariant EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
             parseRecoveryCertificateArray(reader);
         } else if (key == QLatin1String("nam")) {
             parseName(reader);
+        } else if (key == QLatin1String("dob")) {
+            const auto dob = QDate::fromString(reader.readString().data, Qt::ISODate);
+            reader.next();
+            std::visit([&dob](auto &cert) { cert.setDateOfBirth(dob); }, m_cert);
         } else {
             qDebug() << "unhandled element:" << key;
             reader.next();
