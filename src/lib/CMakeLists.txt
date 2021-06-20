@@ -4,6 +4,7 @@
 add_library(KHealthCertificate
     coseparser.cpp
     eudgcparser.cpp
+    khealthcertificate.cpp
     khealthcertificateparser.cpp
     krecoverycertificate.cpp
     ktestcertificate.cpp
@@ -30,6 +31,7 @@ target_link_libraries(KHealthCertificate PRIVATE
 
 ecm_generate_headers(KHealthCertificate_FORWARDING_HEADERS
     HEADER_NAMES
+        KHealthCertificate
         KHealthCertificateParser
         KRecoveryCertificate
         KTestCertificate

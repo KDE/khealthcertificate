@@ -4,6 +4,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
+#include <KHealthCertificate/KHealthCertificate>
 #include <KHealthCertificate/KHealthCertificateParser>
 #include <KHealthCertificate/KRecoveryCertificate>
 #include <KHealthCertificate/KTestCertificate>
@@ -46,6 +47,8 @@ void KHealthCertificateQmlPlugin::registerTypes(const char*)
     qRegisterMetaType<KRecoveryCertificate>();
     qRegisterMetaType<KTestCertificate>();
     qRegisterMetaType<KVaccinationCertificate>();
+
+    qmlRegisterUncreatableType<KHealthCertificate>("org.kde.khealthcertificate", 1, 0, "HealthCertificate", {});
 
     // HACK qmlplugindump chokes on gadget singletons, to the point of breaking ecm_find_qmlmodule()
     if (QCoreApplication::applicationName() != QLatin1String("qmlplugindump")) {

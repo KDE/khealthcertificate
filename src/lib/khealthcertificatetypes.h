@@ -6,6 +6,8 @@
 #ifndef KHEALTHCERTIFICATETYPES_H
 #define KHEALTHCERTIFICATETYPES_H
 
+#include "khealthcertificate.h"
+
 #include <QMetaType>
 #include <QSharedDataPointer>
 
@@ -23,6 +25,7 @@ struct parameter_type
 
 #define KHEALTHCERTIFICATE_GADGET(Class) \
     Q_GADGET \
+    Q_PROPERTY(KHealthCertificate::CertificateType type READ type) \
 public: \
     K ## Class ## Certificate(); \
     K ## Class ## Certificate(K ## Class ## Certificate &&) noexcept; \
@@ -32,6 +35,7 @@ public: \
     K ## Class ## Certificate& operator=(const K ## Class ## Certificate &); \
     operator QVariant () const; \
 private: \
+    KHealthCertificate::CertificateType type() const; \
     friend class K ## Class ## CertificatePrivate; \
     QExplicitlySharedDataPointer<K ## Class ## CertificatePrivate> d;
 

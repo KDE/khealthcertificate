@@ -18,7 +18,8 @@ K ## Class ## Certificate::K ## Class ## Certificate(K ## Class ## Certificate&&
 K ## Class ## Certificate::~K ## Class ## Certificate() = default; \
 K ## Class ## Certificate& K ## Class ## Certificate::operator=(const K ## Class ## Certificate&) = default; \
 K ## Class ## Certificate& K ## Class ## Certificate::operator=(K ## Class ## Certificate&&) noexcept = default; \
-K ## Class ## Certificate::operator QVariant() const { return QVariant::fromValue(*this); }
+K ## Class ## Certificate::operator QVariant() const { return QVariant::fromValue(*this); } \
+KHealthCertificate::CertificateType K ## Class ## Certificate::type() const { return KHealthCertificate::Class; }
 
 #define KHEALTHCERTIFICATE_MAKE_PROPERTY(Class, Type, Getter, Setter) \
 Type K ## Class ## Certificate::Getter() const { return d->Getter; } \
