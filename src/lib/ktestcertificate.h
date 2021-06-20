@@ -19,6 +19,14 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_GADGET(Test)
     KHEALTHCERTIFICATE_PROPERTY(QString, name, setName)
     KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfBirth, setDateOfBirth)
+    KHEALTHCERTIFICATE_PROPERTY(QDate, date, setDate)
+    KHEALTHCERTIFICATE_PROPERTY(QString, disease, setDisease)
+    KHEALTHCERTIFICATE_PROPERTY(QString, testType, setTestType)
+    KHEALTHCERTIFICATE_PROPERTY(QString, naaTestName, setNaaTestName)
+    KHEALTHCERTIFICATE_PROPERTY(QString, ratTest, setRatTest)
+    KHEALTHCERTIFICATE_PROPERTY(QString, result, setResult)
+    KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTextCenter)
+    KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
 };
 
 Q_DECLARE_METATYPE(KTestCertificate)

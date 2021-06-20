@@ -226,8 +226,34 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
     while (reader.hasNext()) {
         const auto key = reader.readString().data;
         reader.next();
-        qDebug() << "unhandled test key:" << key;
-        reader.next();
+        if (key == QLatin1String("tg")) {
+            cert.setDisease(translateValue(key, reader.readString().data));
+            reader.next();
+        } else if (key == QLatin1String("tt")) {
+            cert.setTestType(translateValue(QLatin1String("tcTt"), reader.readString().data));
+            reader.next();
+        } else if (key == QLatin1String("nm")) {
+            cert.setNaaTestName(reader.readString().data);
+            reader.next();
+        } else if (key == QLatin1String("ma")) {
+            cert.setRatTest(translateValue(QLatin1String("tcMa"), reader.readString().data));
+            reader.next();
+        } else if (key == QLatin1String("sc")) {
+            cert.setDate(QDate::fromString(reader.readString().data, Qt::ISODate));
+            reader.next();
+        } else if (key == QLatin1String("tr")) {
+            cert.setResult(translateValue(QLatin1String("tcTr"), reader.readString().data));
+            reader.next();
+        } else if (key == QLatin1String("tc")) {
+            cert.setTextCenter(reader.readString().data);
+            reader.next();
+        } else if (key == QLatin1String("co")) {
+            cert.setCountry(reader.readString().data);
+            reader.next();
+        } else {
+            qDebug() << "unhandled test key:" << key;
+            reader.next();
+        }
     }
     reader.leaveContainer();
     m_cert = std::move(cert);
