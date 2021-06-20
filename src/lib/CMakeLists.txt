@@ -9,6 +9,8 @@ add_library(KHealthCertificate
     ktestcertificate.cpp
     kvaccinationcertificate.cpp
     verifiablecredentialparser.cpp
+
+    data/data.qrc
 )
 
 generate_export_header(KHealthCertificate BASE_NAME KHealthCertificate)

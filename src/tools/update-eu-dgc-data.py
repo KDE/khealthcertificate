@@ -4,6 +4,7 @@
 
 import value_sets_pb2
 
+import argparse
 import datetime
 import io
 import json
@@ -37,9 +38,16 @@ def downloadValueSets(lang):
             elif value_sets[category][entry.key] != entry.displayText:
                 value_sets[category][f"{entry.key}[{lang}]"] = entry.displayText;
 
+
+parser = argparse.ArgumentParser(description='Download and merge translations for codes used in EU DGCs')
+parser.add_argument('--output', type=str, required=True, help='Path to which the output should be written to')
+arguments = parser.parse_args()
+
 # keep en first
 for lang in ['en', 'de']:
     downloadValueSets(lang)
 
-print(json.dumps(value_sets))
-
+for key in value_sets:
+    f = open(os.path.join(arguments.output, f"{key}.json"), 'w')
+    f.write(json.dumps(value_sets[key]))
+    f.close()

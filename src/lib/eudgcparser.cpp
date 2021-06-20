@@ -10,9 +10,34 @@
 
 #include <QCborStreamReader>
 #include <QDebug>
+#include <QFile>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QLocale>
 #include <QVariant>
 
 #include <zlib.h>
+
+static QString translateValue(const QString &type, const QString &key)
+{
+    QFile f(QLatin1String(":/eu-dgc/") + type + QLatin1String(".json"));
+    if (!f.open(QFile::ReadOnly)) {
+        qWarning() << "no translation table found for" << type;
+        return key;
+    }
+
+    const auto obj = QJsonDocument::fromJson(f.readAll()).object();
+    const auto language = QLocale().name().left(QLocale().name().indexOf(QLatin1Char('_')));
+    auto it = obj.constFind(key + QLatin1Char('[') + language + QLatin1Char(']'));
+    if (it != obj.constEnd()) {
+        return it.value().toString();
+    }
+    it = obj.constFind(key);
+    if (it != obj.constEnd()) {
+        return it.value().toString();
+    }
+    return key;
+}
 
 static QByteArray inflateByteArray(const QByteArray &data)
 {
@@ -156,10 +181,10 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
             cert.setDate(QDate::fromString(reader.readString().data, Qt::ISODate));
             reader.next();
         } else if (key == QLatin1String("mp")) {
-            cert.setVaccine(reader.readString().data);
+            cert.setVaccine(translateValue(key, reader.readString().data));
             reader.next();
         } else if (key == QLatin1String("ma")) {
-            cert.setManufacturer(reader.readString().data);
+            cert.setManufacturer(translateValue(key, reader.readString().data));
             reader.next();
         } else if (key == QLatin1String("dn")) {
             cert.setDose(reader.toInteger());
