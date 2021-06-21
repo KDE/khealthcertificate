@@ -20,10 +20,12 @@ class KHEALTHCERTIFICATE_EXPORT KVaccinationCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, name, setName)
     KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfBirth, setDateOfBirth)
     KHEALTHCERTIFICATE_PROPERTY(QDate, date, setDate)
+    KHEALTHCERTIFICATE_PROPERTY(QString, disease, setDisease)
     KHEALTHCERTIFICATE_PROPERTY(QString, vaccine, setVaccine)
     KHEALTHCERTIFICATE_PROPERTY(QString, manufacturer, setManufacturer)
     KHEALTHCERTIFICATE_PROPERTY(int, dose, setDose)
     KHEALTHCERTIFICATE_PROPERTY(int, totalDoses, setTotalDoses)
+    KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
 };
 
 Q_DECLARE_METATYPE(KVaccinationCertificate)

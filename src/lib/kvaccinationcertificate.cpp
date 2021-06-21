@@ -12,19 +12,23 @@ public:
     QString name;
     QDate dateOfBirth;
     QDate date;
+    QString disease;
     QString vaccine;
     QString manufacturer;
     int dose = 0;
     int totalDoses = 0;
+    QString country;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Vaccination)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, name, setName)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDate, dateOfBirth, setDateOfBirth)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDate, date, setDate)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, disease, setDisease)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, vaccine, setVaccine)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, manufacturer, setManufacturer)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, int, dose, setDose)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, int, totalDoses, setTotalDoses)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, country, setCountry)
 
 #include "moc_kvaccinationcertificate.cpp"

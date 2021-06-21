@@ -181,7 +181,10 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
     while (reader.hasNext()) {
         const auto key = reader.readString().data;
         reader.next();
-        if (key == QLatin1String("dt")) {
+        if (key == QLatin1String("tg")) {
+            cert.setDisease(translateValue(key, reader.readString().data));
+            reader.next();
+        } else if (key == QLatin1String("dt")) {
             cert.setDate(QDate::fromString(reader.readString().data, Qt::ISODate));
             reader.next();
         } else if (key == QLatin1String("mp")) {
@@ -195,6 +198,9 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
             reader.next();
         } else if (key == QLatin1String("sd")) {
             cert.setTotalDoses(reader.toInteger());
+            reader.next();
+        } else if (key == QLatin1String("co")) {
+            cert.setCountry(reader.readString().data);
             reader.next();
         } else {
             qDebug() << "unhandled vaccine key:" << key;
