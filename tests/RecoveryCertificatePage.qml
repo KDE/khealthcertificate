@@ -45,5 +45,22 @@ Kirigami.ScrollablePage {
             Kirigami.FormData.isSection: true
             Kirigami.FormData.label: "Recovery"
         }
+
+        QQC2.Label {
+            text: cert.dateOfPositiveTest.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+            Kirigami.FormData.label: "Positive test:"
+        }
+        QQC2.Label {
+            text: cert.validFrom.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+            Kirigami.FormData.label: "Valid from:"
+        }
+        QQC2.Label {
+            text: cert.validUntil.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+            Kirigami.FormData.label: "Valid until:"
+        }
+        QQC2.Label {
+            text: cert.disease
+            Kirigami.FormData.label: "Disease:"
+        }
     }
 }

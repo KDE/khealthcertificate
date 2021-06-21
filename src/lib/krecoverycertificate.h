@@ -19,6 +19,10 @@ class KHEALTHCERTIFICATE_EXPORT KRecoveryCertificate
     KHEALTHCERTIFICATE_GADGET(Recovery)
     KHEALTHCERTIFICATE_PROPERTY(QString, name, setName)
     KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfBirth, setDateOfBirth)
+    KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfPositiveTest, setDateOfPositiveTest)
+    KHEALTHCERTIFICATE_PROPERTY(QDate, validFrom, setValidFrom)
+    KHEALTHCERTIFICATE_PROPERTY(QDate, validUntil, setValidUntil)
+    KHEALTHCERTIFICATE_PROPERTY(QString, disease, setDisease)
 };
 
 Q_DECLARE_METATYPE(KRecoveryCertificate)

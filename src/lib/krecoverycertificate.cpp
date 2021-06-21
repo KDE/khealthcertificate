@@ -11,10 +11,18 @@ class KRecoveryCertificatePrivate : public QSharedData
 public:
     QString name;
     QDate dateOfBirth;
+    QDate dateOfPositiveTest;
+    QDate validFrom;
+    QDate validUntil;
+    QString disease;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Recovery)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, name, setName)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, dateOfBirth, setDateOfBirth)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, dateOfPositiveTest, setDateOfPositiveTest)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, validFrom, setValidFrom)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, validUntil, setValidUntil)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, disease, setDisease)
 
 #include "moc_krecoverycertificate.cpp"

@@ -266,7 +266,7 @@ void EuDgcParser::parseRecoveryCertificateArray(QCborStreamReader &reader) const
     }
     reader.enterContainer();
     while (reader.hasNext()) {
-        parseTestCertificate(reader);
+        parseRecoveryCertificate(reader);
     }
     reader.leaveContainer();
 }
@@ -281,8 +281,22 @@ void EuDgcParser::parseRecoveryCertificate(QCborStreamReader &reader) const
     while (reader.hasNext()) {
         const auto key = reader.readString().data;
         reader.next();
-        qDebug() << "unhandled recovery key:" << key;
-        reader.next();
+       if (key == QLatin1String("tg")) {
+            cert.setDisease(translateValue(key, reader.readString().data));
+            reader.next();
+        } else if (key == QLatin1String("fr")) {
+            cert.setDateOfPositiveTest(QDate::fromString(reader.readString().data, Qt::ISODate));
+            reader.next();
+        } else if (key == QLatin1String("df")) {
+            cert.setValidFrom(QDate::fromString(reader.readString().data, Qt::ISODate));
+            reader.next();
+        } else if (key == QLatin1String("du")) {
+            cert.setValidUntil(QDate::fromString(reader.readString().data, Qt::ISODate));
+            reader.next();
+        } else {
+            qDebug() << "unhandled recovery key:" << key;
+            reader.next();
+        }
     }
     reader.leaveContainer();
     m_cert = std::move(cert);
