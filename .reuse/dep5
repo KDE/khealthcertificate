@@ -6,3 +6,7 @@ Source: https://invent.kde.org/vkrause/khealthcertificate
 Files: src/lib/data/eu-dgc/*
 License: Apache-2.0
 Copyright: https://github.com/ehn-dcc-development/ehn-dcc-valuesets
+
+Files: autotests/data/eu-dgc/*.txt
+License: Apache-2.0
+Copyright: https://github.com/eu-digital-green-certificates/dgc-testdata
