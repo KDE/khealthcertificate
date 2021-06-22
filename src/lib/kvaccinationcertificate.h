@@ -26,6 +26,10 @@ class KHEALTHCERTIFICATE_EXPORT KVaccinationCertificate
     KHEALTHCERTIFICATE_PROPERTY(int, dose, setDose)
     KHEALTHCERTIFICATE_PROPERTY(int, totalDoses, setTotalDoses)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
+    Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
+
+public:
+    KHealthCertificate::CertificateValidation validationState() const;
 };
 
 Q_DECLARE_METATYPE(KVaccinationCertificate)

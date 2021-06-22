@@ -23,6 +23,10 @@ class KHEALTHCERTIFICATE_EXPORT KRecoveryCertificate
     KHEALTHCERTIFICATE_PROPERTY(QDate, validFrom, setValidFrom)
     KHEALTHCERTIFICATE_PROPERTY(QDate, validUntil, setValidUntil)
     KHEALTHCERTIFICATE_PROPERTY(QString, disease, setDisease)
+    Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
+
+public:
+    KHealthCertificate::CertificateValidation validationState() const;
 };
 
 Q_DECLARE_METATYPE(KRecoveryCertificate)

@@ -25,4 +25,9 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, validFrom, setValidFrom)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, validUntil, setValidUntil)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, disease, setDisease)
 
+KHealthCertificate::CertificateValidation KRecoveryCertificate::validationState() const
+{
+    return KHealthCertificate::Unknown;
+}
+
 #include "moc_krecoverycertificate.cpp"

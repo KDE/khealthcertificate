@@ -17,50 +17,68 @@ Kirigami.ScrollablePage {
     property var rawData
     property var cert
 
-    Kirigami.FormLayout {
+    ColumnLayout {
         width: parent.width
 
-        Prison.Barcode {
-            barcodeType: Prison.Barcode.QRCode
-            content: rawData
-            Kirigami.FormData.isSection: true
+        Rectangle {
+            id: validationBg
+            Layout.fillWidth: true
+            implicitHeight: barcode.implicitHeight + Kirigami.Units.largeSpacing * 4
+
+            Prison.Barcode {
+                anchors.centerIn: parent
+                id: barcode
+                barcodeType: Prison.Barcode.QRCode
+                content: rawData
+            }
+
+            color: switch (cert.validationState) {
+                case HealthCertificate.Valid: return Kirigami.Theme.positiveTextColor;
+                case HealthCertificate.Partial: return Kirigami.Theme.neutralTextColor;
+                case HealthCertificate.Invalid: return Kirigami.Theme.negativeTextColor;
+                default: return "transparent"
+            }
         }
 
-        Kirigami.Separator {
-            Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: "Person"
-        }
+        Kirigami.FormLayout {
+            width: parent.width
 
-        QQC2.Label {
-            text: cert.name
-            Kirigami.FormData.label: "Name:"
-        }
-        QQC2.Label {
-            text: cert.dateOfBirth.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            visible: cert.dateOfBirth.getTime() != 0
-            Kirigami.FormData.label: "Date of birth:"
-        }
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Person"
+            }
 
-        Kirigami.Separator {
-            Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: "Recovery"
-        }
+            QQC2.Label {
+                text: cert.name
+                Kirigami.FormData.label: "Name:"
+            }
+            QQC2.Label {
+                text: cert.dateOfBirth.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                visible: cert.dateOfBirth.getTime() != 0
+                Kirigami.FormData.label: "Date of birth:"
+            }
 
-        QQC2.Label {
-            text: cert.dateOfPositiveTest.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            Kirigami.FormData.label: "Positive test:"
-        }
-        QQC2.Label {
-            text: cert.validFrom.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            Kirigami.FormData.label: "Valid from:"
-        }
-        QQC2.Label {
-            text: cert.validUntil.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            Kirigami.FormData.label: "Valid until:"
-        }
-        QQC2.Label {
-            text: cert.disease
-            Kirigami.FormData.label: "Disease:"
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Recovery"
+            }
+
+            QQC2.Label {
+                text: cert.dateOfPositiveTest.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Positive test:"
+            }
+            QQC2.Label {
+                text: cert.validFrom.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Valid from:"
+            }
+            QQC2.Label {
+                text: cert.validUntil.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Valid until:"
+            }
+            QQC2.Label {
+                text: cert.disease
+                Kirigami.FormData.label: "Disease:"
+            }
         }
     }
 }

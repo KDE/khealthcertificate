@@ -27,7 +27,10 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, result, setResult)
     KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTextCenter)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
-};
+    Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
+
+public:
+    KHealthCertificate::CertificateValidation validationState() const;};
 
 Q_DECLARE_METATYPE(KTestCertificate)
 

@@ -33,4 +33,12 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, result, setResult)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, testCenter, setTextCenter)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, country, setCountry)
 
+KHealthCertificate::CertificateValidation KTestCertificate::validationState() const
+{
+    if (d->date.addDays(2) < QDate::currentDate()) {
+        return KHealthCertificate::Invalid;
+    }
+    return KHealthCertificate::Unknown;
+}
+
 #include "moc_ktestcertificate.moc"

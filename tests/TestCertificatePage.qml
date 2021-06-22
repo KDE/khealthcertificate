@@ -18,70 +18,88 @@ Kirigami.ScrollablePage {
     property var rawData
     property var cert
 
-    Kirigami.FormLayout {
+    ColumnLayout {
         width: parent.width
 
-        Prison.Barcode {
-            barcodeType: Prison.Barcode.QRCode
-            content: rawData
-            Kirigami.FormData.isSection: true
+        Rectangle {
+            id: validationBg
+            Layout.fillWidth: true
+            implicitHeight: barcode.implicitHeight + Kirigami.Units.largeSpacing * 4
+
+            Prison.Barcode {
+                anchors.centerIn: parent
+                id: barcode
+                barcodeType: Prison.Barcode.QRCode
+                content: rawData
+            }
+
+            color: switch (cert.validationState) {
+                case HealthCertificate.Valid: return Kirigami.Theme.positiveTextColor;
+                case HealthCertificate.Partial: return Kirigami.Theme.neutralTextColor;
+                case HealthCertificate.Invalid: return Kirigami.Theme.negativeTextColor;
+                default: return "transparent"
+            }
         }
 
-        Kirigami.Separator {
-            Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: "Person"
-        }
+        Kirigami.FormLayout {
+            width: parent.width
 
-        QQC2.Label {
-            text: cert.name
-            Kirigami.FormData.label: "Name:"
-        }
-        QQC2.Label {
-            text: cert.dateOfBirth.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            visible: cert.dateOfBirth.getTime() != 0
-            Kirigami.FormData.label: "Date of birth:"
-        }
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Person"
+            }
 
-        Kirigami.Separator {
-            Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: "Test"
-        }
+            QQC2.Label {
+                text: cert.name
+                Kirigami.FormData.label: "Name:"
+            }
+            QQC2.Label {
+                text: cert.dateOfBirth.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                visible: cert.dateOfBirth.getTime() != 0
+                Kirigami.FormData.label: "Date of birth:"
+            }
 
-        QQC2.Label {
-            text: cert.testType
-            Kirigami.FormData.label: "Type:"
-        }
-        QQC2.Label {
-            text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            Kirigami.FormData.label: "Date:"
-        }
-        QQC2.Label {
-            text: cert.disease
-            Kirigami.FormData.label: "Disease:"
-        }
-        QQC2.Label {
-            text: cert.result
-            Kirigami.FormData.label: "Result:"
-        }
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Test"
+            }
 
-        QQC2.Label {
-            text: cert.naaTestName
-            visible: cert.naaTestName.length > 0
-            Kirigami.FormData.label: "NAA Test:"
-        }
-        QQC2.Label {
-            text: cert.ratTest
-            visible: cert.ratTest.length > 0
-            Kirigami.FormData.label: "RAT Test:"
-        }
+            QQC2.Label {
+                text: cert.testType
+                Kirigami.FormData.label: "Type:"
+            }
+            QQC2.Label {
+                text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Date:"
+            }
+            QQC2.Label {
+                text: cert.disease
+                Kirigami.FormData.label: "Disease:"
+            }
+            QQC2.Label {
+                text: cert.result
+                Kirigami.FormData.label: "Result:"
+            }
 
-        QQC2.Label {
-            text: cert.testCenter
-            Kirigami.FormData.label: "Test Center:"
-        }
-        QQC2.Label {
-            text: KCountry.fromAlpha2(cert.country).emojiFlag + " " + KCountry.fromAlpha2(cert.country).name
-            Kirigami.FormData.label: "Country:"
+            QQC2.Label {
+                text: cert.naaTestName
+                visible: cert.naaTestName.length > 0
+                Kirigami.FormData.label: "NAA Test:"
+            }
+            QQC2.Label {
+                text: cert.ratTest
+                visible: cert.ratTest.length > 0
+                Kirigami.FormData.label: "RAT Test:"
+            }
+
+            QQC2.Label {
+                text: cert.testCenter
+                Kirigami.FormData.label: "Test Center:"
+            }
+            QQC2.Label {
+                text: KCountry.fromAlpha2(cert.country).emojiFlag + " " + KCountry.fromAlpha2(cert.country).name
+                Kirigami.FormData.label: "Country:"
+            }
         }
     }
 }

@@ -18,59 +18,78 @@ Kirigami.ScrollablePage {
     property var rawData
     property var cert
 
-    Kirigami.FormLayout {
+    ColumnLayout {
         width: parent.width
 
-        Prison.Barcode {
-            barcodeType: Prison.Barcode.QRCode
-            content: rawData
-            Kirigami.FormData.isSection: true
+        Rectangle {
+            id: validationBg
+            Layout.fillWidth: true
+            implicitHeight: barcode.implicitHeight + Kirigami.Units.largeSpacing * 4
+
+            Prison.Barcode {
+                anchors.centerIn: parent
+                id: barcode
+                barcodeType: Prison.Barcode.QRCode
+                content: rawData
+            }
+
+            color: switch (cert.validationState) {
+                case HealthCertificate.Valid: return Kirigami.Theme.positiveTextColor;
+                case HealthCertificate.Partial: return Kirigami.Theme.neutralTextColor;
+                case HealthCertificate.Invalid: return Kirigami.Theme.negativeTextColor;
+                default: return "transparent"
+            }
         }
 
-        Kirigami.Separator {
-            Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: "Person"
-        }
+        Kirigami.FormLayout {
+            Layout.fillWidth: true
 
-        QQC2.Label {
-            text: cert.name
-            Kirigami.FormData.label: "Name:"
-        }
-        QQC2.Label {
-            text: cert.dateOfBirth.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            visible: cert.dateOfBirth.getTime() != 0
-            Kirigami.FormData.label: "Date of birth:"
-        }
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Person"
+            }
 
-        Kirigami.Separator {
-            Kirigami.FormData.isSection: true
-            Kirigami.FormData.label: "Vaccination"
-        }
+            QQC2.Label {
+                text: cert.name
+                Kirigami.FormData.label: "Name:"
+            }
+            QQC2.Label {
+                text: cert.dateOfBirth.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                visible: cert.dateOfBirth.getTime() != 0
+                Kirigami.FormData.label: "Date of birth:"
+            }
 
-        QQC2.Label {
-            text: cert.disease
-            Kirigami.FormData.label: "Disease:"
-            visible: cert.disease
-        }
-        QQC2.Label {
-            text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-            Kirigami.FormData.label: "Date:"
-        }
-        QQC2.Label {
-            text: cert.vaccine
-            Kirigami.FormData.label: "Vaccine:"
-        }
-        QQC2.Label {
-            text: cert.manufacturer
-            Kirigami.FormData.label: "Manufacturer:"
-        }
-        QQC2.Label {
-            text: cert.dose + "/" + cert.totalDoses
-            Kirigami.FormData.label: "Dose:"
-        }
-        QQC2.Label {
-            text: KCountry.fromAlpha2(cert.country).emojiFlag + " " + KCountry.fromAlpha2(cert.country).name
-            Kirigami.FormData.label: "Country:"
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Vaccination"
+            }
+
+            QQC2.Label {
+                text: cert.disease
+                Kirigami.FormData.label: "Disease:"
+                visible: cert.disease
+            }
+            QQC2.Label {
+                text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Date:"
+            }
+            QQC2.Label {
+                text: cert.vaccine
+                Kirigami.FormData.label: "Vaccine:"
+            }
+            QQC2.Label {
+                text: cert.manufacturer
+                Kirigami.FormData.label: "Manufacturer:"
+            }
+            QQC2.Label {
+                text: cert.dose + "/" + cert.totalDoses
+                Kirigami.FormData.label: "Dose:"
+                color: cert.dose < cert.totalDoses ? Kirigami.Theme.neutralTextColor : Kirigami.Theme.textColor
+            }
+            QQC2.Label {
+                text: KCountry.fromAlpha2(cert.country).emojiFlag + " " + KCountry.fromAlpha2(cert.country).name
+                Kirigami.FormData.label: "Country:"
+            }
         }
     }
 }

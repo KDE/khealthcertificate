@@ -20,6 +20,14 @@ public:
         Recovery,
     };
     Q_ENUM(CertificateType)
+
+    enum CertificateValidation {
+        Valid,
+        Partial,
+        Invalid,
+        Unknown
+    };
+    Q_ENUM(CertificateValidation)
 };
 
 #endif // KHEALTHCERTIFICATE_H

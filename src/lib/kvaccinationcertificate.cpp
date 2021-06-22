@@ -31,4 +31,19 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, int, dose, setDose)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, int, totalDoses, setTotalDoses)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, country, setCountry)
 
+KHealthCertificate::CertificateValidation KVaccinationCertificate::validationState() const
+{
+    if (d->date > QDate::currentDate() || (d->dose == 0 && d->totalDoses)) {
+        return KHealthCertificate::Invalid;
+    }
+    if (d->date.addDays(14) >= QDate::currentDate()) {
+        return KHealthCertificate::Partial;
+    }
+    if (d->dose < d->totalDoses) {
+        return KHealthCertificate::Partial;
+    }
+
+    return KHealthCertificate::Valid;
+}
+
 #include "moc_kvaccinationcertificate.cpp"
