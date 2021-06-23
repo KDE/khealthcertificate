@@ -77,8 +77,9 @@ Kirigami.ScrollablePage {
                 Kirigami.FormData.label: "Disease:"
             }
             QQC2.Label {
-                text: cert.result
+                text: cert.resultString
                 Kirigami.FormData.label: "Result:"
+                color: cert.result == TestCertificate.Positive ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
             }
 
             QQC2.Label {

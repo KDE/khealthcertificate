@@ -49,6 +49,7 @@ void KHealthCertificateQmlPlugin::registerTypes(const char*)
     qRegisterMetaType<KVaccinationCertificate>();
 
     qmlRegisterUncreatableType<KHealthCertificate>("org.kde.khealthcertificate", 1, 0, "HealthCertificate", {});
+    qmlRegisterUncreatableType<KTestCertificate>("org.kde.khealthcertificate", 1, 0, "TestCertificate", {});
 
     // HACK qmlplugindump chokes on gadget singletons, to the point of breaking ecm_find_qmlmodule()
     if (QCoreApplication::applicationName() != QLatin1String("qmlplugindump")) {

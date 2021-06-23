@@ -75,7 +75,8 @@ private Q_SLOTS:
         QCOMPARE(test.country(), QLatin1String("DE"));
         QCOMPARE(test.date(), QDate(2021, 5, 30));
         QCOMPARE(test.testType(), QLatin1String("Rapid immunoassay"));
-        QCOMPARE(test.result(), QLatin1String("Not detected"));
+        QCOMPARE(test.result(), KTestCertificate::Negative);
+        QCOMPARE(test.resultString(), QLatin1String("Not detected"));
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
     }
 

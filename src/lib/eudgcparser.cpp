@@ -248,7 +248,9 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
             cert.setDate(QDate::fromString(reader.readString().data, Qt::ISODate));
             reader.next();
         } else if (key == QLatin1String("tr")) {
-            cert.setResult(translateValue(QLatin1String("tcTr"), reader.readString().data));
+            const auto value = reader.readString().data;
+            cert.setResultString(translateValue(QLatin1String("tcTr"), value));
+            cert.setResult(value == QLatin1String("260415000") ? KTestCertificate::Negative : KTestCertificate::Positive);
             reader.next();
         } else if (key == QLatin1String("tc")) {
             cert.setTextCenter(reader.readString().data);

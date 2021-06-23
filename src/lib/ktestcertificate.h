@@ -24,10 +24,18 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, testType, setTestType)
     KHEALTHCERTIFICATE_PROPERTY(QString, naaTestName, setNaaTestName)
     KHEALTHCERTIFICATE_PROPERTY(QString, ratTest, setRatTest)
-    KHEALTHCERTIFICATE_PROPERTY(QString, result, setResult)
+    KHEALTHCERTIFICATE_PROPERTY(QString, resultString, setResultString)
     KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTextCenter)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
     Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
+
+    enum Result {
+        Unknown,
+        Negative,
+        Positive,
+    };
+    Q_ENUM(Result)
+    KHEALTHCERTIFICATE_PROPERTY(Result, result, setResult)
 
 public:
     KHealthCertificate::CertificateValidation validationState() const;};
