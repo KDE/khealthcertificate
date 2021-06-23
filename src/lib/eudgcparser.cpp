@@ -4,6 +4,7 @@
  */
 
 #include "eudgcparser.h"
+#include "cborutils_p.h"
 #include "coseparser.h"
 
 #include <KCodecs>
@@ -91,8 +92,7 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
     // TODO parse certificate header
     qDebug() << reader.toInteger();
     reader.next();
-    qDebug() << reader.readString().data;
-    reader.next();
+    qDebug() << CborUtils::readString(reader);
     qDebug() << reader.toInteger();
     reader.next();
     qDebug() << reader.toInteger();
@@ -134,8 +134,7 @@ QVariant EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
     }
     reader.enterContainer();
     while (reader.hasNext()) {
-        const auto key = reader.readString().data;
-        reader.next();
+        const auto key = CborUtils::readString(reader);
         if (key == QLatin1String("v")) {
             parseVaccinationCertificateArray(reader);
         } else if (key == QLatin1String("t")) {
@@ -145,8 +144,7 @@ QVariant EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
         } else if (key == QLatin1String("nam")) {
             parseName(reader);
         } else if (key == QLatin1String("dob")) {
-            const auto dob = QDate::fromString(reader.readString().data, Qt::ISODate);
-            reader.next();
+            const auto dob = QDate::fromString(CborUtils::readString(reader), Qt::ISODate);
             std::visit([&dob](auto &cert) { cert.setDateOfBirth(dob); }, m_cert);
         } else {
             qDebug() << "unhandled element:" << key;
@@ -179,20 +177,15 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
     KVaccinationCertificate cert;
     reader.enterContainer();
     while (reader.hasNext()) {
-        const auto key = reader.readString().data;
-        reader.next();
+        const auto key = CborUtils::readString(reader);
         if (key == QLatin1String("tg")) {
-            cert.setDisease(translateValue(key, reader.readString().data));
-            reader.next();
+            cert.setDisease(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("dt")) {
-            cert.setDate(QDate::fromString(reader.readString().data, Qt::ISODate));
-            reader.next();
+            cert.setDate(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("mp")) {
-            cert.setVaccine(translateValue(key, reader.readString().data));
-            reader.next();
+            cert.setVaccine(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("ma")) {
-            cert.setManufacturer(translateValue(key, reader.readString().data));
-            reader.next();
+            cert.setManufacturer(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("dn")) {
             cert.setDose(reader.toInteger());
             reader.next();
@@ -200,8 +193,7 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
             cert.setTotalDoses(reader.toInteger());
             reader.next();
         } else if (key == QLatin1String("co")) {
-            cert.setCountry(reader.readString().data);
-            reader.next();
+            cert.setCountry(CborUtils::readString(reader));
         } else {
             qDebug() << "unhandled vaccine key:" << key;
             reader.next();
@@ -230,34 +222,25 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
     KTestCertificate cert;
     reader.enterContainer();
     while (reader.hasNext()) {
-        const auto key = reader.readString().data;
-        reader.next();
+        const auto key = CborUtils::readString(reader);
         if (key == QLatin1String("tg")) {
-            cert.setDisease(translateValue(key, reader.readString().data));
-            reader.next();
+            cert.setDisease(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("tt")) {
-            cert.setTestType(translateValue(QLatin1String("tcTt"), reader.readString().data));
-            reader.next();
+            cert.setTestType(translateValue(QLatin1String("tcTt"), CborUtils::readString(reader)));
         } else if (key == QLatin1String("nm")) {
-            cert.setNaaTestName(reader.readString().data);
-            reader.next();
+            cert.setNaaTestName(CborUtils::readString(reader));
         } else if (key == QLatin1String("ma")) {
-            cert.setRatTest(translateValue(QLatin1String("tcMa"), reader.readString().data));
-            reader.next();
+            cert.setRatTest(translateValue(QLatin1String("tcMa"), CborUtils::readString(reader)));
         } else if (key == QLatin1String("sc")) {
-            cert.setDate(QDate::fromString(reader.readString().data, Qt::ISODate));
-            reader.next();
+            cert.setDate(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("tr")) {
-            const auto value = reader.readString().data;
+            const auto value = CborUtils::readString(reader);
             cert.setResultString(translateValue(QLatin1String("tcTr"), value));
             cert.setResult(value == QLatin1String("260415000") ? KTestCertificate::Negative : KTestCertificate::Positive);
-            reader.next();
         } else if (key == QLatin1String("tc")) {
-            cert.setTextCenter(reader.readString().data);
-            reader.next();
+            cert.setTextCenter(CborUtils::readString(reader));
         } else if (key == QLatin1String("co")) {
-            cert.setCountry(reader.readString().data);
-            reader.next();
+            cert.setCountry(CborUtils::readString(reader));
         } else {
             qDebug() << "unhandled test key:" << key;
             reader.next();
@@ -287,20 +270,15 @@ void EuDgcParser::parseRecoveryCertificate(QCborStreamReader &reader) const
     KRecoveryCertificate cert;
     reader.enterContainer();
     while (reader.hasNext()) {
-        const auto key = reader.readString().data;
-        reader.next();
+        const auto key = CborUtils::readString(reader);
        if (key == QLatin1String("tg")) {
-            cert.setDisease(translateValue(key, reader.readString().data));
-            reader.next();
+            cert.setDisease(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("fr")) {
-            cert.setDateOfPositiveTest(QDate::fromString(reader.readString().data, Qt::ISODate));
-            reader.next();
+            cert.setDateOfPositiveTest(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("df")) {
-            cert.setValidFrom(QDate::fromString(reader.readString().data, Qt::ISODate));
-            reader.next();
+            cert.setValidFrom(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("du")) {
-            cert.setValidUntil(QDate::fromString(reader.readString().data, Qt::ISODate));
-            reader.next();
+            cert.setValidUntil(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else {
             qDebug() << "unhandled recovery key:" << key;
             reader.next();
@@ -318,14 +296,11 @@ void EuDgcParser::parseName(QCborStreamReader &reader) const
     QString fn, gn;
     reader.enterContainer();
     while (reader.hasNext()) {
-        const auto key = reader.readString().data;
-        reader.next();
+        const auto key = CborUtils::readString(reader);
         if (key == QLatin1String("fn")) {
-            fn = reader.readString().data;
-            reader.next();
+            fn = CborUtils::readString(reader);
         } else if (key == QLatin1String("gn")) {
-            gn = reader.readString().data;
-            reader.next();
+            gn = CborUtils::readString(reader);
         } else {
             reader.next();
         }

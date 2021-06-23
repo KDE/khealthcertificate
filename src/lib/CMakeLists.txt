@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 add_library(KHealthCertificate
+    cborutils.cpp
     coseparser.cpp
     eudgcparser.cpp
     khealthcertificate.cpp

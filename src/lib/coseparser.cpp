@@ -4,6 +4,7 @@
  */
 
 #include "coseparser.h"
+#include "cborutils_p.h"
 
 #include <QCborStreamReader>
 #include <QDebug>
@@ -25,5 +26,5 @@ void CoseParser::parse(const QByteArray &data)
     reader.enterContainer();
     reader.next(); // algorithm?
     reader.next(); // key id?
-    payload = reader.readByteArray().data; // TODO correct byte array reading
+    payload = CborUtils::readByteArray(reader);
 }
