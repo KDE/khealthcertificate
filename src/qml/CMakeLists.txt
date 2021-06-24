@@ -3,7 +3,7 @@
 
 add_library(khealthcertificateqmlplugin khealthcertificateqmlplugin.cpp)
 target_link_libraries(khealthcertificateqmlplugin
-    Qt5::Qml
+    Qt::Qml
     KHealthCertificate
 )
 

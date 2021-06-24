@@ -22,7 +22,7 @@ set_target_properties(KHealthCertificate PROPERTIES
     EXPORT_NAME KHealthCertificate
 )
 target_link_libraries(KHealthCertificate PUBLIC
-    Qt5::Core
+    Qt::Core
 )
 target_link_libraries(KHealthCertificate PRIVATE
     KF5::Archive
