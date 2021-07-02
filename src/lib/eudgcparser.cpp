@@ -88,25 +88,27 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
         return {};
     }
     reader.enterContainer();
-
-    // TODO parse certificate header
-    qDebug() << reader.toInteger();
-    reader.next();
-    qDebug() << CborUtils::readString(reader);
-    qDebug() << reader.toInteger();
-    reader.next();
-    qDebug() << reader.toInteger();
-    reader.next();
-    qDebug() << reader.toInteger();
-    reader.next();
-    qDebug() << reader.toInteger();
-    reader.next();
-
-    // the actual certificate
-    if (reader.toInteger() == -260) {
-        reader.next();
-        return parseCertificate(reader);
+    // parse certificate header
+    while (reader.hasNext()) {
+        const auto key = CborUtils::readInteger(reader);
+        switch (key) {
+            case -260:
+                return parseCertificate(reader);
+            case 1:
+                qDebug() << "key issuer:" << CborUtils::readString(reader);
+                break;
+            case 4:
+                qDebug() << "key expires:" << QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
+                break;
+            case 6:
+                qDebug() << "key issued at:" << QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
+                break;
+            default:
+                qDebug() << "unhandled header key:" << key;
+                reader.next();
+        }
     }
+    reader.leaveContainer();
 
     return {};
 }
@@ -117,13 +119,12 @@ QVariant EuDgcParser::parseCertificate(QCborStreamReader &reader) const
         return {};
     }
     reader.enterContainer();
-    const auto version = reader.toInteger();
+    const auto version = CborUtils::readInteger(reader);
     if (version != 1) {
         qDebug() << "unknown EU DGC version:" << version;
         return {};
     }
 
-    reader.next();
     return parseCertificateV1(reader);
 }
 
@@ -187,11 +188,9 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
         } else if (key == QLatin1String("ma")) {
             cert.setManufacturer(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("dn")) {
-            cert.setDose(reader.toInteger());
-            reader.next();
+            cert.setDose(CborUtils::readInteger(reader));
         } else if (key == QLatin1String("sd")) {
-            cert.setTotalDoses(reader.toInteger());
-            reader.next();
+            cert.setTotalDoses(CborUtils::readInteger(reader));
         } else if (key == QLatin1String("co")) {
             cert.setCountry(CborUtils::readString(reader));
         } else {

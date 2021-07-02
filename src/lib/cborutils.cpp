@@ -8,6 +8,16 @@
 #include <QCborStreamReader>
 #include <QDebug>
 
+int64_t CborUtils::readInteger(QCborStreamReader &reader)
+{
+    if (!reader.isInteger()) {
+        return {};
+    }
+    const auto result = reader.toInteger();
+    reader.next();
+    return result;
+}
+
 QString CborUtils::readString(QCborStreamReader &reader)
 {
     if (!reader.isString()) {
