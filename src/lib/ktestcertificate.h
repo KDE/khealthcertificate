@@ -27,6 +27,11 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, resultString, setResultString)
     KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTextCenter)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
+    /** The entity that issued this certificate. */
+    KHEALTHCERTIFICATE_PROPERTY(QString, certificateIssuer, setCertificateIssuer)
+    /** The unique identifier of this certificate. */
+    KHEALTHCERTIFICATE_PROPERTY(QString, certificateId, setCertificateId)
+
     Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
 
     enum Result {

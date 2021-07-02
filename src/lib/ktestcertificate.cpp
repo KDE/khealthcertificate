@@ -20,6 +20,8 @@ public:
     QString resultString;
     QString testCenter;
     QString country;
+    QString certificateIssuer;
+    QString certificateId;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Test)
@@ -34,6 +36,8 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, KTestCertificate::Result, result, setResu
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, resultString, setResultString)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, testCenter, setTextCenter)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, country, setCountry)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, certificateIssuer, setCertificateIssuer)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, certificateId, setCertificateId)
 
 KHealthCertificate::CertificateValidation KTestCertificate::validationState() const
 {

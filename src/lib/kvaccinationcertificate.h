@@ -26,6 +26,11 @@ class KHEALTHCERTIFICATE_EXPORT KVaccinationCertificate
     KHEALTHCERTIFICATE_PROPERTY(int, dose, setDose)
     KHEALTHCERTIFICATE_PROPERTY(int, totalDoses, setTotalDoses)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
+    /** The entity that issued this certificate. */
+    KHEALTHCERTIFICATE_PROPERTY(QString, certificateIssuer, setCertificateIssuer)
+    /** The unique identifier of this certificate. */
+    KHEALTHCERTIFICATE_PROPERTY(QString, certificateId, setCertificateId)
+
     Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
 
 public:

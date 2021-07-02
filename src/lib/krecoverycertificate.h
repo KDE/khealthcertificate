@@ -23,6 +23,11 @@ class KHEALTHCERTIFICATE_EXPORT KRecoveryCertificate
     KHEALTHCERTIFICATE_PROPERTY(QDate, validFrom, setValidFrom)
     KHEALTHCERTIFICATE_PROPERTY(QDate, validUntil, setValidUntil)
     KHEALTHCERTIFICATE_PROPERTY(QString, disease, setDisease)
+    /** The entity that issued this certificate. */
+    KHEALTHCERTIFICATE_PROPERTY(QString, certificateIssuer, setCertificateIssuer)
+    /** The unique identifier of this certificate. */
+    KHEALTHCERTIFICATE_PROPERTY(QString, certificateId, setCertificateId)
+
     Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
 
 public:

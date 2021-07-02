@@ -47,6 +47,8 @@ private Q_SLOTS:
         QCOMPARE(vac.date(), QDate(2021, 5, 29));
         QCOMPARE(vac.vaccine(), QLatin1String("COVID-19 Vaccine Moderna"));
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna Biotech Spain S.L."));
+        QCOMPARE(vac.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
+        QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
 
         cert = KHealthCertificateParser::parse(readFile(u"eu-dgc/partial-vaccination.txt"));
@@ -61,6 +63,8 @@ private Q_SLOTS:
         QCOMPARE(vac.date(), QDate(2021, 5, 29));
         QCOMPARE(vac.vaccine(), QLatin1String("COVID-19 Vaccine Moderna"));
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna Biotech Spain S.L."));
+        QCOMPARE(vac.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
+        QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
     }
 
@@ -77,6 +81,8 @@ private Q_SLOTS:
         QCOMPARE(test.testType(), QLatin1String("Rapid immunoassay"));
         QCOMPARE(test.result(), KTestCertificate::Negative);
         QCOMPARE(test.resultString(), QLatin1String("Not detected"));
+        QCOMPARE(test.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
+        QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
     }
 
@@ -91,6 +97,8 @@ private Q_SLOTS:
         QCOMPARE(test.dateOfPositiveTest(), QDate(2021, 1, 10));
         QCOMPARE(test.validFrom(), QDate(2021, 5, 29));
         QCOMPARE(test.validUntil(), QDate(2021, 6, 15));
+        QCOMPARE(test.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
+        QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(test.validationState(), KHealthCertificate::Unknown); // not implemented yet
     }
 };

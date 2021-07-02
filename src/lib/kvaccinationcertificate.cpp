@@ -18,6 +18,8 @@ public:
     int dose = 0;
     int totalDoses = 0;
     QString country;
+    QString certificateIssuer;
+    QString certificateId;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Vaccination)
@@ -30,6 +32,8 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, manufacturer, setManufact
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, int, dose, setDose)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, int, totalDoses, setTotalDoses)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, country, setCountry)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, certificateIssuer, setCertificateIssuer)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, certificateId, setCertificateId)
 
 KHealthCertificate::CertificateValidation KVaccinationCertificate::validationState() const
 {

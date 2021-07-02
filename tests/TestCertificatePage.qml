@@ -102,6 +102,20 @@ Kirigami.ScrollablePage {
                 text: cert.country
                 Kirigami.FormData.label: "Country:"
             }
+
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Certificate"
+            }
+
+            QQC2.Label {
+                text: cert.certificateIssuer
+                Kirigami.FormData.label: "Issuer:"
+            }
+            QQC2.Label {
+                text: cert.certificateId
+                Kirigami.FormData.label: "Identifier:"
+            }
         }
     }
 }

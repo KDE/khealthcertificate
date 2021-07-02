@@ -15,6 +15,8 @@ public:
     QDate validFrom;
     QDate validUntil;
     QString disease;
+    QString certificateIssuer;
+    QString certificateId;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Recovery)
@@ -24,6 +26,8 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, dateOfPositiveTest, setDateOfP
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, validFrom, setValidFrom)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, validUntil, setValidUntil)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, disease, setDisease)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, certificateId, setCertificateId)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, certificateIssuer, setCertificateIssuer)
 
 KHealthCertificate::CertificateValidation KRecoveryCertificate::validationState() const
 {

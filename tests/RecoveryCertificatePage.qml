@@ -79,6 +79,20 @@ Kirigami.ScrollablePage {
                 text: cert.disease
                 Kirigami.FormData.label: "Disease:"
             }
+
+            Kirigami.Separator {
+                Kirigami.FormData.isSection: true
+                Kirigami.FormData.label: "Certificate"
+            }
+
+            QQC2.Label {
+                text: cert.certificateIssuer
+                Kirigami.FormData.label: "Issuer:"
+            }
+            QQC2.Label {
+                text: cert.certificateId
+                Kirigami.FormData.label: "Identifier:"
+            }
         }
     }
 }

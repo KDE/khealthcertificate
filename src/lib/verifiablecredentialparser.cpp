@@ -43,5 +43,8 @@ QVariant VerifiableCredentialParser::parse(const QByteArray &data)
     const auto address = facility.value(QLatin1String("address")).toObject();
     cert.setCountry(address.value(QLatin1String("addressCountry")).toString());
 
+    cert.setCertificateId(evidence.value(QLatin1String("certificateId")).toString());
+    cert.setCertificateIssuer(doc.object().value(QLatin1String("issuer")).toString());
+
     return cert;
 }

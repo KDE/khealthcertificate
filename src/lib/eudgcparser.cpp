@@ -193,6 +193,10 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
             cert.setTotalDoses(CborUtils::readInteger(reader));
         } else if (key == QLatin1String("co")) {
             cert.setCountry(CborUtils::readString(reader));
+        } else if (key == QLatin1String("is")) {
+            cert.setCertificateIssuer(CborUtils::readString(reader));
+        } else if (key == QLatin1String("ci")) {
+            cert.setCertificateId(CborUtils::readString(reader));
         } else {
             qDebug() << "unhandled vaccine key:" << key;
             reader.next();
@@ -240,6 +244,10 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
             cert.setTextCenter(CborUtils::readString(reader));
         } else if (key == QLatin1String("co")) {
             cert.setCountry(CborUtils::readString(reader));
+        } else if (key == QLatin1String("is")) {
+            cert.setCertificateIssuer(CborUtils::readString(reader));
+        } else if (key == QLatin1String("ci")) {
+            cert.setCertificateId(CborUtils::readString(reader));
         } else {
             qDebug() << "unhandled test key:" << key;
             reader.next();
@@ -278,6 +286,10 @@ void EuDgcParser::parseRecoveryCertificate(QCborStreamReader &reader) const
             cert.setValidFrom(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("du")) {
             cert.setValidUntil(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
+        } else if (key == QLatin1String("is")) {
+            cert.setCertificateIssuer(CborUtils::readString(reader));
+        } else if (key == QLatin1String("ci")) {
+            cert.setCertificateId(CborUtils::readString(reader));
         } else {
             qDebug() << "unhandled recovery key:" << key;
             reader.next();
