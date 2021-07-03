@@ -18,6 +18,10 @@ Kirigami.ScrollablePage {
     property var rawData
     property var cert
 
+    function daysTo(d1, d2) {
+        return (d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24);
+    }
+
     ColumnLayout {
         width: parent.width
 
@@ -67,6 +71,7 @@ Kirigami.ScrollablePage {
             QQC2.Label {
                 text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
                 Kirigami.FormData.label: "Date:"
+                color: daysTo(cert.date, new Date()) >= 14 ? Kirigami.Theme.textColor : Kirigami.Theme.neutralTextColor
             }
             QQC2.Label {
                 text: cert.disease
