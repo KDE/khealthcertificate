@@ -181,6 +181,8 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
         const auto key = CborUtils::readString(reader);
         if (key == QLatin1String("tg")) {
             cert.setDisease(translateValue(key, CborUtils::readString(reader)));
+        } else if (key == QLatin1String("vp")) {
+            cert.setVaccineType(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("dt")) {
             cert.setDate(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("mp")) {

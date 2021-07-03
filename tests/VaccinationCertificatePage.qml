@@ -65,13 +65,18 @@ Kirigami.ScrollablePage {
             }
 
             QQC2.Label {
+                text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Date:"
+            }
+            QQC2.Label {
                 text: cert.disease
                 Kirigami.FormData.label: "Disease:"
                 visible: cert.disease
             }
             QQC2.Label {
-                text: cert.date.toLocaleDateString(Qt.locale(), Locale.ShortFormat)
-                Kirigami.FormData.label: "Date:"
+                text: cert.vaccineType
+                Kirigami.FormData.label: "Type:"
+                visible: cert.vaccineType
             }
             QQC2.Label {
                 text: cert.vaccine
