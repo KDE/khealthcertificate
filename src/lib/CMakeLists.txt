@@ -17,8 +17,8 @@ add_library(KHealthCertificate
 
 generate_export_header(KHealthCertificate BASE_NAME KHealthCertificate)
 set_target_properties(KHealthCertificate PROPERTIES
-    VERSION ${KHealthCertificate_VERSION}
-    SOVERSION ${KHealthCertificate_SOVERSION}
+    VERSION ${KHEALTHCERTIFICATE_VERSION}
+    SOVERSION ${KHEALTHCERTIFICATE_SOVERSION}
     EXPORT_NAME KHealthCertificate
 )
 target_link_libraries(KHealthCertificate PUBLIC

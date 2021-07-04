@@ -29,7 +29,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 ecm_setup_version(PROJECT
-    #VARIABLE_PREFIX KHEALTHCERTIFICATE
+    VARIABLE_PREFIX KHEALTHCERTIFICATE
     VERSION_HEADER khealthcertificate_version.h
     PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KHealthCertificateConfigVersion.cmake"
     SOVERSION 1
@@ -48,7 +48,25 @@ add_definitions(-DQT_USE_QSTRINGBUILDER)
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
 
 add_subdirectory(src)
-add_subdirectory(autotests)
-add_subdirectory(tests)
+if (BUILD_TESTING)
+    add_subdirectory(autotests)
+    add_subdirectory(tests)
+endif()
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/KHealthCertificate")
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/KHealthCertificateConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/KHealthCertificateConfig.cmake"
+    INSTALL_DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+)
+
+install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/KHealthCertificateConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/KHealthCertificateConfigVersion.cmake"
+    DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+    COMPONENT Devel
+)
+install(EXPORT KHealthCertificateTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KHealthCertificateTargets.cmake)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/khealthcertificate_version.h DESTINATION ${KDE_INSTALL_INCLUDEDIR}/khealthcertificate COMPONENT Devel)
