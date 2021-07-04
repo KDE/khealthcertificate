@@ -22,6 +22,8 @@ public:
     QString country;
     QString certificateIssuer;
     QString certificateId;
+    QDateTime certificateIssueDate;
+    QDateTime certificateExpiryDate;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Test)
@@ -38,9 +40,14 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, testCenter, setTextCenter)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, country, setCountry)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, certificateIssuer, setCertificateIssuer)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, certificateId, setCertificateId)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QDateTime, certificateIssueDate, setCertificateIssueDate)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QDateTime, certificateExpiryDate, setCertificateExpiryDate)
 
 KHealthCertificate::CertificateValidation KTestCertificate::validationState() const
 {
+    if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
+        return KHealthCertificate::Invalid;
+    }
     if (d->result == Positive) {
         return KHealthCertificate::Invalid;
     }

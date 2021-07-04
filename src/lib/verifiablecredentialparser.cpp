@@ -45,6 +45,7 @@ QVariant VerifiableCredentialParser::parse(const QByteArray &data)
 
     cert.setCertificateId(evidence.value(QLatin1String("certificateId")).toString());
     cert.setCertificateIssuer(doc.object().value(QLatin1String("issuer")).toString());
+    cert.setCertificateIssueDate(QDateTime::fromString(doc.object().value(QLatin1String("issuanceDate")).toString(), Qt::ISODate));
 
     return cert;
 }

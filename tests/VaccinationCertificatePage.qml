@@ -115,6 +115,15 @@ Kirigami.ScrollablePage {
                 text: cert.certificateId
                 Kirigami.FormData.label: "Identifier:"
             }
+            QQC2.Label {
+                text: cert.certificateIssueDate.toLocaleString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Issued:"
+            }
+            QQC2.Label {
+                text: cert.certificateExpiryDate.toLocaleString(Qt.locale(), Locale.ShortFormat)
+                Kirigami.FormData.label: "Expires:"
+                visible: cert.certificateExpiryDate.getTime() != 0
+            }
         }
     }
 }

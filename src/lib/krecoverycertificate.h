@@ -27,6 +27,10 @@ class KHEALTHCERTIFICATE_EXPORT KRecoveryCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, certificateIssuer, setCertificateIssuer)
     /** The unique identifier of this certificate. */
     KHEALTHCERTIFICATE_PROPERTY(QString, certificateId, setCertificateId)
+    /** Date/time this certificate has been issued at. */
+    KHEALTHCERTIFICATE_PROPERTY(QDateTime, certificateIssueDate, setCertificateIssueDate)
+    /** Date/time this certificate expires. */
+    KHEALTHCERTIFICATE_PROPERTY(QDateTime, certificateExpiryDate, setCertificateExpiryDate)
 
     Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
 

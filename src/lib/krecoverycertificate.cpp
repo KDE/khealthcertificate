@@ -17,6 +17,8 @@ public:
     QString disease;
     QString certificateIssuer;
     QString certificateId;
+    QDateTime certificateIssueDate;
+    QDateTime certificateExpiryDate;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Recovery)
@@ -28,9 +30,15 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDate, validUntil, setValidUntil)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, disease, setDisease)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, certificateId, setCertificateId)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, certificateIssuer, setCertificateIssuer)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDateTime, certificateIssueDate, setCertificateIssueDate)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDateTime, certificateExpiryDate, setCertificateExpiryDate)
 
 KHealthCertificate::CertificateValidation KRecoveryCertificate::validationState() const
 {
+    if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
+        return KHealthCertificate::Invalid;
+    }
+
     return KHealthCertificate::Unknown;
 }
 

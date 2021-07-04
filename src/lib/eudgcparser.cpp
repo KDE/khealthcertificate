@@ -89,19 +89,21 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
     }
     reader.enterContainer();
     // parse certificate header
+    QDateTime issueDt, expiryDt;
     while (reader.hasNext()) {
         const auto key = CborUtils::readInteger(reader);
         switch (key) {
             case -260:
-                return parseCertificate(reader);
+                parseCertificate(reader);
+                break;
             case 1:
                 qDebug() << "key issuer:" << CborUtils::readString(reader);
                 break;
             case 4:
-                qDebug() << "key expires:" << QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
+                expiryDt = QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
                 break;
             case 6:
-                qDebug() << "key issued at:" << QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
+                issueDt = QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
                 break;
             default:
                 qDebug() << "unhandled header key:" << key;
@@ -109,29 +111,30 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
         }
     }
     reader.leaveContainer();
-
-    return {};
+    std::visit([&issueDt](auto &cert) { cert.setCertificateIssueDate(issueDt); }, m_cert);
+    std::visit([&expiryDt](auto &cert) { cert.setCertificateExpiryDate(expiryDt); }, m_cert);
+    return std::visit([](const auto &cert) { return QVariant::fromValue(cert); }, m_cert);
 }
 
-QVariant EuDgcParser::parseCertificate(QCborStreamReader &reader) const
+void EuDgcParser::parseCertificate(QCborStreamReader &reader) const
 {
     if (!reader.isMap()) {
-        return {};
+        return;
     }
     reader.enterContainer();
     const auto version = CborUtils::readInteger(reader);
     if (version != 1) {
         qDebug() << "unknown EU DGC version:" << version;
-        return {};
+        return;
     }
 
-    return parseCertificateV1(reader);
+    parseCertificateV1(reader);
 }
 
-QVariant EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
+void EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
 {
     if (!reader.isMap()) {
-        return {};
+        return;
     }
     reader.enterContainer();
     while (reader.hasNext()) {
@@ -153,8 +156,6 @@ QVariant EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
         }
     }
     reader.leaveContainer();
-
-    return std::visit([](const auto &cert) { return QVariant::fromValue(cert); }, m_cert);
 }
 
 void EuDgcParser::parseCertificateArray(QCborStreamReader &reader, void (EuDgcParser::*func)(QCborStreamReader&) const) const

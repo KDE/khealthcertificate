@@ -25,8 +25,8 @@ public:
     QVariant parse(const QByteArray &data) const;
 
 private:
-    QVariant parseCertificate(QCborStreamReader &reader) const;
-    QVariant parseCertificateV1(QCborStreamReader &reader) const;
+    void parseCertificate(QCborStreamReader &reader) const;
+    void parseCertificateV1(QCborStreamReader &reader) const;
     void parseCertificateArray(QCborStreamReader &reader, void (EuDgcParser::* func)(QCborStreamReader&) const) const;
     void parseVaccinationCertificate(QCborStreamReader &reader) const;
     void parseTestCertificate(QCborStreamReader &reader) const;

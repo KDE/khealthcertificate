@@ -21,6 +21,8 @@ public:
     QString country;
     QString certificateIssuer;
     QString certificateId;
+    QDateTime certificateIssueDate;
+    QDateTime certificateExpiryDate;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Vaccination)
@@ -36,12 +38,18 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, int, totalDoses, setTotalDoses)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, country, setCountry)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, certificateIssuer, setCertificateIssuer)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, certificateId, setCertificateId)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDateTime, certificateIssueDate, setCertificateIssueDate)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDateTime, certificateExpiryDate, setCertificateExpiryDate)
 
 KHealthCertificate::CertificateValidation KVaccinationCertificate::validationState() const
 {
+    if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
+        return KHealthCertificate::Invalid;
+    }
     if (d->date > QDate::currentDate() || (d->dose == 0 && d->totalDoses)) {
         return KHealthCertificate::Invalid;
     }
+
     if (d->date.addDays(14) >= QDate::currentDate()) {
         return KHealthCertificate::Partial;
     }

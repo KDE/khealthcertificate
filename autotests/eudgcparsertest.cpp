@@ -50,6 +50,8 @@ private Q_SLOTS:
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna Biotech Spain S.L."));
         QCOMPARE(vac.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
+        QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
+        QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
 
         cert = KHealthCertificateParser::parse(readFile(u"eu-dgc/partial-vaccination.txt"));
@@ -67,6 +69,8 @@ private Q_SLOTS:
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna Biotech Spain S.L."));
         QCOMPARE(vac.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
+        QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
+        QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
     }
 
@@ -85,6 +89,8 @@ private Q_SLOTS:
         QCOMPARE(test.resultString(), QLatin1String("Not detected"));
         QCOMPARE(test.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
+        QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
+        QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
     }
 
@@ -101,6 +107,8 @@ private Q_SLOTS:
         QCOMPARE(test.validUntil(), QDate(2021, 6, 15));
         QCOMPARE(test.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/5CWLU12RNOB9RXSEOP6FG8#W"));
+        QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
+        QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(test.validationState(), KHealthCertificate::Unknown); // not implemented yet
     }
 };
