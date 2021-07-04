@@ -76,6 +76,9 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
     }
 
     const auto decoded = inflateByteArray(KCodecs::base45Decode(data.mid(4)));
+    if (decoded.isEmpty()) {
+        return {};
+    }
 
     CoseParser cose;
     cose.parse(decoded);

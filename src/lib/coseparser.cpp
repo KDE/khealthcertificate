@@ -13,7 +13,7 @@ void CoseParser::parse(const QByteArray &data)
 {
     // only single signer case implemented atm
     QCborStreamReader reader(data);
-    if (reader.toTag() != QCborKnownTags::COSE_Sign1) {
+    if (reader.type() != QCborStreamReader::Tag || reader.toTag() != QCborKnownTags::COSE_Sign1) {
         qDebug() << "wrong COSE tag:" << reader.toTag();
         return;
     }
