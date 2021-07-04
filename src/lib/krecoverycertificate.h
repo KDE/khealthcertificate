@@ -34,6 +34,8 @@ class KHEALTHCERTIFICATE_EXPORT KRecoveryCertificate
 
     Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
 
+    /** Fully encoded data as represented in the barcode. */
+    KHEALTHCERTIFICATE_PROPERTY(QByteArray, rawData, setRawData)
 public:
     KHealthCertificate::CertificateValidation validationState() const;
 };

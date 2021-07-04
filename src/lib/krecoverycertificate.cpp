@@ -19,6 +19,7 @@ public:
     QString certificateId;
     QDateTime certificateIssueDate;
     QDateTime certificateExpiryDate;
+    QByteArray rawData;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Recovery)
@@ -32,6 +33,7 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, certificateId, setCertificat
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, certificateIssuer, setCertificateIssuer)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDateTime, certificateIssueDate, setCertificateIssueDate)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDateTime, certificateExpiryDate, setCertificateExpiryDate)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QByteArray, rawData, setRawData)
 
 KHealthCertificate::CertificateValidation KRecoveryCertificate::validationState() const
 {

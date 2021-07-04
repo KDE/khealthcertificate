@@ -53,6 +53,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
+        QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination.txt"));
 
         cert = KHealthCertificateParser::parse(readFile(u"eu-dgc/partial-vaccination.txt"));
         QCOMPARE(cert.userType(), qMetaTypeId<KVaccinationCertificate>());
@@ -72,6 +73,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
+        QCOMPARE(vac.rawData(), readFile(u"eu-dgc/partial-vaccination.txt"));
     }
 
     void testTestCertificates()
@@ -92,6 +94,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
+        QCOMPARE(test.rawData(), readFile(u"eu-dgc/negative-test.txt"));
     }
 
     void testRecoveryCertificates()
@@ -110,6 +113,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
         QCOMPARE(test.validationState(), KHealthCertificate::Unknown); // not implemented yet
+        QCOMPARE(test.rawData(), readFile(u"eu-dgc/recovery.txt"));
     }
 };
 

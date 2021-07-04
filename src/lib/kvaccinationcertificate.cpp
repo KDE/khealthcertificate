@@ -23,6 +23,7 @@ public:
     QString certificateId;
     QDateTime certificateIssueDate;
     QDateTime certificateExpiryDate;
+    QByteArray rawData;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Vaccination)
@@ -40,6 +41,7 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, certificateIssuer, setCer
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, certificateId, setCertificateId)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDateTime, certificateIssueDate, setCertificateIssueDate)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDateTime, certificateExpiryDate, setCertificateExpiryDate)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QByteArray, rawData, setRawData)
 
 KHealthCertificate::CertificateValidation KVaccinationCertificate::validationState() const
 {

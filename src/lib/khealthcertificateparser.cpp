@@ -39,7 +39,9 @@ QVariant KHealthCertificateParser::parse(const QByteArray &data)
             if (auto f = zip.directory()->file(entry)) {
                 result = parse(f->data());
                 if (!result.isNull()) {
-                    return result;
+                    auto vac = result.value<KVaccinationCertificate>();
+                    vac.setRawData(data);
+                    return vac;
                 }
             }
         }

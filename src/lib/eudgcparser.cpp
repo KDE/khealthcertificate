@@ -113,6 +113,7 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
     reader.leaveContainer();
     std::visit([&issueDt](auto &cert) { cert.setCertificateIssueDate(issueDt); }, m_cert);
     std::visit([&expiryDt](auto &cert) { cert.setCertificateExpiryDate(expiryDt); }, m_cert);
+    std::visit([&data](auto &cert) { cert.setRawData(data); }, m_cert);
     return std::visit([](const auto &cert) { return QVariant::fromValue(cert); }, m_cert);
 }
 

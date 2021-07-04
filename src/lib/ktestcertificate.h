@@ -46,6 +46,8 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     Q_ENUM(Result)
     KHEALTHCERTIFICATE_PROPERTY(Result, result, setResult)
 
+    /** Fully encoded data as represented in the barcode. */
+    KHEALTHCERTIFICATE_PROPERTY(QByteArray, rawData, setRawData)
 public:
     KHealthCertificate::CertificateValidation validationState() const;};
 

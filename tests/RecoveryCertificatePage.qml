@@ -14,7 +14,6 @@ Kirigami.ScrollablePage {
     id: page
     title: "Recovery Certificate"
 
-    property var rawData
     property var cert
 
     ColumnLayout {
@@ -29,7 +28,7 @@ Kirigami.ScrollablePage {
                 anchors.centerIn: parent
                 id: barcode
                 barcodeType: Prison.Barcode.QRCode
-                content: rawData
+                content: cert.rawData
             }
 
             color: switch (cert.validationState) {

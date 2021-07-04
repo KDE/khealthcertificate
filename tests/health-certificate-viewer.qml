@@ -42,13 +42,13 @@ Kirigami.ApplicationWindow {
                 var cert = HealthCertificateParser.parse(rawData);
                 switch (cert.type) {
                     case HealthCertificate.Vaccination:
-                        applicationWindow().pageStack.push(vaccinationPage, {"rawData": rawData, "cert": cert});
+                        applicationWindow().pageStack.push(vaccinationPage, {"cert": cert});
                         break;
                     case HealthCertificate.Test:
-                        applicationWindow().pageStack.push(testPage, {"rawData": rawData, "cert": cert});
+                        applicationWindow().pageStack.push(testPage, {"cert": cert});
                         break;
                     case HealthCertificate.Recovery:
-                        applicationWindow().pageStack.push(recoveryPage, {"rawData": rawData, "cert": cert});
+                        applicationWindow().pageStack.push(recoveryPage, {"cert": cert});
                         break;
                     default:
                         console.log(cert);
