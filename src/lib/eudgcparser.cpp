@@ -137,11 +137,11 @@ QVariant EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
     while (reader.hasNext()) {
         const auto key = CborUtils::readString(reader);
         if (key == QLatin1String("v")) {
-            parseVaccinationCertificateArray(reader);
+            parseCertificateArray(reader, &EuDgcParser::parseVaccinationCertificate);
         } else if (key == QLatin1String("t")) {
-            parseTestCertificateArray(reader);
+            parseCertificateArray(reader, &EuDgcParser::parseTestCertificate);
         } else if (key == QLatin1String("r")) {
-            parseRecoveryCertificateArray(reader);
+            parseCertificateArray(reader, &EuDgcParser::parseRecoveryCertificate);
         } else if (key == QLatin1String("nam")) {
             parseName(reader);
         } else if (key == QLatin1String("dob")) {
@@ -157,15 +157,14 @@ QVariant EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
     return std::visit([](const auto &cert) { return QVariant::fromValue(cert); }, m_cert);
 }
 
-void EuDgcParser::parseVaccinationCertificateArray(QCborStreamReader &reader) const
+void EuDgcParser::parseCertificateArray(QCborStreamReader &reader, void (EuDgcParser::*func)(QCborStreamReader&) const) const
 {
     if (!reader.isArray()) {
         return;
     }
     reader.enterContainer();
-    // TODO can we have more than one here!?
     while (reader.hasNext()) {
-        parseVaccinationCertificate(reader);
+        (this->*func)(reader);
     }
     reader.leaveContainer();
 }
@@ -208,17 +207,6 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
     m_cert = std::move(cert);
 }
 
-void EuDgcParser::parseTestCertificateArray(QCborStreamReader &reader) const
-{
-    if (!reader.isArray()) {
-        return;
-    }
-    reader.enterContainer();
-    while (reader.hasNext()) {
-        parseTestCertificate(reader);
-    }
-    reader.leaveContainer();}
-
 void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
 {
     if (!reader.isMap()) {
@@ -257,18 +245,6 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
     }
     reader.leaveContainer();
     m_cert = std::move(cert);
-}
-
-void EuDgcParser::parseRecoveryCertificateArray(QCborStreamReader &reader) const
-{
-    if (!reader.isArray()) {
-        return;
-    }
-    reader.enterContainer();
-    while (reader.hasNext()) {
-        parseRecoveryCertificate(reader);
-    }
-    reader.leaveContainer();
 }
 
 void EuDgcParser::parseRecoveryCertificate(QCborStreamReader &reader) const
