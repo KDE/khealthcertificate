@@ -6,7 +6,9 @@
 #include "coseparser.h"
 #include "cborutils_p.h"
 
+#include <QCborMap>
 #include <QCborStreamReader>
+#include <QCborValue>
 #include <QDebug>
 
 void CoseParser::parse(const QByteArray &data)
@@ -24,7 +26,22 @@ void CoseParser::parse(const QByteArray &data)
     }
 
     reader.enterContainer();
-    reader.next(); // algorithm?
-    reader.next(); // key id?
-    payload = CborUtils::readByteArray(reader);
+    m_protectedParams = CborUtils::readByteArray(reader);
+    const auto algo = QCborValue::fromCbor(m_protectedParams);
+    qDebug() << algo.toMap().value(1); // 1: algorithm
+    if (reader.isMap()) { // unprotected params
+        reader.enterContainer();
+        while (reader.hasNext()) {
+            const auto key = CborUtils::readInteger(reader);
+            qDebug() << key << CborUtils::readByteArray(reader).toBase64(); // 4: key id, as found in dsc-list.json
+        }
+        reader.leaveContainer();
+    }
+    m_payload = CborUtils::readByteArray(reader);
+    m_signature = CborUtils::readByteArray(reader);
+}
+
+QByteArray CoseParser::payload() const
+{
+    return m_payload;
 }

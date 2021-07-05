@@ -82,11 +82,11 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
 
     CoseParser cose;
     cose.parse(decoded);
-    if (cose.payload.isEmpty()) {
+    if (cose.payload().isEmpty()) {
         return {};
     }
 
-    QCborStreamReader reader(cose.payload);
+    QCborStreamReader reader(cose.payload());
     if (!reader.isMap()) {
         return {};
     }

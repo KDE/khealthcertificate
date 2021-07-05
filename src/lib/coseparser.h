@@ -15,8 +15,13 @@ class CoseParser
 {
 public:
     void parse(const QByteArray &data);
+    /** The signed content. */
+    QByteArray payload() const;
 
-    QByteArray payload;
+private:
+    QByteArray m_protectedParams;
+    QByteArray m_payload;
+    QByteArray m_signature;
 };
 
 #endif // COSEPARSER_H
