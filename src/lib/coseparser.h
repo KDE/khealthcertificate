@@ -22,6 +22,7 @@ private:
     QByteArray m_protectedParams;
     QByteArray m_payload;
     QByteArray m_signature;
+    QByteArray m_kid;
 };
 
 #endif // COSEPARSER_H

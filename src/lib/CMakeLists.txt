@@ -13,6 +13,7 @@ add_library(KHealthCertificate
     verifiablecredentialparser.cpp
 
     data/data.qrc
+    data/eu-dgc/certs/certs.qrc
 )
 
 generate_export_header(KHealthCertificate BASE_NAME KHealthCertificate)
@@ -27,6 +28,7 @@ target_link_libraries(KHealthCertificate PUBLIC
 target_link_libraries(KHealthCertificate PRIVATE
     KF5::Archive
     KF5::Codecs
+    OpenSSL::SSL
     ZLIB::ZLIB
 )
 

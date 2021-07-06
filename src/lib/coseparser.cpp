@@ -10,6 +10,17 @@
 #include <QCborStreamReader>
 #include <QCborValue>
 #include <QDebug>
+#include <QFile>
+
+#include <openssl/bio.h>
+#include <openssl/evp.h>
+#include <openssl/pem.h>
+#include <openssl/x509.h>
+
+enum {
+    CoseHeaderAlgorithm = 1,
+    CoseHeaderKid = 4
+};
 
 void CoseParser::parse(const QByteArray &data)
 {
@@ -27,18 +38,38 @@ void CoseParser::parse(const QByteArray &data)
 
     reader.enterContainer();
     m_protectedParams = CborUtils::readByteArray(reader);
-    const auto algo = QCborValue::fromCbor(m_protectedParams);
-    qDebug() << algo.toMap().value(1); // 1: algorithm
-    if (reader.isMap()) { // unprotected params
-        reader.enterContainer();
-        while (reader.hasNext()) {
-            const auto key = CborUtils::readInteger(reader);
-            qDebug() << key << CborUtils::readByteArray(reader).toBase64(); // 4: key id, as found in dsc-list.json
-        }
-        reader.leaveContainer();
-    }
+    auto params = QCborValue::fromCbor(m_protectedParams);
+    qDebug() << params.toMap().value(CoseHeaderAlgorithm);
+    params = QCborValue::fromCbor(reader);
+    m_kid = params.toMap().value(CoseHeaderKid).toByteArray();
     m_payload = CborUtils::readByteArray(reader);
     m_signature = CborUtils::readByteArray(reader);
+
+    // load certificate
+    QFile certFile(QLatin1String(":/eu-dgc/certs/") + QString::fromUtf8(m_kid.toHex()) + QLatin1String(".pem"));
+    if (!certFile.open(QFile::ReadOnly)) {
+        qWarning() << "unable to find certificate for key id:" << m_kid.toHex();
+        return;
+    }
+
+    const auto certData = certFile.readAll();
+    auto bio = BIO_new_mem_buf(certData.constData(), certData.size());
+
+    X509 *cert = PEM_read_bio_X509(bio, nullptr, nullptr, nullptr);
+    if (!cert) {
+        qWarning() << "failed to read X509 certificate";
+    }
+
+    EVP_PKEY *pkey = X509_get_pubkey(cert);
+    if (!pkey) {
+        qWarning() << "failed to load public key";
+    }
+
+    qDebug() << "found certificate!" << pkey << EVP_PKEY_bits(pkey);
+
+    EVP_PKEY_free(pkey);
+    X509_free(cert);
+    BIO_free_all(bio);
 }
 
 QByteArray CoseParser::payload() const

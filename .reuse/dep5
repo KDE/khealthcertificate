@@ -3,9 +3,13 @@ Upstream-Name: KHealthCertificate
 Upstream-Contact: Volker Krause <vkrause@kde.org>
 Source: https://invent.kde.org/vkrause/khealthcertificate
 
-Files: src/lib/data/eu-dgc/*
+Files: src/lib/data/eu-dgc/*.json
 License: Apache-2.0
 Copyright: https://github.com/ehn-dcc-development/ehn-dcc-valuesets
+
+Files: src/lib/data/eu-dgc/certs/*.pem
+License: Apache-2.0
+Copyright: https://github.com/Digitaler-Impfnachweis/covpass-android
 
 Files: autotests/data/eu-dgc/*.txt
 License: Apache-2.0

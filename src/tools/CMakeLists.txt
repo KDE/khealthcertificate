@@ -8,3 +8,11 @@ add_custom_command(
     COMMENT "Updating EU DCG translation tables"
 )
 add_custom_target(update-eu-dgc-data DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/eu-dgc/ma.json)
+
+add_custom_command(
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/data/eu-dgc/certs/dummy.pem
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update-eu-dgc-certs.py --output ${CMAKE_SOURCE_DIR}/src/lib/data/eu-dgc/certs/
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Updating EU DCG certificates"
+)
+add_custom_target(update-eu-dgc-certs DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/eu-dgc/certs/dummy.pem)

@@ -39,6 +39,7 @@ ecm_setup_version(PROJECT
 set(QT_MIN_VERSION 5.15)
 find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Qml Test)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs)
+find_package(OpenSSL REQUIRED)
 find_package(ZLIB REQUIRED)
 set_package_properties("ZLIB" PROPERTIES PURPOSE "Needed for decoding EU DGC data.")
 
