@@ -146,6 +146,7 @@ void CoseParser::validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm)
     if (digestSize * 2 != (uint32_t)m_signature.size() || EVP_PKEY_bits(pkey.get()) != 4 * m_signature.size()) {
         m_signatureState = InvalidSignature;
         qWarning() << "digest size mismatch!?" << digestSize << m_signature.size();
+        return;
     }
 
     // unpack the signature field
