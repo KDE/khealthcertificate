@@ -15,6 +15,7 @@
 #include <QFile>
 
 #include <openssl/bn.h>
+#include <openssl/engine.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
 
@@ -171,7 +172,47 @@ void CoseParser::validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm)
 
 void CoseParser::validateRSAPSS(const openssl::evp_pkey_ptr &pkey, int algorithm)
 {
-    qWarning() << "RSA PSS support not implemented yet!";
+    // compute hash of the signed data
+    const EVP_MD *digest = nullptr;
+    switch (algorithm) {
+        case CoseAlgorithmRSA_PSS_256:
+            digest = EVP_sha256();
+            break;
+        case CoseAlgorithmRSA_PSS_384:
+            digest = EVP_sha384();
+            break;
+        case CoseAlgorithmRSA_PSS_512:
+            digest = EVP_sha512();
+            break;
+    }
+
+    const auto signedData = sigStructure();
+    uint8_t digestData[EVP_MAX_MD_SIZE];
+    uint32_t  digestSize = 0;
+    EVP_Digest(reinterpret_cast<const uint8_t*>(signedData.constData()), signedData.size(), digestData, &digestSize, digest, nullptr);
+
+    // verify
+    openssl::evp_pkey_ctx_ptr ctx(EVP_PKEY_CTX_new(pkey.get(), nullptr), &EVP_PKEY_CTX_free);
+    if (!ctx || EVP_PKEY_verify_init(ctx.get()) <= 0) {
+        return;
+    }
+    if (EVP_PKEY_CTX_set_rsa_padding(ctx.get(), RSA_PKCS1_PSS_PADDING) <= 0 || EVP_PKEY_CTX_set_signature_md(ctx.get(), digest) <= 0) {
+        return;
+    }
+
+    const auto verifyResult = EVP_PKEY_verify(ctx.get(), reinterpret_cast<const uint8_t*>(m_signature.constData()), m_signature.size(),  digestData, digestSize);
+    switch (verifyResult) {
+        case -1: // technical issue
+            m_signatureState = InvalidSignature;
+            qWarning() << "Failed to verify signature:" << ERR_error_string(ERR_get_error(), nullptr);
+            break;
+        case 0: // invalid signature
+            m_signatureState = InvalidSignature;
+            break;
+        case 1: // valid signature;
+            m_signatureState = ValidSignature;
+            break;
+    }
 }
 
 QByteArray CoseParser::sigStructure() const

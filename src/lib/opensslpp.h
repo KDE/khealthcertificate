@@ -20,6 +20,7 @@ namespace openssl {
     using ec_key_ptr = std::unique_ptr<EC_KEY, decltype(&EC_KEY_free)>;
     using ecdsa_sig_ptr = std::unique_ptr<ECDSA_SIG, decltype(&ECDSA_SIG_free)>;
     using evp_pkey_ptr = std::unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)>;
+    using evp_pkey_ctx_ptr = std::unique_ptr<EVP_PKEY_CTX, decltype(&EVP_PKEY_CTX_free)>;
     using rsa_ptr = std::unique_ptr<RSA, decltype(&RSA_free)>;
     using x509_ptr = std::unique_ptr<X509, decltype(&X509_free)>;
 }

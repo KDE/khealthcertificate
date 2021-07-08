@@ -83,7 +83,7 @@ private Q_SLOTS:
         vac = cert.value<KVaccinationCertificate>();
         QCOMPARE(vac.name(), QLatin1String("Martina Studer"));
         QCOMPARE(vac.country(), QLatin1String("CH"));
-        QCOMPARE(vac.signatureState(), KHealthCertificate::UnknownSignature); // not implemented yet
+        QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination-ch.txt"));
     }
