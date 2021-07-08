@@ -8,7 +8,7 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 2.1 as QQC2
 import org.kde.kirigami 2.12 as Kirigami
 import org.kde.prison 1.0 as Prison
-//import org.kde.ki18n 1.0
+// //import org.kde.ki18n 1.0
 import org.kde.khealthcertificate 1.0
 
 Kirigami.ScrollablePage {
@@ -27,13 +27,15 @@ Kirigami.ScrollablePage {
         Rectangle {
             id: validationBg
             Layout.fillWidth: true
-            implicitHeight: barcode.implicitHeight + Kirigami.Units.largeSpacing * 4
+            implicitHeight: barcode.height + Kirigami.Units.largeSpacing * 4
 
             Prison.Barcode {
                 anchors.centerIn: parent
                 id: barcode
                 barcodeType: Prison.Barcode.QRCode
                 content: cert.rawData
+                width: height
+                height: minimumHeight * 3
             }
 
             color: switch (cert.validationState) {
@@ -122,6 +124,12 @@ Kirigami.ScrollablePage {
                 text: cert.certificateExpiryDate.toLocaleString(Qt.locale(), Locale.ShortFormat)
                 Kirigami.FormData.label: "Expires:"
                 visible: cert.certificateExpiryDate.getTime() != 0
+            }
+            QQC2.Label {
+                text: cert.signatureState == HealthCertificate.ValidSignature ? "valid" : "invalid"
+                visible: cert.signatureState != HealthCertificate.UnknownSignature
+                Kirigami.FormData.label: "Signature:"
+                color: cert.signatureState == HealthCertificate.InvalidSignature ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
             }
         }
     }

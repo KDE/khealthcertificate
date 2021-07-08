@@ -115,6 +115,12 @@ Kirigami.ScrollablePage {
                 text: cert.certificateId
                 Kirigami.FormData.label: "Identifier:"
             }
+            QQC2.Label {
+                text: cert.signatureState == HealthCertificate.ValidSignature ? "valid" : "invalid"
+                visible: cert.signatureState != HealthCertificate.UnknownSignature
+                Kirigami.FormData.label: "Signature:"
+                color: cert.signatureState == HealthCertificate.InvalidSignature ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
+            }
         }
     }
 }

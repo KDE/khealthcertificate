@@ -24,6 +24,7 @@ public:
     QDateTime certificateIssueDate;
     QDateTime certificateExpiryDate;
     QByteArray rawData;
+    KHealthCertificate::SignatureValidation signatureState = KHealthCertificate::UnknownSignature;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Vaccination)
@@ -42,10 +43,14 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QString, certificateId, setCertifi
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDateTime, certificateIssueDate, setCertificateIssueDate)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QDateTime, certificateExpiryDate, setCertificateExpiryDate)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, QByteArray, rawData, setRawData)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, KHealthCertificate::SignatureValidation, signatureState, setSignatureState)
 
 KHealthCertificate::CertificateValidation KVaccinationCertificate::validationState() const
 {
     if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
+        return KHealthCertificate::Invalid;
+    }
+    if (d->signatureState == KHealthCertificate::InvalidSignature) {
         return KHealthCertificate::Invalid;
     }
     if (d->date > QDate::currentDate() || (d->dose == 0 && d->totalDoses)) {

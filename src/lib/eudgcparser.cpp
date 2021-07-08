@@ -116,6 +116,17 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
     reader.leaveContainer();
     std::visit([&issueDt](auto &cert) { cert.setCertificateIssueDate(issueDt); }, m_cert);
     std::visit([&expiryDt](auto &cert) { cert.setCertificateExpiryDate(expiryDt); }, m_cert);
+    switch (cose.signatureState()) {
+        case CoseParser::InvalidSignature:
+            std::visit([](auto &cert) { cert.setSignatureState(KHealthCertificate::InvalidSignature); }, m_cert);
+            break;
+        case CoseParser::ValidSignature:
+            std::visit([](auto &cert) { cert.setSignatureState(KHealthCertificate::ValidSignature); }, m_cert);
+            break;
+        default:
+            std::visit([](auto &cert) { cert.setSignatureState(KHealthCertificate::UnknownSignature); }, m_cert);
+            break;
+    }
     std::visit([&data](auto &cert) { cert.setRawData(data); }, m_cert);
     return std::visit([](const auto &cert) { return QVariant::fromValue(cert); }, m_cert);
 }

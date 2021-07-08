@@ -28,6 +28,13 @@ public:
         Unknown
     };
     Q_ENUM(CertificateValidation)
+
+    enum SignatureValidation {
+        ValidSignature,
+        InvalidSignature,
+        UnknownSignature
+    };
+    Q_ENUM(SignatureValidation)
 };
 
 #endif // KHEALTHCERTIFICATE_H

@@ -52,6 +52,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination.txt"));
 
@@ -72,6 +73,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/partial-vaccination.txt"));
     }
@@ -93,6 +95,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/negative-test.txt"));
     }
@@ -112,6 +115,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/5CWLU12RNOB9RXSEOP6FG8#W"));
         QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
         QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(test.validationState(), KHealthCertificate::Unknown); // not implemented yet
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/recovery.txt"));
     }

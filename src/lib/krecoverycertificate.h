@@ -31,6 +31,8 @@ class KHEALTHCERTIFICATE_EXPORT KRecoveryCertificate
     KHEALTHCERTIFICATE_PROPERTY(QDateTime, certificateIssueDate, setCertificateIssueDate)
     /** Date/time this certificate expires. */
     KHEALTHCERTIFICATE_PROPERTY(QDateTime, certificateExpiryDate, setCertificateExpiryDate)
+    /** Validation status of the cryptographic signature of this certificate. */
+    KHEALTHCERTIFICATE_PROPERTY(KHealthCertificate::SignatureValidation, signatureState, setSignatureState)
 
     Q_PROPERTY(KHealthCertificate::CertificateValidation validationState READ validationState)
 

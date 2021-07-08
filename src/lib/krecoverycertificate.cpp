@@ -20,6 +20,7 @@ public:
     QDateTime certificateIssueDate;
     QDateTime certificateExpiryDate;
     QByteArray rawData;
+    KHealthCertificate::SignatureValidation signatureState = KHealthCertificate::UnknownSignature;
 };
 
 KHEALTHCERTIFICATE_MAKE_GADGET(Recovery)
@@ -34,10 +35,14 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QString, certificateIssuer, setCertif
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDateTime, certificateIssueDate, setCertificateIssueDate)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QDateTime, certificateExpiryDate, setCertificateExpiryDate)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, QByteArray, rawData, setRawData)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Recovery, KHealthCertificate::SignatureValidation, signatureState, setSignatureState)
 
 KHealthCertificate::CertificateValidation KRecoveryCertificate::validationState() const
 {
     if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
+        return KHealthCertificate::Invalid;
+    }
+    if (d->signatureState == KHealthCertificate::InvalidSignature) {
         return KHealthCertificate::Invalid;
     }
 
