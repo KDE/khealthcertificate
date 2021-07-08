@@ -27,6 +27,9 @@ enum {
     CoseAlgorithmECDSA_SHA256 = -7,
     CoseAlgorithmECDSA_SHA384 = -35,
     CoseAlgorithmECDSA_SHA512 = -36,
+    CoseAlgorithmRSA_PSS_256 = -37,
+    CoseAlgorithmRSA_PSS_384 = -38,
+    CoseAlgorithmRSA_PSS_512 = -39,
 };
 
 void CoseParser::parse(const QByteArray &data)
@@ -49,8 +52,11 @@ void CoseParser::parse(const QByteArray &data)
     m_protectedParams = CborUtils::readByteArray(reader);
     auto params = QCborValue::fromCbor(m_protectedParams);
     const auto algorithm = params.toMap().value(CoseHeaderAlgorithm).toInteger();
-    params = QCborValue::fromCbor(reader);
     m_kid = params.toMap().value(CoseHeaderKid).toByteArray();
+    params = QCborValue::fromCbor(reader);
+    if (m_kid.isEmpty()) {
+        m_kid = params.toMap().value(CoseHeaderKid).toByteArray();
+    }
     m_payload = CborUtils::readByteArray(reader);
     m_signature = CborUtils::readByteArray(reader);
 
@@ -82,6 +88,11 @@ void CoseParser::parse(const QByteArray &data)
         case CoseAlgorithmECDSA_SHA384:
         case CoseAlgorithmECDSA_SHA512:
             validateECDSA(pkey, algorithm);
+            break;
+        case CoseAlgorithmRSA_PSS_256:
+        case CoseAlgorithmRSA_PSS_384:
+        case CoseAlgorithmRSA_PSS_512:
+            validateRSAPSS(pkey, algorithm);
             break;
         default:
             qWarning() << "signature algorithm not implemented yet:" << algorithm;
@@ -156,6 +167,11 @@ void CoseParser::validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm)
             m_signatureState = ValidSignature;
             break;
     }
+}
+
+void CoseParser::validateRSAPSS(const openssl::evp_pkey_ptr &pkey, int algorithm)
+{
+    qWarning() << "RSA PSS support not implemented yet!";
 }
 
 QByteArray CoseParser::sigStructure() const

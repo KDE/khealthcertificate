@@ -76,6 +76,16 @@ private Q_SLOTS:
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/partial-vaccination.txt"));
+
+        // Swiss certificates use another signature algorithm
+        cert = KHealthCertificateParser::parse(readFile(u"eu-dgc/full-vaccination-ch.txt"));
+        QCOMPARE(cert.userType(), qMetaTypeId<KVaccinationCertificate>());
+        vac = cert.value<KVaccinationCertificate>();
+        QCOMPARE(vac.name(), QLatin1String("Martina Studer"));
+        QCOMPARE(vac.country(), QLatin1String("CH"));
+        QCOMPARE(vac.signatureState(), KHealthCertificate::UnknownSignature); // not implemented yet
+        QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
+        QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination-ch.txt"));
     }
 
     void testTestCertificates()

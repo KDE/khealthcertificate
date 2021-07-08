@@ -33,6 +33,7 @@ public:
 private:
     void clear();
     void validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm);
+    void validateRSAPSS(const openssl::evp_pkey_ptr &pkey, int algorithm);
     // the raw data that is being signed, see RFC 8152 § 4.4
     QByteArray sigStructure() const;
 
