@@ -11,6 +11,6 @@ Files: src/lib/data/eu-dgc/certs/*.pem
 License: Apache-2.0
 Copyright: https://github.com/Digitaler-Impfnachweis/covpass-android
 
-Files: autotests/data/eu-dgc/*.txt
+Files: autotests/data/eu-dgc/*.txt autotests/data/eu-dgc/*.pem
 License: Apache-2.0
 Copyright: https://github.com/eu-digital-green-certificates/dgc-testdata
