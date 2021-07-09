@@ -62,7 +62,7 @@ void CoseParser::parse(const QByteArray &data)
     m_signature = CborUtils::readByteArray(reader);
 
     // find and load certificate
-    QFile certFile(QLatin1String(":/eu-dgc/certs/") + QString::fromUtf8(m_kid.toHex()) + QLatin1String(".pem"));
+    QFile certFile(QLatin1String(":/org.kde.khealthcertificate/eu-dgc/certs/") + QString::fromUtf8(m_kid.toHex()) + QLatin1String(".pem"));
     if (!certFile.open(QFile::ReadOnly)) {
         qWarning() << "unable to find certificate for key id:" << m_kid.toHex();
         m_signatureState = UnknownCertificate;

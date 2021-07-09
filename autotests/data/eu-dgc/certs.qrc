@@ -3,7 +3,7 @@
     SPDX-License-Identifier: CC0-1.0
 -->
 <RCC>
-  <qresource prefix="/eu-dgc/certs">
+  <qresource prefix="/org.kde.khealthcertificate/eu-dgc/certs">
     <file>0c4b15512be91401.pem</file>
     <file>2e5dcd3f4df33b16.pem</file>
   </qresource>

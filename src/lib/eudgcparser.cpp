@@ -21,7 +21,7 @@
 
 static QString translateValue(const QString &type, const QString &key)
 {
-    QFile f(QLatin1String(":/eu-dgc/") + type + QLatin1String(".json"));
+    QFile f(QLatin1String(":/org.kde.khealthcertificate/eu-dgc/") + type + QLatin1String(".json"));
     if (!f.open(QFile::ReadOnly)) {
         qWarning() << "no translation table found for" << type;
         return key;

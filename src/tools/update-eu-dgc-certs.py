@@ -19,7 +19,7 @@ req = requests.get('https://de.dscg.ubirch.com/trustList/DSC/')
 jsonStart = str(req.content).index('{')
 certs = json.loads(str(req.content)[jsonStart:-1])
 
-# TODO write out qrc file
+# write out qrc file
 pemFileNames = []
 for cert in certs['certificates']:
     pemFileName = base64.b64decode(cert['kid']).hex() + ".pem"
@@ -38,7 +38,7 @@ qrcFile.write("""<!--
     SPDX-License-Identifier: CC0-1.0
 -->
 <RCC>
-  <qresource prefix="/eu-dgc/certs">
+  <qresource prefix="/org.kde.khealthcertificate/eu-dgc/certs">
 """)
 for pemFileName in pemFileNames:
     qrcFile.write(f"    <file>{pemFileName}</file>\n")
