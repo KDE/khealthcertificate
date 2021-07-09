@@ -9,6 +9,7 @@
 #include "opensslpp.h"
 
 #include <QByteArray>
+#include <QSslCertificate>
 
 /** Parser for CBOR Object Signing and Encryption (COSE) data.
  *  @see RFC 8152
@@ -30,6 +31,9 @@ public:
     /** Result of validating the COSE signature. */
     SignatureState signatureState() const;
 
+    /** The certificate of the signing entity. */
+    QSslCertificate certificate() const;
+
 private:
     void clear();
     void validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm);
@@ -42,6 +46,7 @@ private:
     QByteArray m_signature;
     QByteArray m_kid;
     SignatureState m_signatureState = Unknown;
+    QSslCertificate m_certificate;
 };
 
 #endif // COSEPARSER_H

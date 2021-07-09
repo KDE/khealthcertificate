@@ -83,6 +83,7 @@ void CoseParser::parse(const QByteArray &data)
         m_signatureState = UnknownCertificate;
         return;
     }
+    m_certificate = QSslCertificate(certData);
 
     switch (algorithm) {
         case CoseAlgorithmECDSA_SHA256:
@@ -110,6 +111,11 @@ QByteArray CoseParser::payload() const
 CoseParser::SignatureState CoseParser::signatureState() const
 {
     return m_signatureState;
+}
+
+QSslCertificate CoseParser::certificate() const
+{
+    return m_certificate;
 }
 
 void CoseParser::clear()

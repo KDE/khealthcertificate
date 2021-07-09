@@ -116,7 +116,15 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
     reader.leaveContainer();
     std::visit([&issueDt](auto &cert) { cert.setCertificateIssueDate(issueDt); }, m_cert);
     std::visit([&expiryDt](auto &cert) { cert.setCertificateExpiryDate(expiryDt); }, m_cert);
-    switch (cose.signatureState()) {
+
+    // signature validation
+    auto sigState = cose.signatureState();
+    if (sigState == CoseParser::ValidSignature && cose.certificate().expiryDate() < issueDt ) {
+        sigState = CoseParser::InvalidSignature;
+    }
+    // TODO check key usage OIDs for 1.3.6.1.4.1.1847.2021.1.[1-3] / 1.3.6.1.4.1.0.1847.2021.1.[1-3]
+    // (seems unused so far?)
+    switch (sigState) {
         case CoseParser::InvalidSignature:
             std::visit([](auto &cert) { cert.setSignatureState(KHealthCertificate::InvalidSignature); }, m_cert);
             break;
