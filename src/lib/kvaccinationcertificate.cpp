@@ -63,6 +63,9 @@ KHealthCertificate::CertificateValidation KVaccinationCertificate::validationSta
     if (d->dose < d->totalDoses) {
         return KHealthCertificate::Partial;
     }
+    if (d->signatureState == KHealthCertificate::UnknownSignature) {
+        return KHealthCertificate::Partial;
+    }
 
     return KHealthCertificate::Valid;
 }

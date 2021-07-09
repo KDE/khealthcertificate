@@ -46,6 +46,10 @@ KHealthCertificate::CertificateValidation KRecoveryCertificate::validationState(
         return KHealthCertificate::Invalid;
     }
 
+    if (d->signatureState == KHealthCertificate::UnknownSignature) {
+        return KHealthCertificate::Partial;
+    }
+
     return KHealthCertificate::Unknown;
 }
 

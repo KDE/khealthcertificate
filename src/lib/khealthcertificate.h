@@ -29,10 +29,12 @@ public:
     };
     Q_ENUM(CertificateValidation)
 
+    /** Result of attempting to verify the cryptographic signature of a certificate. */
     enum SignatureValidation {
-        ValidSignature,
-        InvalidSignature,
-        UnknownSignature
+        ValidSignature, ///< signature is valid
+        InvalidSignature, ///< signature is invalid
+        UnknownSignature, ///< signature verification was attempted but didn't yield a result, e.g. due to a missing certificate of signing entity.
+        UncheckedSignature, ///< signature verification was not attempted, e.g. as it's not yet implemented for the specific certificate type.
     };
     Q_ENUM(SignatureValidation)
 };

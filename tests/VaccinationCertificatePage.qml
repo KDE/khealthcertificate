@@ -126,10 +126,22 @@ Kirigami.ScrollablePage {
                 visible: cert.certificateExpiryDate.getTime() != 0
             }
             QQC2.Label {
-                text: cert.signatureState == HealthCertificate.ValidSignature ? "valid" : "invalid"
-                visible: cert.signatureState != HealthCertificate.UnknownSignature
+                text: {
+                    switch(cert.signatureState) {
+                        case HealthCertificate.ValidSignature: return "valid";
+                        case HealthCertificate.UnknownSignature: return "unknwon";
+                        default: return "invalid";
+                    }
+                }
+                visible: cert.signatureState != HealthCertificate.UncheckedSignature
                 Kirigami.FormData.label: "Signature:"
-                color: cert.signatureState == HealthCertificate.InvalidSignature ? Kirigami.Theme.negativeTextColor : Kirigami.Theme.textColor
+                color: {
+                    switch (cert.signatureState) {
+                        case HealthCertificate.ValidSignature: return  Kirigami.Theme.positiveTextColor;
+                        case HealthCertificate.UnknownSignature: return Kirigami.Theme.neutralTextColor;
+                        default: return Kirigami.Theme.negativeTextColor;
+                    }
+                }
             }
         }
     }

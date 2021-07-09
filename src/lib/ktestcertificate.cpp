@@ -62,6 +62,10 @@ KHealthCertificate::CertificateValidation KTestCertificate::validationState() co
     if (d->date.addDays(2) < QDate::currentDate()) {
         return KHealthCertificate::Invalid;
     }
+    if (d->signatureState == KHealthCertificate::UnknownSignature) {
+        return KHealthCertificate::Partial;
+    }
+
     return d->result == Negative ? KHealthCertificate::Valid : KHealthCertificate::Unknown;
 }
 
