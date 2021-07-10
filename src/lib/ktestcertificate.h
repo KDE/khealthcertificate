@@ -25,7 +25,7 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, naaTestName, setNaaTestName)
     KHEALTHCERTIFICATE_PROPERTY(QString, ratTest, setRatTest)
     KHEALTHCERTIFICATE_PROPERTY(QString, resultString, setResultString)
-    KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTextCenter)
+    KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTestCenter)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
     /** The entity that issued this certificate. */
     KHEALTHCERTIFICATE_PROPERTY(QString, certificateIssuer, setCertificateIssuer)

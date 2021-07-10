@@ -270,7 +270,7 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
             cert.setResultString(translateValue(QLatin1String("tcTr"), value));
             cert.setResult(value == QLatin1String("260415000") ? KTestCertificate::Negative : KTestCertificate::Positive);
         } else if (key == QLatin1String("tc")) {
-            cert.setTextCenter(CborUtils::readString(reader));
+            cert.setTestCenter(CborUtils::readString(reader));
         } else if (key == QLatin1String("co")) {
             cert.setCountry(CborUtils::readString(reader));
         } else if (key == QLatin1String("is")) {
