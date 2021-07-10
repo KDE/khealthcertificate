@@ -20,6 +20,20 @@
 
 #include <zlib.h>
 
+static bool initResources()
+{
+    Q_INIT_RESOURCE(data);
+    Q_INIT_RESOURCE(certs);
+    return true;
+}
+
+EuDgcParser::EuDgcParser()
+{
+    [[maybe_unused]] static bool s_init = initResources();
+}
+
+EuDgcParser::~EuDgcParser() = default;
+
 static QString translateValue(const QString &type, const QString &key)
 {
     QFile f(QLatin1String(":/org.kde.khealthcertificate/eu-dgc/") + type + QLatin1String(".json"));

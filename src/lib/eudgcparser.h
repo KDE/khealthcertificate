@@ -22,6 +22,8 @@ class QVariant;
 class EuDgcParser
 {
 public:
+    EuDgcParser();
+    ~EuDgcParser();
     QVariant parse(const QByteArray &data) const;
 
 private:
