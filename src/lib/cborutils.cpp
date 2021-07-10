@@ -4,6 +4,7 @@
  */
 
 #include "cborutils_p.h"
+#include "logging.h"
 
 #include <QCborStreamReader>
 #include <QDebug>
@@ -31,7 +32,7 @@ QString CborUtils::readString(QCborStreamReader &reader)
         r = reader.readString();
     }
     if (r.status == QCborStreamReader::Error) {
-        qDebug() << "CBOR string read error";
+        qCWarning(Log) << "CBOR string read error";
         result.clear();
     }
     return result;
@@ -51,7 +52,7 @@ QByteArray CborUtils::readByteArray(QCborStreamReader &reader)
     }
 
     if (r.status == QCborStreamReader::Error) {
-        qDebug() << "CBOR byte array read error";
+        qCWarning(Log) << "CBOR byte array read error";
         result.clear();
     }
     return result;

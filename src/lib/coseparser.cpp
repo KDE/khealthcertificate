@@ -5,6 +5,7 @@
 
 #include "coseparser.h"
 #include "cborutils_p.h"
+#include "logging.h"
 #include "opensslpp.h"
 
 #include <QCborMap>
@@ -40,7 +41,7 @@ void CoseParser::parse(const QByteArray &data)
     // only single signer case implemented atm
     QCborStreamReader reader(data);
     if (reader.type() != QCborStreamReader::Tag || reader.toTag() != QCborKnownTags::COSE_Sign1) {
-        qDebug() << "wrong COSE tag:" << reader.toTag();
+        qCWarning(Log) << "wrong COSE tag:" << reader.toTag();
         return;
     }
 
@@ -64,7 +65,7 @@ void CoseParser::parse(const QByteArray &data)
     // find and load certificate
     QFile certFile(QLatin1String(":/org.kde.khealthcertificate/eu-dgc/certs/") + QString::fromUtf8(m_kid.toHex()) + QLatin1String(".pem"));
     if (!certFile.open(QFile::ReadOnly)) {
-        qWarning() << "unable to find certificate for key id:" << m_kid.toHex();
+        qCWarning(Log) << "unable to find certificate for key id:" << m_kid.toHex();
         m_signatureState = UnknownCertificate;
         return;
     }
@@ -73,13 +74,13 @@ void CoseParser::parse(const QByteArray &data)
     const openssl::bio_ptr bio(BIO_new_mem_buf(certData.constData(), certData.size()), &BIO_free_all);
     const openssl::x509_ptr cert(PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr), &X509_free);
     if (!cert) {
-        qWarning() << "failed to read X509 certificate";
+        qCWarning(Log) << "failed to read X509 certificate";
         m_signatureState = UnknownCertificate;
         return;
     }
     const openssl::evp_pkey_ptr pkey(X509_get_pubkey(cert.get()), &EVP_PKEY_free);
     if (!pkey) {
-        qWarning() << "failed to load public key";
+        qCWarning(Log) << "failed to load public key";
         m_signatureState = UnknownCertificate;
         return;
     }
@@ -97,7 +98,7 @@ void CoseParser::parse(const QByteArray &data)
             validateRSAPSS(pkey, algorithm);
             break;
         default:
-            qWarning() << "signature algorithm not implemented yet:" << algorithm;
+            qCWarning(Log) << "signature algorithm not implemented yet:" << algorithm;
             m_signatureState = UnsupportedAlgorithm;
             return;
     }
@@ -151,7 +152,7 @@ void CoseParser::validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm)
     EVP_Digest(reinterpret_cast<const uint8_t*>(signedData.constData()), signedData.size(), digestData, &digestSize, digest, nullptr);
     if (digestSize * 2 != (uint32_t)m_signature.size() || EVP_PKEY_bits(pkey.get()) != 4 * m_signature.size()) {
         m_signatureState = InvalidSignature;
-        qWarning() << "digest size mismatch!?" << digestSize << m_signature.size();
+        qCWarning(Log) << "digest size mismatch!?" << digestSize << m_signature.size();
         return;
     }
 
@@ -166,7 +167,7 @@ void CoseParser::validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm)
     switch (verifyResult) {
         case -1: // technical issue
             m_signatureState = InvalidSignature;
-            qWarning() << "Failed to verify signature:" << ERR_error_string(ERR_get_error(), nullptr);
+            qCWarning(Log) << "Failed to verify signature:" << ERR_error_string(ERR_get_error(), nullptr);
             break;
         case 0: // invalid signature
             m_signatureState = InvalidSignature;
@@ -211,7 +212,7 @@ void CoseParser::validateRSAPSS(const openssl::evp_pkey_ptr &pkey, int algorithm
     switch (verifyResult) {
         case -1: // technical issue
             m_signatureState = InvalidSignature;
-            qWarning() << "Failed to verify signature:" << ERR_error_string(ERR_get_error(), nullptr);
+            qCWarning(Log) << "Failed to verify signature:" << ERR_error_string(ERR_get_error(), nullptr);
             break;
         case 0: // invalid signature
             m_signatureState = InvalidSignature;

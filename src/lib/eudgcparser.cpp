@@ -6,6 +6,7 @@
 #include "eudgcparser.h"
 #include "cborutils_p.h"
 #include "coseparser.h"
+#include "logging.h"
 
 #include <KCodecs>
 
@@ -23,7 +24,7 @@ static QString translateValue(const QString &type, const QString &key)
 {
     QFile f(QLatin1String(":/org.kde.khealthcertificate/eu-dgc/") + type + QLatin1String(".json"));
     if (!f.open(QFile::ReadOnly)) {
-        qWarning() << "no translation table found for" << type;
+        qCWarning(Log) << "no translation table found for" << type;
         return key;
     }
 
@@ -61,7 +62,7 @@ static QByteArray inflateByteArray(const QByteArray &data)
         case Z_STREAM_END:
             break; // all good
         default:
-            qWarning() << "zlib decompression failed" << stream.msg;
+            qCWarning(Log) << "zlib decompression failed" << stream.msg;
             return {};
     }
     inflateEnd(&stream);
@@ -100,7 +101,7 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
                 parseCertificate(reader);
                 break;
             case 1:
-                qDebug() << "key issuer:" << CborUtils::readString(reader);
+                qCDebug(Log) << "key issuer:" << CborUtils::readString(reader);
                 break;
             case 4:
                 expiryDt = QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
@@ -109,7 +110,7 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
                 issueDt = QDateTime::fromSecsSinceEpoch(CborUtils::readInteger(reader));
                 break;
             default:
-                qDebug() << "unhandled header key:" << key;
+                qCDebug(Log) << "unhandled header key:" << key;
                 reader.next();
         }
     }
@@ -147,7 +148,7 @@ void EuDgcParser::parseCertificate(QCborStreamReader &reader) const
     reader.enterContainer();
     const auto version = CborUtils::readInteger(reader);
     if (version != 1) {
-        qDebug() << "unknown EU DGC version:" << version;
+        qCWarning(Log) << "unknown EU DGC version:" << version;
         return;
     }
 
@@ -174,7 +175,7 @@ void EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
             const auto dob = QDate::fromString(CborUtils::readString(reader), Qt::ISODate);
             std::visit([&dob](auto &cert) { cert.setDateOfBirth(dob); }, m_cert);
         } else {
-            qDebug() << "unhandled element:" << key;
+            qCDebug(Log) << "unhandled element:" << key;
             reader.next();
         }
     }
@@ -223,7 +224,7 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
         } else if (key == QLatin1String("ci")) {
             cert.setCertificateId(CborUtils::readString(reader));
         } else {
-            qDebug() << "unhandled vaccine key:" << key;
+            qCDebug(Log) << "unhandled vaccine key:" << key;
             reader.next();
         }
     }
@@ -263,7 +264,7 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
         } else if (key == QLatin1String("ci")) {
             cert.setCertificateId(CborUtils::readString(reader));
         } else {
-            qDebug() << "unhandled test key:" << key;
+            qCDebug(Log) << "unhandled test key:" << key;
             reader.next();
         }
     }
@@ -293,7 +294,7 @@ void EuDgcParser::parseRecoveryCertificate(QCborStreamReader &reader) const
         } else if (key == QLatin1String("ci")) {
             cert.setCertificateId(CborUtils::readString(reader));
         } else {
-            qDebug() << "unhandled recovery key:" << key;
+            qCDebug(Log) << "unhandled recovery key:" << key;
             reader.next();
         }
     }

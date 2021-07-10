@@ -71,3 +71,8 @@ install(FILES
 )
 install(EXPORT KHealthCertificateTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KHealthCertificateTargets.cmake)
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/khealthcertificate_version.h DESTINATION ${KDE_INSTALL_INCLUDEDIR}/khealthcertificate COMPONENT Devel)
+ecm_qt_install_logging_categories(
+    EXPORT KHealthCertificateLogging
+    FILE org_kde_khealthcertificate.categories
+    DESTINATION ${KDE_INSTALL_LOGGINGCATEGORIESDIR}
+)

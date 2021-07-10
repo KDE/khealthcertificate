@@ -17,6 +17,14 @@ add_library(KHealthCertificate
 )
 
 generate_export_header(KHealthCertificate BASE_NAME KHealthCertificate)
+ecm_qt_declare_logging_category(KHealthCertificate
+    HEADER logging.h
+    IDENTIFIER Log
+    CATEGORY_NAME org.kde.khealthcertificate
+    DESCRIPTION "KHealthCertificate"
+    EXPORT KHealthCertificateLogging
+)
+
 set_target_properties(KHealthCertificate PROPERTIES
     VERSION ${KHEALTHCERTIFICATE_VERSION}
     SOVERSION ${KHEALTHCERTIFICATE_SOVERSION}
