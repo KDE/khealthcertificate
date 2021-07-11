@@ -42,9 +42,6 @@ set_package_properties("OpenSSL" PROPERTIES TYPE REQUIRED PURPOSE "Needed for si
 find_package(ZLIB)
 set_package_properties("ZLIB" PROPERTIES TYPE REQUIRED PURPOSE "Needed for decoding EU DGC data.")
 
-add_definitions(-DQT_NO_CAST_FROM_ASCII -DQT_NO_CAST_TO_ASCII -DQT_NO_URL_CAST_FROM_STRING)
-add_definitions(-DQT_NO_NARROWING_CONVERSIONS_IN_CONNECT)
-add_definitions(-DQT_USE_QSTRINGBUILDER)
 add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
 
 add_subdirectory(src)
