@@ -10,6 +10,7 @@
 #include "khealthcertificatetypes.h"
 
 #include <QDate>
+#include <QUrl>
 
 class KTestCertificatePrivate;
 
@@ -25,6 +26,8 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, testType, setTestType)
     /** The test manufacturer/product used. */
     KHEALTHCERTIFICATE_PROPERTY(QString, testName, setTestName)
+    /** URL pointing to further information about the test product. */
+    KHEALTHCERTIFICATE_PROPERTY(QUrl, testUrl, setTestUrl)
     KHEALTHCERTIFICATE_PROPERTY(QString, resultString, setResultString)
     KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTestCenter)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)

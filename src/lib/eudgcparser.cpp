@@ -224,7 +224,12 @@ void EuDgcParser::parseVaccinationCertificate(QCborStreamReader& reader) const
         } else if (key == QLatin1String("dt")) {
             cert.setDate(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("mp")) {
-            cert.setVaccine(translateValue(key, CborUtils::readString(reader)));
+            const auto productId = CborUtils::readString(reader);
+            cert.setVaccine(translateValue(key,productId));
+            if (productId.startsWith(QLatin1String("EU/")) && productId.count(QLatin1Char('/')) == 3) {
+                const auto num = QStringView(productId).mid(productId.lastIndexOf(QLatin1Char('/')) + 1);
+                cert.setVaccineUrl(QUrl(QLatin1String("https://ec.europa.eu/health/documents/community-register/html/h") + num + QLatin1String(".htm")));
+            }
         } else if (key == QLatin1String("ma")) {
             cert.setManufacturer(translateValue(key, CborUtils::readString(reader)));
         } else if (key == QLatin1String("dn")) {
@@ -262,7 +267,9 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
         } else if (key == QLatin1String("nm")) {
             cert.setTestName(CborUtils::readString(reader));
         } else if (key == QLatin1String("ma")) {
-            cert.setTestName(translateValue(QLatin1String("tcMa"), CborUtils::readString(reader)));
+            const auto productId = CborUtils::readString(reader);
+            cert.setTestName(translateValue(QLatin1String("tcMa"), productId));
+            cert.setTestUrl(QUrl(QLatin1String("https://covid-19-diagnostics.jrc.ec.europa.eu/devices/detail/") + productId));
         } else if (key == QLatin1String("sc")) {
             cert.setDate(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("tr")) {

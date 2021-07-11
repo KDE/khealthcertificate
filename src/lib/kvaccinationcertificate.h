@@ -10,6 +10,7 @@
 #include "khealthcertificatetypes.h"
 
 #include <QDateTime>
+#include <QUrl>
 
 class KVaccinationCertificatePrivate;
 
@@ -21,8 +22,13 @@ class KHEALTHCERTIFICATE_EXPORT KVaccinationCertificate
     KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfBirth, setDateOfBirth)
     KHEALTHCERTIFICATE_PROPERTY(QDate, date, setDate)
     KHEALTHCERTIFICATE_PROPERTY(QString, disease, setDisease)
+    /** The vaccine type, such as mRNA or vector. */
     KHEALTHCERTIFICATE_PROPERTY(QString, vaccineType, setVaccineType)
+    /** The name of the vaccine as given by the manufacturer. */
     KHEALTHCERTIFICATE_PROPERTY(QString, vaccine, setVaccine)
+    /** URL to further details on the vaccine. */
+    KHEALTHCERTIFICATE_PROPERTY(QUrl, vaccineUrl, setVaccineUrl)
+    /** Name of the manufacturer of the vaccine. */
     KHEALTHCERTIFICATE_PROPERTY(QString, manufacturer, setManufacturer)
     KHEALTHCERTIFICATE_PROPERTY(int, dose, setDose)
     KHEALTHCERTIFICATE_PROPERTY(int, totalDoses, setTotalDoses)

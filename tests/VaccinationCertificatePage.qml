@@ -83,8 +83,9 @@ Kirigami.ScrollablePage {
                 visible: cert.vaccineType
             }
             QQC2.Label {
-                text: cert.vaccine
+                text: '<a href="' + cert.vaccineUrl + '">' + cert.vaccine + '</a>'
                 Kirigami.FormData.label: "Vaccine:"
+                onLinkActivated: Qt.openUrlExternally(link)
             }
             QQC2.Label {
                 text: cert.manufacturer

@@ -82,9 +82,10 @@ Kirigami.ScrollablePage {
             }
 
             QQC2.Label {
-                text: cert.testName
+                text: '<a href="' + cert.testUrl + '">' + cert.testName + '</a>'
                 visible: cert.testName.length > 0
                 Kirigami.FormData.label: "Test:"
+                onLinkActivated: Qt.openUrlExternally(link)
             }
 
             QQC2.Label {

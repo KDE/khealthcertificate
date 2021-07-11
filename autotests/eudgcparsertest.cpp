@@ -48,6 +48,7 @@ private Q_SLOTS:
         QCOMPARE(vac.date(), QDate(2021, 5, 29));
         QCOMPARE(vac.vaccineType(), QLatin1String("SARS-CoV-2 mRNA vaccine"));
         QCOMPARE(vac.vaccine(), QLatin1String("COVID-19 Vaccine Moderna"));
+        QCOMPARE(vac.vaccineUrl().toString(), QLatin1String("https://ec.europa.eu/health/documents/community-register/html/h1507.htm"));
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna Biotech Spain S.L."));
         QCOMPARE(vac.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
@@ -118,6 +119,7 @@ private Q_SLOTS:
         QCOMPARE(test.country(), QLatin1String("CZ"));
         QCOMPARE(test.testType(), QLatin1String("Rapid immunoassay"));
         QVERIFY(!test.testName().isEmpty());
+        QCOMPARE(test.testUrl().toString(), QLatin1String("https://covid-19-diagnostics.jrc.ec.europa.eu/devices/detail/1242"));
         QCOMPARE(test.result(), KTestCertificate::Negative);
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
     }
