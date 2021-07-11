@@ -21,9 +21,10 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_PROPERTY(QDate, dateOfBirth, setDateOfBirth)
     KHEALTHCERTIFICATE_PROPERTY(QDate, date, setDate)
     KHEALTHCERTIFICATE_PROPERTY(QString, disease, setDisease)
+    /** The type of test, such as PCR or antigen. */
     KHEALTHCERTIFICATE_PROPERTY(QString, testType, setTestType)
-    KHEALTHCERTIFICATE_PROPERTY(QString, naaTestName, setNaaTestName)
-    KHEALTHCERTIFICATE_PROPERTY(QString, ratTest, setRatTest)
+    /** The test manufacturer/product used. */
+    KHEALTHCERTIFICATE_PROPERTY(QString, testName, setTestName)
     KHEALTHCERTIFICATE_PROPERTY(QString, resultString, setResultString)
     KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTestCenter)
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)

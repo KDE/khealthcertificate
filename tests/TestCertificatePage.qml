@@ -82,14 +82,9 @@ Kirigami.ScrollablePage {
             }
 
             QQC2.Label {
-                text: cert.naaTestName
-                visible: cert.naaTestName.length > 0
-                Kirigami.FormData.label: "NAA Test:"
-            }
-            QQC2.Label {
-                text: cert.ratTest
-                visible: cert.ratTest.length > 0
-                Kirigami.FormData.label: "RAT Test:"
+                text: cert.testName
+                visible: cert.testName.length > 0
+                Kirigami.FormData.label: "Test:"
             }
 
             QQC2.Label {

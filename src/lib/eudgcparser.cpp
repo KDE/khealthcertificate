@@ -260,9 +260,9 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
         } else if (key == QLatin1String("tt")) {
             cert.setTestType(translateValue(QLatin1String("tcTt"), CborUtils::readString(reader)));
         } else if (key == QLatin1String("nm")) {
-            cert.setNaaTestName(CborUtils::readString(reader));
+            cert.setTestName(CborUtils::readString(reader));
         } else if (key == QLatin1String("ma")) {
-            cert.setRatTest(translateValue(QLatin1String("tcMa"), CborUtils::readString(reader)));
+            cert.setTestName(translateValue(QLatin1String("tcMa"), CborUtils::readString(reader)));
         } else if (key == QLatin1String("sc")) {
             cert.setDate(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
         } else if (key == QLatin1String("tr")) {

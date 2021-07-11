@@ -109,6 +109,17 @@ private Q_SLOTS:
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/negative-test.txt"));
+
+        cert = KHealthCertificateParser::parse(readFile(u"eu-dgc/negative-rat-test-cz.txt"));
+        QCOMPARE(cert.userType(), qMetaTypeId<KTestCertificate>());
+        test = cert.value<KTestCertificate>();
+        QCOMPARE(test.name(), QStringLiteral("Jan Novák"));
+        QCOMPARE(test.disease(), QLatin1String("COVID-19"));
+        QCOMPARE(test.country(), QLatin1String("CZ"));
+        QCOMPARE(test.testType(), QLatin1String("Rapid immunoassay"));
+        QVERIFY(!test.testName().isEmpty());
+        QCOMPARE(test.result(), KTestCertificate::Negative);
+        QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
     }
 
     void testRecoveryCertificates()

@@ -6,5 +6,6 @@
   <qresource prefix="/org.kde.khealthcertificate/eu-dgc/certs">
     <file>0c4b15512be91401.pem</file>
     <file>2e5dcd3f4df33b16.pem</file>
+    <file>ea3ab2264f346d45.pem</file>
   </qresource>
 </RCC>

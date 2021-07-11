@@ -14,8 +14,7 @@ public:
     QDate date;
     QString disease;
     QString testType;
-    QString naaTestName;
-    QString ratTest;
+    QString testName;
     KTestCertificate::Result result = KTestCertificate::Unknown;
     QString resultString;
     QString testCenter;
@@ -34,8 +33,7 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QDate, dateOfBirth, setDateOfBirth)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QDate, date, setDate)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, disease, setDisease)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, testType, setTestType)
-KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, naaTestName, setNaaTestName)
-KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, ratTest, setRatTest)
+KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, testName, setTestName)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, KTestCertificate::Result, result, setResult)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, resultString, setResultString)
 KHEALTHCERTIFICATE_MAKE_PROPERTY(Test, QString, testCenter, setTestCenter)
