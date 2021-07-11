@@ -15,6 +15,11 @@ add_library(KHealthCertificate
     data/data.qrc
     data/eu-dgc/certs/certs.qrc
 )
+set_target_properties(KHealthCertificate PROPERTIES
+    VERSION ${KHEALTHCERTIFICATE_VERSION}
+    SOVERSION ${KHEALTHCERTIFICATE_SOVERSION}
+    EXPORT_NAME KHealthCertificate
+)
 
 generate_export_header(KHealthCertificate BASE_NAME KHealthCertificate)
 ecm_qt_declare_logging_category(KHealthCertificate
@@ -25,11 +30,6 @@ ecm_qt_declare_logging_category(KHealthCertificate
     EXPORT KHealthCertificateLogging
 )
 
-set_target_properties(KHealthCertificate PROPERTIES
-    VERSION ${KHEALTHCERTIFICATE_VERSION}
-    SOVERSION ${KHEALTHCERTIFICATE_SOVERSION}
-    EXPORT_NAME KHealthCertificate
-)
 target_link_libraries(KHealthCertificate PUBLIC
     Qt::Core
 )
