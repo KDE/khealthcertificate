@@ -15,6 +15,7 @@
 void initLocale()
 {
     qputenv("LC_ALL", "en_US.utf-8");
+    qputenv("TZ", "UTC");
 }
 
 Q_CONSTRUCTOR_FUNCTION(initLocale)
@@ -50,8 +51,8 @@ private Q_SLOTS:
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna Biotech Spain S.L."));
         QCOMPARE(vac.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
-        QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
-        QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
+        QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination.txt"));
@@ -71,8 +72,8 @@ private Q_SLOTS:
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna Biotech Spain S.L."));
         QCOMPARE(vac.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(vac.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
-        QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
-        QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
+        QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/partial-vaccination.txt"));
@@ -103,8 +104,8 @@ private Q_SLOTS:
         QCOMPARE(test.resultString(), QLatin1String("Not detected"));
         QCOMPARE(test.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/IZ12345A/5CWLU12RNOB9RXSEOP6FG8#W"));
-        QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
-        QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
+        QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/negative-test.txt"));
@@ -123,8 +124,8 @@ private Q_SLOTS:
         QCOMPARE(test.validUntil(), QDate(2021, 6, 15));
         QCOMPARE(test.certificateIssuer(), QLatin1String("Robert Koch-Institut"));
         QCOMPARE(test.certificateId(), QLatin1String("URN:UVCI:01DE/5CWLU12RNOB9RXSEOP6FG8#W"));
-        QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {21, 21, 13}));
-        QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {8, 47, 53}));
+        QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
+        QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(test.validationState(), KHealthCertificate::Unknown); // not implemented yet
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/recovery.txt"));
