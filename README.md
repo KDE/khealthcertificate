@@ -7,7 +7,7 @@ Parsing of digital vaccination, test and recovery certificates.
 The following certificate formats can be parsed:
 
 * Indian vaccination certificates (based on https://en.wikipedia.org/wiki/Verifiable_credentials)
-* EU "Digitial Green Certificate" (DCG) vaccination, test and recovery certificates (see https://github.com/eu-digital-green-certificates)
+* EU "Digital Green Certificate" (DCG) vaccination, test and recovery certificates (see https://github.com/eu-digital-green-certificates)
 
 ## Use Case
 
