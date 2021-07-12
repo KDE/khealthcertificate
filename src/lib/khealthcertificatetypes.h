@@ -41,7 +41,7 @@ private: \
 
 #define KHEALTHCERTIFICATE_PROPERTY(Type, Getter, Setter) \
 public: \
-    Q_PROPERTY(Type Getter READ Getter WRITE Setter) \
+    Q_PROPERTY(Type Getter READ Getter CONSTANT) \
     Type Getter() const; \
     void Setter(KHealthCertificateInternal::parameter_type<Type>::type value); \
 
