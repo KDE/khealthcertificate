@@ -37,6 +37,13 @@ public:
         UncheckedSignature, ///< signature verification was not attempted, e.g. as it's not yet implemented for the specific certificate type.
     };
     Q_ENUM(SignatureValidation)
+
+    /** Returns the last date until @p certificate is relevant.
+     *  That is, past the returned date, the certificate is considered expired and thus provides
+     *  no or only very limited use anymore.
+     *  This is useful for sorting a set of certificate in the UI in a meaningful way.
+     */
+    static QDateTime relevantUntil(const QVariant &certificate);
 };
 
 #endif // KHEALTHCERTIFICATE_H

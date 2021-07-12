@@ -57,6 +57,7 @@ private Q_SLOTS:
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination.txt"));
+        QCOMPARE(KHealthCertificate::relevantUntil(vac), QDateTime({2022, 1, 28}, {7, 47, 53}));
 
         cert = KHealthCertificateParser::parse(readFile(u"eu-dgc/partial-vaccination.txt"));
         QCOMPARE(cert.userType(), qMetaTypeId<KVaccinationCertificate>());
@@ -110,6 +111,7 @@ private Q_SLOTS:
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/negative-test.txt"));
+        QCOMPARE(KHealthCertificate::relevantUntil(test), QDateTime({2021, 6, 1}, {}));
 
         cert = KHealthCertificateParser::parse(readFile(u"eu-dgc/negative-rat-test-cz.txt"));
         QCOMPARE(cert.userType(), qMetaTypeId<KTestCertificate>());
@@ -142,6 +144,7 @@ private Q_SLOTS:
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(test.validationState(), KHealthCertificate::Unknown); // not implemented yet
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/recovery.txt"));
+        QCOMPARE(KHealthCertificate::relevantUntil(test), QDateTime({2021, 6, 15}, {}));
     }
 };
 
