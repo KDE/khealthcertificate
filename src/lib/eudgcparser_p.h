@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef EUDGCPARSER_H
-#define EUDGCPARSER_H
+#ifndef EUDGCPARSER_P_H
+#define EUDGCPARSER_P_H
 
 #include "krecoverycertificate.h"
 #include "ktestcertificate.h"
@@ -38,4 +38,4 @@ private:
     mutable std::variant<KVaccinationCertificate, KTestCertificate, KRecoveryCertificate> m_cert;
 };
 
-#endif // EUDGCPARSER_H
+#endif // EUDGCPARSER_P_H

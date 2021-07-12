@@ -3,9 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include "eudgcparser.h"
+#include "eudgcparser_p.h"
 #include "cborutils_p.h"
-#include "coseparser.h"
+#include "coseparser_p.h"
 #include "logging.h"
 
 #include <KCodecs>

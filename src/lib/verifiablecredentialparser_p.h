@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef VERIFIABLECREDENTIALPARSER_H
-#define VERIFIABLECREDENTIALPARSER_H
+#ifndef VERIFIABLECREDENTIALPARSER_P_H
+#define VERIFIABLECREDENTIALPARSER_P_H
 
 class QByteArray;
 class QVariant;
@@ -15,4 +15,4 @@ namespace VerifiableCredentialParser
     QVariant parse(const QByteArray &data);
 }
 
-#endif // VERIFIABLECREDENTIALPARSER_H
+#endif // VERIFIABLECREDENTIALPARSER_P_H

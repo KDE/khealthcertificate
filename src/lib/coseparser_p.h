@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#ifndef COSEPARSER_H
-#define COSEPARSER_H
+#ifndef COSEPARSER_P_H
+#define COSEPARSER_P_H
 
-#include "opensslpp.h"
+#include "opensslpp_p.h"
 
 #include <QByteArray>
 #include <QSslCertificate>
@@ -49,4 +49,4 @@ private:
     QSslCertificate m_certificate;
 };
 
-#endif // COSEPARSER_H
+#endif // COSEPARSER_P_H

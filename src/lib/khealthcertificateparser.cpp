@@ -4,8 +4,8 @@
  */
 
 #include "khealthcertificateparser.h"
-#include "eudgcparser.h"
-#include "verifiablecredentialparser.h"
+#include "eudgcparser_p.h"
+#include "verifiablecredentialparser_p.h"
 
 #include <KZip>
 

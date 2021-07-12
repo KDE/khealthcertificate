@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include "verifiablecredentialparser.h"
+#include "verifiablecredentialparser_p.h"
 #include "kvaccinationcertificate.h"
 
 #include <QByteArray>

@@ -3,10 +3,9 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include "coseparser.h"
+#include "coseparser_p.h"
 #include "cborutils_p.h"
 #include "logging.h"
-#include "opensslpp.h"
 
 #include <QCborMap>
 #include <QCborStreamReader>
