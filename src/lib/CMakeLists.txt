@@ -5,6 +5,7 @@ add_library(KHealthCertificate
     cborutils.cpp
     coseparser.cpp
     eudgcparser.cpp
+    jwsverifier.cpp
     khealthcertificate.cpp
     khealthcertificateparser.cpp
     krecoverycertificate.cpp
