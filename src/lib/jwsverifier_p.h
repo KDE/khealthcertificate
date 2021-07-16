@@ -6,6 +6,8 @@
 #ifndef JWSVERIFIER_H
 #define JWSVERIFIER_H
 
+#include "opensslpp_p.h"
+
 #include <QJsonObject>
 
 /** Verification of JSON Web Signatures (JWS).
@@ -21,6 +23,8 @@ public:
     bool verify() const;
 
 private:
+    openssl::rsa_ptr loadPublicKey() const;
+
     QJsonObject m_obj;
 };
 

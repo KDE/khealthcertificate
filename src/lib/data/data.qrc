@@ -4,6 +4,7 @@
 -->
 <RCC>
   <qresource prefix="/org.kde.khealthcertificate/">
+    <file>divoc/did-india.pem</file>
     <file>eu-dgc/ma.json</file>
     <file>eu-dgc/mp.json</file>
     <file>eu-dgc/tcMa.json</file>
