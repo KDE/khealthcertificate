@@ -23,7 +23,7 @@ public:
     bool verify() const;
 
 private:
-    openssl::rsa_ptr loadPublicKey() const;
+    openssl::evp_pkey_ptr loadPublicKey() const;
 
     QJsonObject m_obj;
 };
