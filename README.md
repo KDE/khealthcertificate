@@ -6,7 +6,7 @@ Parsing of digital vaccination, test and recovery certificates.
 
 The following certificate formats can be parsed:
 
-* Indian vaccination certificates (based on https://en.wikipedia.org/wiki/Verifiable_credentials)
+* Digital Infrastructure for Vaccination Open Credentialing (DIVOC), the system used for Indian vaccination certificates (see https://divoc.egov.org.in/)
 * EU "Digital Green Certificate" (DCG) vaccination, test and recovery certificates (see https://github.com/eu-digital-green-certificates)
 
 ## Use Case
