@@ -52,17 +52,28 @@ bool JwsVerifier::verify() const
         return false;
     }
 
-    // prepare the canonicalized form of the signed content
-    // TODO this is most likely still wrong
-    QJsonObject obj = m_obj;
-    obj.remove(QLatin1String("proof"));
-    const auto signedData = QJsonDocument(obj).toJson(QJsonDocument::Compact);
-    qDebug().noquote() << signedData;
-
-    // compute hash of the signed data
     const EVP_MD *digest = EVP_sha256();
     uint8_t digestData[EVP_MAX_MD_SIZE];
     uint32_t  digestSize = 0;
+
+    // prepare the canonicalized form of the signed content
+    QJsonObject content = m_obj;
+    QJsonObject proofOptions = content.take(QLatin1String("proof")).toObject();
+    proofOptions.remove(QLatin1String("jws"));
+    proofOptions.remove(QLatin1String("signatureValue"));
+    proofOptions.remove(QLatin1String("proofValue"));
+    proofOptions.insert(QLatin1String("@context"), QLatin1String("https://w3id.org/security/v2"));
+
+    const auto canonicalProof = canonicalRdf(proofOptions);
+    const auto canonicalContent = canonicalRdf(content);
+
+    QByteArray signedData = header.toUtf8() + '.';
+    EVP_Digest(reinterpret_cast<const uint8_t*>(canonicalProof.constData()), canonicalProof.size(), digestData, &digestSize, digest, nullptr);
+    signedData.append(reinterpret_cast<const char*>(digestData), digestSize);
+    EVP_Digest(reinterpret_cast<const uint8_t*>(canonicalContent.constData()), canonicalContent.size(), digestData, &digestSize, digest, nullptr);
+    signedData.append(reinterpret_cast<const char*>(digestData), digestSize);
+
+    // compute hash of the signed data
     EVP_Digest(reinterpret_cast<const uint8_t*>(signedData.constData()), signedData.size(), digestData, &digestSize, digest, nullptr);
 
     // verify
@@ -75,9 +86,13 @@ bool JwsVerifier::verify() const
     }
 
     const auto verifyResult = EVP_PKEY_verify(ctx.get(), reinterpret_cast<const uint8_t*>(signature.constData()), signature.size(),  digestData, digestSize);
-    qDebug() << verifyResult << ERR_error_string(ERR_get_error(), nullptr);
-
-    // TODO
+    switch (verifyResult) {
+        case -1: // technical issue
+            qCWarning(Log) << "Failed to verify signature:" << ERR_error_string(ERR_get_error(), nullptr);
+            break;
+        case 1: // valid signature;
+            return true;
+    }
     return false;
 }
 
@@ -104,4 +119,9 @@ openssl::evp_pkey_ptr JwsVerifier::loadPublicKey() const
     evp.reset(EVP_PKEY_new());
     EVP_PKEY_assign_RSA(evp.get(), rsa.release());
     return evp;
+}
+
+QByteArray JwsVerifier::canonicalRdf(const QJsonObject &doc) const
+{
+    return ""; // TODO Universal RDF Dataset Canonicalization Algorithm 2015 (URDNA2015)
 }

@@ -50,7 +50,7 @@ QVariant VerifiableCredentialParser::parse(const QByteArray &data)
     cert.setSignatureState(KHealthCertificate::UncheckedSignature); // TODO implement signature verification
 
     JwsVerifier verifier(doc.object());
-    verifier.verify();
+    qDebug() << "signature valid (WIP):" << verifier.verify();
 
     return cert;
 }

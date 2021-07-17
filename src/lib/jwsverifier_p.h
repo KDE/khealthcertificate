@@ -24,6 +24,7 @@ public:
 
 private:
     openssl::evp_pkey_ptr loadPublicKey() const;
+    QByteArray canonicalRdf(const QJsonObject &doc) const;
 
     QJsonObject m_obj;
 };
