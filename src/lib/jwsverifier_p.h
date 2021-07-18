@@ -13,6 +13,9 @@
 /** Verification of JSON Web Signatures (JWS).
  *  @see RFC 7515
  *  @see RFC 7797 (unencoded payload extension)
+ *
+ *  @note This is far from a complete implementation of the full spec, this barely
+ *  covers enough for the needs of DIVOC JWS verification.
  */
 class JwsVerifier
 {

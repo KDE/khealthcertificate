@@ -5,6 +5,11 @@
 <RCC>
   <qresource prefix="/org.kde.khealthcertificate/">
     <file>divoc/did-india.pem</file>
+    <file>divoc/credentials-v1.json</file>
+    <file>divoc/security-v1.json</file>
+    <file>divoc/security-v2.json</file>
+    <file>divoc/vaccination-v1.json</file>
+
     <file>eu-dgc/ma.json</file>
     <file>eu-dgc/mp.json</file>
     <file>eu-dgc/tcMa.json</file>

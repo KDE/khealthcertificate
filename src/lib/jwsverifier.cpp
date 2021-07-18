@@ -4,8 +4,11 @@
  */
 
 #include "jwsverifier_p.h"
+#include "jsonld_p.h"
 #include "logging.h"
+#include "rdf_p.h"
 
+#include <QBuffer>
 #include <QFile>
 #include <QJsonDocument>
 
@@ -121,7 +124,42 @@ openssl::evp_pkey_ptr JwsVerifier::loadPublicKey() const
     return evp;
 }
 
+static struct {
+    const char *uri;
+    const char *filePath;
+} constexpr const schema_document_table[] = {
+    { "https://www.w3.org/2018/credentials/v1", ":/org.kde.khealthcertificate/divoc/credentials-v1.json" },
+    { "https://cowin.gov.in/credentials/vaccination/v1", ":/org.kde.khealthcertificate/divoc/vaccination-v1.json" },
+    { "https://w3id.org/security/v1", ":/org.kde.khealthcertificate/divoc/security-v1.json" },
+    { "https://w3id.org/security/v2", ":/org.kde.khealthcertificate/divoc/security-v2.json" },
+};
+
 QByteArray JwsVerifier::canonicalRdf(const QJsonObject &doc) const
 {
-    return ""; // TODO Universal RDF Dataset Canonicalization Algorithm 2015 (URDNA2015)
+    JsonLd jsonLd;
+    const auto documentLoader = [](const QString &context) -> QByteArray {
+        for (const auto &i : schema_document_table) {
+            if (context == QLatin1String(i.uri)) {
+                QFile f(QLatin1String(i.filePath));
+                if (!f.open(QFile::ReadOnly)) {
+                    qCWarning(Log) << f.errorString();
+                } else {
+                    return f.readAll();
+                }
+            }
+        }
+        qCWarning(Log) << "Failed to provide requested document:" << context;
+        return QByteArray();
+    };
+    jsonLd.setDocumentLoader(documentLoader);
+
+    auto quads = jsonLd.toRdf(doc);
+    Rdf::normalize(quads);
+    QByteArray out;
+    QBuffer buffer(&out);
+    buffer.open(QIODevice::WriteOnly);
+    Rdf::serialize(&buffer, quads);
+    buffer.close();
+    qDebug().noquote() << out;
+    return out;
 }

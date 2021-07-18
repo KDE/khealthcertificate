@@ -5,12 +5,14 @@ add_library(KHealthCertificate
     cborutils.cpp
     coseparser.cpp
     eudgcparser.cpp
+    jsonld.cpp
     jwsverifier.cpp
     khealthcertificate.cpp
     khealthcertificateparser.cpp
     krecoverycertificate.cpp
     ktestcertificate.cpp
     kvaccinationcertificate.cpp
+    rdf.cpp
     verifiablecredentialparser.cpp
 
     data/data.qrc
