@@ -1,0 +1,73 @@
+{
+  "@context": [
+    "https://www.w3.org/2018/credentials/v1",
+    "https://cowin.gov.in/credentials/vaccination/v1"
+  ],
+  "type": [
+    "VerifiableCredential",
+    "ProofOfVaccinationCredential"
+  ],
+  "credentialSubject": {
+    "type": "Person",
+    "id": "did:Aadhaar Card:********1234",
+    "refId": "12345678901234",
+    "name": "Katie Dragon",
+    "uhid": "",
+    "gender": "Female",
+    "age": "25",
+    "nationality": "Indian",
+    "address": {
+      "streetAddress": "",
+      "streetAddress2": "",
+      "district": "",
+      "city": "",
+      "addressRegion": "",
+      "addressCountry": "IN",
+      "postalCode": 100001
+    }
+  },
+  "issuer": "https://cowin.gov.in/",
+  "issuanceDate": "2021-07-16T19:40:00.000Z",
+  "evidence": [
+    {
+      "id": "https://cowin.gov.in/vaccine/987654321098",
+      "feedbackUrl": "https://cowin.gov.in/?987654321098",
+      "infoUrl": "https://cowin.gov.in/?987654321098",
+      "certificateId": "987654321098",
+      "type": [
+        "Vaccination"
+      ],
+      "batch": "1234Z001",
+      "vaccine": "COVISHIELD",
+      "manufacturer": "Serum Institute of India",
+      "date": "2021-07-16T19:40:00.000Z",
+      "effectiveStart": "2021-07-16",
+      "effectiveUntil": "2021-07-16",
+      "dose": 1,
+      "totalDoses": 2,
+      "verifier": {
+        "name": "Doctor Konqui"
+      },
+      "facility": {
+        "name": "KDE Vaccination Center",
+        "address": {
+          "streetAddress": "MG Road",
+          "streetAddress2": "",
+          "district": "Bengaluru Urban",
+          "city": "",
+          "addressRegion": "Karnataka",
+          "addressCountry": "IN",
+          "postalCode": ""
+        }
+      }
+    }
+  ],
+  "nonTransferable": "true",
+  "proof": {
+    "type": "RsaSignature2018",
+    "created": "2021-07-16T19:40:00Z",
+    "verificationMethod": "did:india",
+    "proofPurpose": "assertionMethod",
+    "jws": "eyJhbGciOiJQUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19..AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=="
+  }
+}
