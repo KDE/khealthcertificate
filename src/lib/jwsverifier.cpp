@@ -8,7 +8,6 @@
 #include "logging.h"
 #include "rdf_p.h"
 
-#include <QBuffer>
 #include <QFile>
 #include <QJsonDocument>
 
@@ -38,12 +37,11 @@ bool JwsVerifier::verify() const
     if (sigStart < 0) {
         return false;
     }
-    const auto payload = QStringView(jws).mid(payloadStart + 1, sigStart - payloadStart - 1);
+    //const auto payload = QStringView(jws).mid(payloadStart + 1, sigStart - payloadStart - 1);
     const auto signature = QByteArray::fromBase64(QStringView(jws).mid(sigStart + 1).toUtf8(), QByteArray::Base64UrlEncoding);
 
     // check signature algorithm
     const auto headerObj = QJsonDocument::fromJson(QByteArray::fromBase64(header.toUtf8(), QByteArray::Base64UrlEncoding)).object();
-    qDebug() << headerObj << payload << signature.toHex();
     if (headerObj.value(QLatin1String("alg")) != QLatin1String("PS256")) {
         qCWarning(Log) << "not implemented JWS algorithm:" << headerObj;
         return false;
@@ -155,11 +153,5 @@ QByteArray JwsVerifier::canonicalRdf(const QJsonObject &doc) const
 
     auto quads = jsonLd.toRdf(doc);
     Rdf::normalize(quads);
-    QByteArray out;
-    QBuffer buffer(&out);
-    buffer.open(QIODevice::WriteOnly);
-    Rdf::serialize(&buffer, quads);
-    buffer.close();
-    qDebug().noquote() << out;
-    return out;
+    return Rdf::serialize(quads);
 }

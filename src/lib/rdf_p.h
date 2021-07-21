@@ -37,12 +37,15 @@ public:
     Term predicate;
     Term object;
     // ### graph - not relevant for us
+
+    bool operator<(const Quad &other) const;
 };
 
 /** Apply the Universal RDF Dataset Normalization Algorithm 2015 (URDNA2015) to @p quads. */
 void normalize(std::vector<Rdf::Quad> &quads);
 
 /** Write list of RDF quads to @p out. */
+QByteArray serialize(const std::vector<Rdf::Quad> &quads);
 void serialize(QIODevice *out, const std::vector<Rdf::Quad> &quads);
 void serialize(QIODevice *out, const Rdf::Quad &quad);
 void serialize(QIODevice *out, const Rdf::Term &term);

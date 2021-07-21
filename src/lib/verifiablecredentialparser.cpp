@@ -47,10 +47,9 @@ QVariant VerifiableCredentialParser::parse(const QByteArray &data)
     cert.setCertificateId(evidence.value(QLatin1String("certificateId")).toString());
     cert.setCertificateIssuer(doc.object().value(QLatin1String("issuer")).toString());
     cert.setCertificateIssueDate(QDateTime::fromString(doc.object().value(QLatin1String("issuanceDate")).toString(), Qt::ISODate));
-    cert.setSignatureState(KHealthCertificate::UncheckedSignature); // TODO implement signature verification
 
     JwsVerifier verifier(doc.object());
-    qDebug() << "signature valid (WIP):" << verifier.verify();
+    cert.setSignatureState(verifier.verify() ? KHealthCertificate::ValidSignature : KHealthCertificate::InvalidSignature);
 
     return cert;
 }

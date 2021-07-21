@@ -48,8 +48,8 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssuer(), QLatin1String("https://cowin.gov.in/"));
         QCOMPARE(vac.certificateId(), QLatin1String("987654321098"));
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 7, 16}, {19, 40}));
-        QCOMPARE(vac.signatureState(), KHealthCertificate::UncheckedSignature);
-        QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
+        QCOMPARE(vac.signatureState(), KHealthCertificate::InvalidSignature);
+        QCOMPARE(vac.validationState(), KHealthCertificate::Invalid); // due to invalid signature
         QCOMPARE(vac.rawData(), readFile(u"divoc/partial-vaccination.bin"));
         QCOMPARE(KHealthCertificate::relevantUntil(vac), QDateTime({2022, 7, 16}, {0, 0}));
     }

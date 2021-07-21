@@ -11,5 +11,6 @@ The following certificate formats can be parsed:
 
 ## Use Case
 
-Warning: This is merely meant to check what is in your own trusted certificates, this does not
-validate signatures and is therefore not suitable for checking untrusted certificates.
+Warning: This is merely meant to check what is in your own trusted certificates.
+While this attempts to validate the signatures of all supported certificates, there is no guarantee this is
+implemented correctly.
