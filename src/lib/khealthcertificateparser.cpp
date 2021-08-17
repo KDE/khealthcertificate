@@ -4,8 +4,8 @@
  */
 
 #include "khealthcertificateparser.h"
+#include "divocparser_p.h"
 #include "eudgcparser_p.h"
-#include "verifiablecredentialparser_p.h"
 
 #include <KZip>
 
@@ -20,7 +20,7 @@ QVariant KHealthCertificateParser::parse(const QByteArray &data)
     if (!result.isNull()) {
         return result;
     }
-    result = VerifiableCredentialParser::parse(data);
+    result = DivocParser::parse(data);
     if (!result.isNull()) {
         return result;
     }

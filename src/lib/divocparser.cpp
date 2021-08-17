@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include "verifiablecredentialparser_p.h"
+#include "divocparser_p.h"
 #include "jwsverifier_p.h"
 #include "kvaccinationcertificate.h"
 
@@ -14,7 +14,7 @@
 #include <QJsonObject>
 #include <QVariant>
 
-QVariant VerifiableCredentialParser::parse(const QByteArray &data)
+QVariant DivocParser::parse(const QByteArray &data)
 {
     QJsonParseError error;
     const auto doc = QJsonDocument::fromJson(data, &error);
