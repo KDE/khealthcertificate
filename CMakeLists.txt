@@ -10,15 +10,13 @@ set (RELEASE_SERVICE_VERSION_MICRO "70")
 set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 project(KHealthCertificate VERSION ${RELEASE_SERVICE_VERSION})
 
-set(CMAKE_CXX_STANDARD 17)
-
-set(KF5_MIN_VERSION 5.84) # for KCodecs::base45Decode
+set(KF5_MIN_VERSION 5.85) # for KDECompilerSettings
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
 include(KDEInstallDirs)
 include(KDECMakeSettings)
-include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE) # switch to KDECompilerSettings once we depend on ECM 5.85
+include(KDECompilerSettings NO_POLICY_SCOPE)
 include(ECMAddTests)
 include(ECMGenerateHeaders)
 include(ECMQtDeclareLoggingCategory)
