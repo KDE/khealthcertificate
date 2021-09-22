@@ -14,6 +14,7 @@ add_library(KHealthCertificate
     ktestcertificate.cpp
     kvaccinationcertificate.cpp
     rdf.cpp
+    zlib.cpp
 
     data/data.qrc
     data/eu-dgc/certs/certs.qrc

@@ -7,6 +7,7 @@
 #include "cborutils_p.h"
 #include "coseparser_p.h"
 #include "logging.h"
+#include "zlib_p.h"
 
 #include <KCodecs>
 
@@ -18,7 +19,6 @@
 #include <QLocale>
 #include <QVariant>
 
-#include <zlib.h>
 
 static bool initResources()
 {
@@ -55,42 +55,13 @@ static QString translateValue(const QString &type, const QString &key)
     return key;
 }
 
-static QByteArray inflateByteArray(const QByteArray &data)
-{
-    // decompress
-    QByteArray out;
-    out.resize(4096);
-    z_stream stream;
-    stream.zalloc = nullptr;
-    stream.zfree = nullptr;
-    stream.opaque = nullptr;
-    stream.avail_in = data.size();
-    stream.next_in = reinterpret_cast<unsigned char*>(const_cast<char*>(data.data()));
-    stream.avail_out = out.size();
-    stream.next_out = reinterpret_cast<unsigned char*>(out.data());
-
-    inflateInit(&stream);
-    const auto res = inflate(&stream, Z_NO_FLUSH);
-    switch (res) {
-        case Z_OK:
-        case Z_STREAM_END:
-            break; // all good
-        default:
-            qCWarning(Log) << "zlib decompression failed" << stream.msg;
-            return {};
-    }
-    inflateEnd(&stream);
-    out.truncate(out.size() - stream.avail_out);
-    return out;
-}
-
 QVariant EuDgcParser::parse(const QByteArray &data) const
 {
     if (!data.startsWith("HC1:")) {
         return {};
     }
 
-    const auto decoded = inflateByteArray(KCodecs::base45Decode(data.mid(4)));
+    const auto decoded = Zlib::decompressZlib(KCodecs::base45Decode(data.mid(4)));
     if (decoded.isEmpty()) {
         return {};
     }
