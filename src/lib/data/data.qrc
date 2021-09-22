@@ -17,5 +17,7 @@
     <file>eu-dgc/tcTt.json</file>
     <file>eu-dgc/tg.json</file>
     <file>eu-dgc/vp.json</file>
+
+    <file>shc/hl7-cvx-codes.json</file>
   </qresource>
 </RCC>

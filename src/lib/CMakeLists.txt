@@ -8,12 +8,14 @@ add_library(KHealthCertificate
     eudgcparser.cpp
     jsonld.cpp
     jwsverifier.cpp
+    jwtparser.cpp
     khealthcertificate.cpp
     khealthcertificateparser.cpp
     krecoverycertificate.cpp
     ktestcertificate.cpp
     kvaccinationcertificate.cpp
     rdf.cpp
+    shcparser.cpp
     zlib.cpp
 
     data/data.qrc

@@ -14,3 +14,11 @@ Copyright: https://github.com/Digitaler-Impfnachweis/covpass-android
 Files: autotests/data/eu-dgc/*.txt autotests/data/eu-dgc/*.pem
 License: Apache-2.0
 Copyright: https://github.com/eu-digital-green-certificates/dgc-testdata
+
+Files: autotests/data/shc/*.txt
+License: CC-BY-4.0
+Copyright: Computational Health Informatics Program, Boston Children's Hospital, Boston, MA
+
+Files: src/lib/data/shc/*.json
+License: CC0-1.0
+Copyright: https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp
