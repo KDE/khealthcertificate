@@ -6,6 +6,7 @@
 #include "coseparser_p.h"
 #include "cborutils_p.h"
 #include "logging.h"
+#include "verify_p.h"
 
 #include <QCborMap>
 #include <QCborStreamReader>
@@ -146,35 +147,8 @@ void CoseParser::validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm)
 
     // compute hash of the signed data
     const auto signedData = sigStructure();
-    uint8_t digestData[EVP_MAX_MD_SIZE];
-    uint32_t  digestSize = 0;
-    EVP_Digest(reinterpret_cast<const uint8_t*>(signedData.constData()), signedData.size(), digestData, &digestSize, digest, nullptr);
-    if (digestSize * 2 != (uint32_t)m_signature.size() || EVP_PKEY_bits(pkey.get()) != 4 * m_signature.size()) {
-        m_signatureState = InvalidSignature;
-        qCWarning(Log) << "digest size mismatch!?" << digestSize << m_signature.size();
-        return;
-    }
-
-    // unpack the signature field
-    const auto r = BN_bin2bn(reinterpret_cast<const uint8_t*>(m_signature.constData()), m_signature.size() / 2, nullptr);
-    const auto s = BN_bin2bn(reinterpret_cast<const uint8_t*>(m_signature.constData() + m_signature.size() / 2) , m_signature.size() / 2, nullptr);
-
-    // verify
-    const openssl::ecdsa_sig_ptr sig(ECDSA_SIG_new(), &ECDSA_SIG_free);
-    ECDSA_SIG_set0(sig.get(), r, s);
-    const auto verifyResult = ECDSA_do_verify(digestData, digestSize, sig.get(), ecKey.get());
-    switch (verifyResult) {
-        case -1: // technical issue
-            m_signatureState = InvalidSignature;
-            qCWarning(Log) << "Failed to verify signature:" << ERR_error_string(ERR_get_error(), nullptr);
-            break;
-        case 0: // invalid signature
-            m_signatureState = InvalidSignature;
-            break;
-        case 1: // valid signature;
-            m_signatureState = ValidSignature;
-            break;
-    }
+    m_signatureState = Verify::verifyECDSA(pkey, digest, signedData.constData(), signedData.size(), m_signature.constData(), m_signature.size()) ?
+        ValidSignature : InvalidSignature;
 }
 
 void CoseParser::validateRSAPSS(const openssl::evp_pkey_ptr &pkey, int algorithm)

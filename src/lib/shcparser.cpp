@@ -35,7 +35,6 @@ QVariant ShcParser::parse(const QByteArray &data)
 
     JwtParser jwt;
     jwt.parse(unpacked);
-    // TODO check signature state
 
     const auto nbf = QDateTime::fromSecsSinceEpoch(jwt.payload().value(QLatin1String("nbf")).toDouble());
     const auto vc = jwt.payload().value(QLatin1String("vc")).toObject();
@@ -46,7 +45,7 @@ QVariant ShcParser::parse(const QByteArray &data)
             auto cert = parseImmunization(vc.value(QLatin1String("credentialSubject")).toObject());
             cert.setCertificateIssueDate(nbf);
             cert.setRawData(data);
-            cert.setSignatureState(KHealthCertificate::UncheckedSignature); // TODO not yet implemented
+            cert.setSignatureState(jwt.signatureState());
             return cert;
         }
     }

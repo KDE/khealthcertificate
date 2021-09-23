@@ -6,6 +6,8 @@
 #ifndef JWTPARSER_P_H
 #define JWTPARSER_P_H
 
+#include "khealthcertificate.h"
+
 #include <QJsonObject>
 
 /** Decoding of JSON Web Tokens (JWT). */
@@ -18,9 +20,11 @@ public:
     void parse(const QByteArray &data);
 
     QJsonObject payload() const;
+    KHealthCertificate::SignatureValidation signatureState() const;
 
 private:
     QJsonObject m_payload;
+    KHealthCertificate::SignatureValidation m_signatureState = KHealthCertificate::InvalidSignature;
 };
 
 #endif // JWTPARSER_P_H

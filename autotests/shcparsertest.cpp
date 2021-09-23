@@ -47,7 +47,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssuer(), QString());
         QCOMPARE(vac.certificateId(), QString());
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 9, 21}, {21, 52, 14}));
-        QCOMPARE(vac.signatureState(), KHealthCertificate::UncheckedSignature);
+        QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
         QCOMPARE(vac.rawData(), readFile(u"shc/example-00-f-qr-code-numeric-value-0.txt"));
     }

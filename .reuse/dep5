@@ -15,7 +15,7 @@ Files: autotests/data/eu-dgc/*.txt autotests/data/eu-dgc/*.pem
 License: Apache-2.0
 Copyright: https://github.com/eu-digital-green-certificates/dgc-testdata
 
-Files: autotests/data/shc/*.txt
+Files: autotests/data/shc/*.txt autotests/data/shc/*.jwk
 License: CC-BY-4.0
 Copyright: Computational Health Informatics Program, Boston Children's Hospital, Boston, MA
 
