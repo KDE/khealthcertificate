@@ -19,5 +19,7 @@
     <file>eu-dgc/vp.json</file>
 
     <file>shc/hl7-cvx-codes.json</file>
+    <!-- manually collected keys not found by auto-discovery -->
+    <file>shc/certs/fFyWQ6CvV9Me_FkwWAL_DwxI_VQROw8tyzSp5_zI8_4.jwk</file> <!-- Quebec Vaxicode Verif app -->
   </qresource>
 </RCC>

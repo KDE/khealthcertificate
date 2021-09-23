@@ -24,3 +24,11 @@ add_custom_command(
     COMMENT "Updating HL7 CVX codes"
 )
 add_custom_target(update-hl7-cvx DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/shc/hl7-cvx-codes.json)
+
+add_custom_command(
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/data/shc/certs/dummy.jwk
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update-shc-certs.py --output ${CMAKE_SOURCE_DIR}/src/lib/data/shc/certs/
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Updating SHC certificates"
+)
+add_custom_target(update-shc-certs DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/shc/certs/dummy.jwk)

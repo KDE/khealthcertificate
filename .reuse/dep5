@@ -22,3 +22,7 @@ Copyright: Computational Health Informatics Program, Boston Children's Hospital,
 Files: src/lib/data/shc/*.json
 License: CC0-1.0
 Copyright: https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp
+
+Files: src/lib/data/shc/certs/*.jwk
+License: CC0-1.0
+Copyright: none

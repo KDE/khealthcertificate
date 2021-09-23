@@ -22,6 +22,7 @@ add_library(KHealthCertificate
 
     data/data.qrc
     data/eu-dgc/certs/certs.qrc
+    data/shc/certs/shc-certs.qrc
 )
 set_target_properties(KHealthCertificate PROPERTIES
     VERSION ${KHEALTHCERTIFICATE_VERSION}
