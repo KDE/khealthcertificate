@@ -44,6 +44,7 @@ QVariant ShcParser::parse(const QByteArray &data)
         if (type.toString() == QLatin1String("https://smarthealth.cards#immunization")) {
             auto cert = parseImmunization(vc.value(QLatin1String("credentialSubject")).toObject());
             cert.setCertificateIssueDate(nbf);
+            cert.setCertificateIssuer(jwt.payload().value(QLatin1String("iss")).toString());
             cert.setRawData(data);
             cert.setSignatureState(jwt.signatureState());
             return cert;
