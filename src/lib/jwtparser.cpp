@@ -37,6 +37,7 @@ void JwtParser::parse(const QByteArray &data)
     const auto evp = JwkLoader::loadPublicKey(QLatin1String(":/org.kde.khealthcertificate/shc/certs/") + kid + QLatin1String(".jwk"));
     if (!evp) {
         qCWarning(Log) << "no key found for kid:" << kid;
+        m_signatureState = KHealthCertificate::UnknownSignature;
         return;
     }
     const auto alg = header.value(QLatin1String("alg")).toString();
