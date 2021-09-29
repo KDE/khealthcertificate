@@ -77,7 +77,7 @@ public:
 
 private:
     Rdf::Term toRdfRecursive(const JsonLdContext &context, const QJsonObject &obj, std::vector<Rdf::Quad> &quads) const;
-    void toRdfRecursive(const JsonLdContext &context, const JsonLdMetaType &mt, const Rdf::Term id, const QJsonObject &obj, std::vector<Rdf::Quad> &quads) const;
+    void toRdfRecursive(const JsonLdContext &context, const JsonLdMetaType &mt, const Rdf::Term &id, const QJsonObject &obj, std::vector<Rdf::Quad> &quads) const;
     Rdf::Term idForObject(const QJsonObject &obj) const;
 
     JsonLdDocumentLoader m_documentLoader;

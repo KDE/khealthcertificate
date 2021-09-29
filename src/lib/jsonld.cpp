@@ -232,7 +232,7 @@ Rdf::Term JsonLd::toRdfRecursive(const JsonLdContext &context, const QJsonObject
     return id;
 }
 
-void JsonLd::toRdfRecursive(const JsonLdContext &context, const JsonLdMetaType &mt, const Rdf::Term id, const QJsonObject &obj, std::vector<Rdf::Quad> &quads) const
+void JsonLd::toRdfRecursive(const JsonLdContext &context, const JsonLdMetaType &mt, const Rdf::Term &id, const QJsonObject &obj, std::vector<Rdf::Quad> &quads) const
 {
     if (mt.name.isEmpty() && mt.properties.empty()) { // meta type not found
         return;
