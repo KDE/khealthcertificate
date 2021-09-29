@@ -20,7 +20,7 @@
 class JwsVerifier
 {
 public:
-    JwsVerifier(const QJsonObject &doc);
+    explicit JwsVerifier(const QJsonObject &doc);
     ~JwsVerifier();
 
     bool verify() const;
