@@ -50,6 +50,20 @@ class KHEALTHCERTIFICATE_EXPORT KVaccinationCertificate
     KHEALTHCERTIFICATE_PROPERTY(QByteArray, rawData, setRawData)
 public:
     KHealthCertificate::CertificateValidation validationState() const;
+
+    /** More detailed information about the vaccination certificate. */
+    enum VaccinationState {
+        Invalid, ///< certificate is invalid
+        VaccinationTooRecent, ///< the vaccination happened too recently
+        PartiallyVaccinated, ///< a multi-dose vaccination hasn't been fully applied yet
+        Vaccinated, ///< valid vaccination, but not information about a multi-dose requirement specified
+        FullyVaccinated, ///< complete vaccination with all required doses
+    };
+    Q_ENUM(VaccinationState)
+
+    Q_PROPERTY(VaccinationState vaccinationState READ vaccinationState)
+public:
+    VaccinationState vaccinationState() const;
 };
 
 Q_DECLARE_METATYPE(KVaccinationCertificate)

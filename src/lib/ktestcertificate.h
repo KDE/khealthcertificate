@@ -55,7 +55,8 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     /** Fully encoded data as represented in the barcode. */
     KHEALTHCERTIFICATE_PROPERTY(QByteArray, rawData, setRawData)
 public:
-    KHealthCertificate::CertificateValidation validationState() const;};
+    KHealthCertificate::CertificateValidation validationState() const;
+};
 
 Q_DECLARE_METATYPE(KTestCertificate)
 

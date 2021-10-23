@@ -50,6 +50,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 7, 16}, {19, 40}));
         QCOMPARE(vac.signatureState(), KHealthCertificate::InvalidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Invalid); // due to invalid signature
+        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::PartiallyVaccinated);
         QCOMPARE(vac.rawData(), readFile(u"divoc/partial-vaccination.bin"));
         QCOMPARE(KHealthCertificate::relevantUntil(vac), QDateTime({2022, 7, 16}, {0, 0}));
     }

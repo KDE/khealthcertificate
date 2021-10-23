@@ -56,6 +56,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
+        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::FullyVaccinated);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination.txt"));
         QCOMPARE(KHealthCertificate::relevantUntil(vac), QDateTime({2022, 1, 28}, {7, 47, 53}));
 
@@ -78,6 +79,7 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
+        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::PartiallyVaccinated);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/partial-vaccination.txt"));
 
         // Swiss certificates use another signature algorithm
@@ -88,6 +90,7 @@ private Q_SLOTS:
         QCOMPARE(vac.country(), QLatin1String("CH"));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
+        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::FullyVaccinated);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination-ch.txt"));
     }
 

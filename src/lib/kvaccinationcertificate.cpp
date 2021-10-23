@@ -49,27 +49,36 @@ KHEALTHCERTIFICATE_MAKE_PROPERTY(Vaccination, KHealthCertificate::SignatureValid
 
 KHealthCertificate::CertificateValidation KVaccinationCertificate::validationState() const
 {
-    if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
-        return KHealthCertificate::Invalid;
-    }
-    if (d->signatureState == KHealthCertificate::InvalidSignature) {
-        return KHealthCertificate::Invalid;
-    }
-    if (d->date > QDate::currentDate() || (d->dose == 0 && d->totalDoses)) {
+    const auto vacState = vaccinationState();
+    if (vacState == KVaccinationCertificate::Invalid || d->signatureState == KHealthCertificate::InvalidSignature) {
         return KHealthCertificate::Invalid;
     }
 
-    if (d->date.addDays(14) >= QDate::currentDate()) {
-        return KHealthCertificate::Partial;
-    }
-    if (d->dose < d->totalDoses) {
-        return KHealthCertificate::Partial;
-    }
-    if (d->signatureState == KHealthCertificate::UnknownSignature) {
+    if ((vacState != KVaccinationCertificate::FullyVaccinated && vacState != KVaccinationCertificate::Vaccinated)
+        || d->signatureState == KHealthCertificate::UnknownSignature) {
         return KHealthCertificate::Partial;
     }
 
     return KHealthCertificate::Valid;
+}
+
+KVaccinationCertificate::VaccinationState KVaccinationCertificate::vaccinationState() const
+{
+    if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
+        return KVaccinationCertificate::Invalid;
+    }
+    if (d->date > QDate::currentDate() || (d->dose == 0 && d->totalDoses)) {
+        return KVaccinationCertificate::Invalid;
+    }
+
+    if (d->date.addDays(14) >= QDate::currentDate()) {
+        return KVaccinationCertificate::VaccinationTooRecent;
+    }
+    if (d->dose < d->totalDoses) {
+        return KVaccinationCertificate::PartiallyVaccinated;
+    }
+
+    return d->totalDoses ? KVaccinationCertificate::FullyVaccinated : KVaccinationCertificate::Vaccinated;
 }
 
 #include "moc_kvaccinationcertificate.cpp"
