@@ -52,10 +52,15 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     Q_ENUM(Result)
     KHEALTHCERTIFICATE_PROPERTY(Result, result, setResult)
 
+    /** Indicates whether the result is still current. */
+    Q_PROPERTY(bool isCurrent READ isCurrent)
+
     /** Fully encoded data as represented in the barcode. */
     KHEALTHCERTIFICATE_PROPERTY(QByteArray, rawData, setRawData)
 public:
     KHealthCertificate::CertificateValidation validationState() const;
+
+    bool isCurrent() const;
 };
 
 Q_DECLARE_METATYPE(KTestCertificate)

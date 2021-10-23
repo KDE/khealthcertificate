@@ -112,7 +112,8 @@ private Q_SLOTS:
         QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
         QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
-        QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
+        QCOMPARE(test.validationState(), KHealthCertificate::Partial); // expired
+        QCOMPARE(test.isCurrent(), false);
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/negative-test.txt"));
         QCOMPARE(KHealthCertificate::relevantUntil(test), QDateTime({2021, 6, 1}, {}));
 
@@ -127,6 +128,7 @@ private Q_SLOTS:
         QCOMPARE(test.testUrl().toString(), QLatin1String("https://covid-19-diagnostics.jrc.ec.europa.eu/devices/detail/1242"));
         QCOMPARE(test.result(), KTestCertificate::Negative);
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
+        QCOMPARE(test.isCurrent(), false);
     }
 
     void testRecoveryCertificates()

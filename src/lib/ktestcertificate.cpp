@@ -52,21 +52,23 @@ KHealthCertificate::CertificateValidation KTestCertificate::validationState() co
     if (d->certificateIssueDate > QDateTime::currentDateTime() || (d->certificateExpiryDate.isValid() && d->certificateExpiryDate < QDateTime::currentDateTime())) {
         return KHealthCertificate::Invalid;
     }
-    if (d->signatureState == KHealthCertificate::InvalidSignature) {
-        return KHealthCertificate::Invalid;
-    }
-    if (d->result == Positive) {
+    if (d->signatureState == KHealthCertificate::InvalidSignature || d->result == Unknown) {
         return KHealthCertificate::Invalid;
     }
 
-    if (d->date.addDays(2) < QDate::currentDate()) {
-        return KHealthCertificate::Invalid;
+    if (d->result == Positive || !isCurrent()) {
+        return KHealthCertificate::Partial;
     }
     if (d->signatureState == KHealthCertificate::UnknownSignature) {
         return KHealthCertificate::Partial;
     }
 
-    return d->result == Negative ? KHealthCertificate::Valid : KHealthCertificate::Unknown;
+    return KHealthCertificate::Valid;
+}
+
+bool KTestCertificate::isCurrent() const
+{
+    return d->date.addDays(2) >= QDate::currentDate();
 }
 
 #include "moc_ktestcertificate.moc"
