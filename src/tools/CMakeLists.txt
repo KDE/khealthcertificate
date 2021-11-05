@@ -32,3 +32,5 @@ add_custom_command(
     COMMENT "Updating SHC certificates"
 )
 add_custom_target(update-shc-certs DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/shc/certs/dummy.jwk)
+
+add_custom_target(update-all DEPENDS update-eu-dgc-data update-eu-dgc-certs update-hl7-cvx update-shc-certs)
