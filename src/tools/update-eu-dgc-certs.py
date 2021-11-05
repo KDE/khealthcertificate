@@ -19,7 +19,11 @@ req = requests.get('https://de.dscg.ubirch.com/trustList/DSC/')
 jsonStart = str(req.content).index('{')
 certs = json.loads(str(req.content)[jsonStart:-1])
 
-# write out qrc file
+# remove all existing certs so we clean up revoked/expired ones
+for certFile in os.listdir(arguments.output):
+    if certFile.endswith(".pem"):
+        os.remove(os.path.join(arguments.output, certFile))
+
 pemFileNames = []
 for cert in certs['certificates']:
     pemFileName = base64.b64decode(cert['kid']).hex() + ".pem"
@@ -32,6 +36,8 @@ for cert in certs['certificates']:
     pemFileNames.append(pemFileName)
 
 pemFileNames.sort()
+
+# write out qrc file
 qrcFile = open(os.path.join(arguments.output, 'certs.qrc'), 'w')
 qrcFile.write("""<!--
     SPDX-FileCopyrightText: none
