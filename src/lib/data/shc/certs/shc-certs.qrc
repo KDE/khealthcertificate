@@ -4,6 +4,7 @@
 -->
 <RCC>
   <qresource prefix="/org.kde.khealthcertificate/shc/certs">
+    <file>2XlWk1UQMqavMtLt-aX35q_q9snFtGgdjH4-Y1gfH1M.jwk</file>
     <file>XCqxdhhS7SWlPqihaUXovM_FjU65WeoBFGc_ppent0Q.jwk</file>
   </qresource>
 </RCC>
