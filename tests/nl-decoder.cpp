@@ -59,7 +59,7 @@ static QByteArray decodeByteArray(const uint8_t *&it, std::size_t length)
 
 static void dumpMetaData(const QByteArray &md)
 {
-    int64_t length = 0;
+    long int length = 0;
     int tag = 0, asn1Class = 0;
     auto it = reinterpret_cast<const uint8_t*>(md.constData());
     const auto endIt = it + md.size();
@@ -100,7 +100,7 @@ static const char *field_names[] = {
 
 static void dumpInnerSequence(const uint8_t *&it, const uint8_t *endIt)
 {
-    int64_t length = 0;
+    long int length = 0;
     int tag = 0, asn1Class = 0;
 
     // metadata field
@@ -125,7 +125,7 @@ static void dumpInnerSequence(const uint8_t *&it, const uint8_t *endIt)
 
 static void dumpOuterSequence(const uint8_t *&it, const uint8_t *endIt)
 {
-    int64_t length = 0;
+    long int length = 0;
     int tag = 0, asn1Class = 0;
     while (it != endIt) {
         ASN1_get_object(&it, &length, &tag, &asn1Class, std::distance(it, endIt));
@@ -157,7 +157,7 @@ int main(int argc, char **argv)
     const auto base45Decoded = dutchBase45Decode(in.mid(4));
 //     qDebug() << base45Decoded;
 
-    int64_t length = 0;
+    long int length = 0;
     int tag = 0, asn1Class = 0;
     auto it = reinterpret_cast<const uint8_t*>(base45Decoded.constData());
     ASN1_get_object(&it, &length, &tag, &asn1Class, base45Decoded.size());
