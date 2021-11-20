@@ -3,39 +3,11 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
+#include "../src/lib/nl-coronacheck/nlbase45.cpp"
 #include "../src/lib/openssl/opensslpp_p.h"
 
 #include <QDebug>
 #include <QFile>
-
-// creative variation of Base45...
-static constexpr const char dutchBase45Table[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:";
-
-static uint8_t dutchBase45MapFromChar(char c)
-{
-    const auto it = std::find(std::begin(dutchBase45Table), std::end(dutchBase45Table), c);
-    if (it == std::end(dutchBase45Table)) {
-        qWarning() << "invalid base45 character:" << c;
-        return 0;
-    }
-    return std::distance(std::begin(dutchBase45Table), it);
-}
-
-static QByteArray dutchBase45Decode(const QByteArray &in)
-{
-    openssl::bn_ptr bn(BN_new(), &BN_free);
-    BN_zero(bn.get());
-    for (int i = 0; i < in.size(); ++i) {
-        BN_mul_word(bn.get(), 45);
-        BN_add_word(bn.get(), dutchBase45MapFromChar(in[i]));
-    }
-
-    QByteArray out;
-    out.resize(BN_num_bytes(bn.get()));
-    BN_bn2bin(bn.get(), reinterpret_cast<uint8_t*>(out.data()));
-
-    return out;
-}
 
 // creative string encoding...
 static QByteArray decodeByteArray(const uint8_t *&it, std::size_t length)
@@ -154,7 +126,7 @@ int main(int argc, char **argv)
     }
 
     // "base45" decode
-    const auto base45Decoded = dutchBase45Decode(in.mid(4));
+    const auto base45Decoded = NLBase45::decode(in.begin() + 4, in.end());
 //     qDebug() << base45Decoded;
 
     long int length = 0;

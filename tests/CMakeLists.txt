@@ -5,4 +5,4 @@ add_executable(eu-dgc-decoder eu-dgc-decoder.cpp)
 target_link_libraries(eu-dgc-decoder PRIVATE Qt::Core KF5::Codecs ZLIB::ZLIB)
 
 add_executable(nl-decoder nl-decoder.cpp)
-target_link_libraries(nl-decoder PRIVATE Qt::Core OpenSSL::SSL)
+target_link_libraries(nl-decoder PRIVATE Qt::Core OpenSSL::SSL KHealthCertificate)

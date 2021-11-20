@@ -20,6 +20,8 @@ add_library(KHealthCertificate
     eu-dgc/data/eu-dgc-data.qrc
     eu-dgc/certs/eu-dgc-certs.qrc
 
+    nl-coronacheck/nlbase45.cpp
+
     openssl/verify.cpp
 
     shc/jwkloader.cpp
