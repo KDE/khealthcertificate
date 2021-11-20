@@ -38,7 +38,7 @@ for cert in certs['certificates']:
 pemFileNames.sort()
 
 # write out qrc file
-qrcFile = open(os.path.join(arguments.output, 'certs.qrc'), 'w')
+qrcFile = open(os.path.join(arguments.output, 'eu-dgc-certs.qrc'), 'w')
 qrcFile.write("""<!--
     SPDX-FileCopyrightText: none
     SPDX-License-Identifier: CC0-1.0

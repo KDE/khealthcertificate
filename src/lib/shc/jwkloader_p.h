@@ -6,7 +6,7 @@
 #ifndef JWKLOADER_P_H
 #define JWKLOADER_P_H
 
-#include "opensslpp_p.h"
+#include "openssl/opensslpp_p.h"
 
 class QJsonObject;
 class QString;

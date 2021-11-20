@@ -6,7 +6,7 @@
 #ifndef COSEPARSER_P_H
 #define COSEPARSER_P_H
 
-#include "opensslpp_p.h"
+#include "openssl/opensslpp_p.h"
 
 #include <QByteArray>
 #include <QSslCertificate>

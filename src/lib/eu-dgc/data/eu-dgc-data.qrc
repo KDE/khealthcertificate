@@ -1,0 +1,15 @@
+<!--
+    SPDX-FileCopyrightText: 2021 Volker Krause <vkrause@kde.org>
+    SPDX-License-Identifier: CC0-1.0
+-->
+<RCC>
+  <qresource prefix="/org.kde.khealthcertificate/eu-dgc">
+    <file>ma.json</file>
+    <file>mp.json</file>
+    <file>tcMa.json</file>
+    <file>tcTr.json</file>
+    <file>tcTt.json</file>
+    <file>tg.json</file>
+    <file>vp.json</file>
+  </qresource>
+</RCC>

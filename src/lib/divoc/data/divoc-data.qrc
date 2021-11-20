@@ -1,0 +1,13 @@
+<!--
+    SPDX-FileCopyrightText: 2021 Volker Krause <vkrause@kde.org>
+    SPDX-License-Identifier: CC0-1.0
+-->
+<RCC>
+  <qresource prefix="/org.kde.khealthcertificate/divoc">
+    <file>did-india.pem</file>
+    <file>credentials-v1.json</file>
+    <file>security-v1.json</file>
+    <file>security-v2.json</file>
+    <file>vaccination-v1.json</file>
+  </qresource>
+</RCC>

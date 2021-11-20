@@ -4,9 +4,9 @@
  */
 
 #include "khealthcertificateparser.h"
-#include "divocparser_p.h"
-#include "eudgcparser_p.h"
-#include "shcparser_p.h"
+#include "divoc/divocparser_p.h"
+#include "eu-dgc/eudgcparser_p.h"
+#include "shc/shcparser_p.h"
 
 #include <KZip>
 

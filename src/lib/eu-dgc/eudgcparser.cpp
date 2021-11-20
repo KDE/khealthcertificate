@@ -7,7 +7,7 @@
 #include "cborutils_p.h"
 #include "coseparser_p.h"
 #include "logging.h"
-#include "zlib_p.h"
+#include "zlib/zlib_p.h"
 
 #include <KCodecs>
 
@@ -22,8 +22,8 @@
 
 static bool initResources()
 {
-    Q_INIT_RESOURCE(data);
-    Q_INIT_RESOURCE(certs);
+    Q_INIT_RESOURCE(eu_dgc_data);
+    Q_INIT_RESOURCE(eu_dgc_certs);
     return true;
 }
 

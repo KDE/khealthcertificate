@@ -3,11 +3,11 @@ Upstream-Name: KHealthCertificate
 Upstream-Contact: Volker Krause <vkrause@kde.org>
 Source: https://invent.kde.org/vkrause/khealthcertificate
 
-Files: src/lib/data/eu-dgc/*.json
+Files: src/lib/eu-dgc/data/*.json
 License: Apache-2.0
 Copyright: https://github.com/ehn-dcc-development/ehn-dcc-valuesets
 
-Files: src/lib/data/eu-dgc/certs/*.pem
+Files: src/lib/eu-dgc/certs/*.pem
 License: Apache-2.0
 Copyright: https://github.com/Digitaler-Impfnachweis/covpass-android
 
@@ -19,10 +19,10 @@ Files: autotests/data/shc/*.txt autotests/data/shc/*.jwk
 License: CC-BY-4.0
 Copyright: Computational Health Informatics Program, Boston Children's Hospital, Boston, MA
 
-Files: src/lib/data/shc/*.json
+Files: src/lib/shc/data/*.json
 License: CC0-1.0
 Copyright: https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp
 
-Files: src/lib/data/shc/certs/*.jwk
+Files: src/lib/shc/certs/*.jwk
 License: CC0-1.0
 Copyright: none

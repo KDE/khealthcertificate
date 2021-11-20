@@ -6,7 +6,7 @@
 #include "coseparser_p.h"
 #include "cborutils_p.h"
 #include "logging.h"
-#include "verify_p.h"
+#include "openssl/verify_p.h"
 
 #include <QCborMap>
 #include <QCborStreamReader>

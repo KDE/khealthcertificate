@@ -6,8 +6,8 @@
 #include "jwtparser_p.h"
 #include "jwkloader_p.h"
 #include "logging.h"
-#include "verify_p.h"
-#include "zlib_p.h"
+#include "openssl/verify_p.h"
+#include "zlib/zlib_p.h"
 
 #include <QDebug>
 #include <QJsonDocument>

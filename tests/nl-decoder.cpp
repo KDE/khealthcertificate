@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include "../src/lib/opensslpp_p.h"
+#include "../src/lib/openssl/opensslpp_p.h"
 
 #include <QDebug>
 #include <QFile>

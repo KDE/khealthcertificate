@@ -2,27 +2,34 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 add_library(KHealthCertificate
-    cborutils.cpp
-    coseparser.cpp
-    divocparser.cpp
-    eudgcparser.cpp
-    jsonld.cpp
-    jwkloader.cpp
-    jwsverifier.cpp
-    jwtparser.cpp
     khealthcertificate.cpp
     khealthcertificateparser.cpp
     krecoverycertificate.cpp
     ktestcertificate.cpp
     kvaccinationcertificate.cpp
-    rdf.cpp
-    shcparser.cpp
-    verify.cpp
-    zlib.cpp
 
-    data/data.qrc
-    data/eu-dgc/certs/certs.qrc
-    data/shc/certs/shc-certs.qrc
+    divoc/divocparser.cpp
+    divoc/jsonld.cpp
+    divoc/jwsverifier.cpp
+    divoc/rdf.cpp
+    divoc/data/divoc-data.qrc
+
+    eu-dgc/cborutils.cpp
+    eu-dgc/coseparser.cpp
+    eu-dgc/eudgcparser.cpp
+    eu-dgc/data/eu-dgc-data.qrc
+    eu-dgc/certs/eu-dgc-certs.qrc
+
+    openssl/verify.cpp
+
+    shc/jwkloader.cpp
+    shc/jwtparser.cpp
+    shc/shcparser.cpp
+    shc/data/shc-data.qrc
+    shc/certs/shc-certs.qrc
+    shc/certs/shc-certs-manual.qrc
+
+    zlib/zlib.cpp
 )
 set_target_properties(KHealthCertificate PROPERTIES
     VERSION ${KHEALTHCERTIFICATE_VERSION}

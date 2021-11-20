@@ -6,7 +6,7 @@
 #ifndef JWSVERIFIER_H
 #define JWSVERIFIER_H
 
-#include "opensslpp_p.h"
+#include "openssl/opensslpp_p.h"
 
 #include <QJsonObject>
 
