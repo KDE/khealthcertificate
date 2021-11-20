@@ -33,7 +33,7 @@ private:
     void parseVaccinationCertificate(QCborStreamReader &reader) const;
     void parseTestCertificate(QCborStreamReader &reader) const;
     void parseRecoveryCertificate(QCborStreamReader &reader) const;
-    void parseName(QCborStreamReader &reader) const;
+    QString parseName(QCborStreamReader &reader) const;
 
     mutable std::variant<KVaccinationCertificate, KTestCertificate, KRecoveryCertificate> m_cert;
 };

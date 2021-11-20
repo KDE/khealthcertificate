@@ -145,6 +145,10 @@ void EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
     if (!reader.isMap()) {
         return;
     }
+
+    QString name;
+    QDate dob;
+
     reader.enterContainer();
     while (reader.hasNext()) {
         const auto key = CborUtils::readString(reader);
@@ -155,16 +159,18 @@ void EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
         } else if (key == QLatin1String("r")) {
             parseCertificateArray(reader, &EuDgcParser::parseRecoveryCertificate);
         } else if (key == QLatin1String("nam")) {
-            parseName(reader);
+            name = parseName(reader);
         } else if (key == QLatin1String("dob")) {
-            const auto dob = QDate::fromString(CborUtils::readString(reader), Qt::ISODate);
-            std::visit([&dob](auto &cert) { cert.setDateOfBirth(dob); }, m_cert);
+            dob = QDate::fromString(CborUtils::readString(reader), Qt::ISODate);
         } else {
             qCDebug(Log) << "unhandled element:" << key;
             reader.next();
         }
     }
     reader.leaveContainer();
+
+    std::visit([&name](auto &cert) { cert.setName(name); }, m_cert);
+    std::visit([&dob](auto &cert) { cert.setDateOfBirth(dob); }, m_cert);
 }
 
 void EuDgcParser::parseCertificateArray(QCborStreamReader &reader, void (EuDgcParser::*func)(QCborStreamReader&) const) const
@@ -294,10 +300,10 @@ void EuDgcParser::parseRecoveryCertificate(QCborStreamReader &reader) const
     m_cert = std::move(cert);
 }
 
-void EuDgcParser::parseName(QCborStreamReader &reader) const
+QString EuDgcParser::parseName(QCborStreamReader &reader) const
 {
     if (!reader.isMap()) {
-        return;
+        return {};
     }
     QString fn, gn;
     reader.enterContainer();
@@ -313,6 +319,5 @@ void EuDgcParser::parseName(QCborStreamReader &reader) const
     }
     reader.leaveContainer();
 
-    const QString name = gn + QLatin1Char(' ') + fn;
-    std::visit([&name](auto &cert) { cert.setName(name); }, m_cert);
+    return gn + QLatin1Char(' ') + fn;
 }
