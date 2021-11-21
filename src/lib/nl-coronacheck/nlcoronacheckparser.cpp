@@ -122,8 +122,8 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         return {};
     }
     adisclosed = adisclosed.next();
-    bd += QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
-    const auto birthday = QDate::fromString(bd, QStringLiteral("dM"));
+    bd += QLatin1Char(' ') + QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
+    const auto birthday = QDate::fromString(bd, QStringLiteral("d M"));
 
     if (validFrom.secsTo(validTo) > 48 * 3600) {
         KVaccinationCertificate cert;
