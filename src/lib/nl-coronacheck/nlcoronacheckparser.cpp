@@ -10,6 +10,7 @@
 #include "openssl/asn1_p.h"
 
 #include <KHealthCertificate/KTestCertificate>
+#include <KHealthCertificate/KVaccinationCertificate>
 
 #include <QDebug>
 #include <QVariant>
@@ -124,17 +125,30 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
     bd += QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
     const auto birthday = QDate::fromString(bd, QStringLiteral("dM"));
 
-    KTestCertificate cert;
-    cert.setCountry(QStringLiteral("NL"));
-    cert.setDisease(QStringLiteral("COVID-19"));
-    cert.setResult(KTestCertificate::Negative);
-    cert.setName(name);
-    cert.setDateOfBirth(birthday);
-    cert.setCertificateIssueDate(validFrom);
-    cert.setCertificateExpiryDate(validTo);
-    cert.setCertificateIssuer(QString::fromUtf8(issuer)); // ### temporary
-    cert.setRawData(data);
-    cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
-
-    return cert;
+    if (validFrom.secsTo(validTo) > 48 * 3600) {
+        KVaccinationCertificate cert;
+        cert.setCountry(QStringLiteral("NL"));
+        cert.setDisease(QStringLiteral("COVID-19"));
+        cert.setName(name);
+        cert.setDateOfBirth(birthday);
+        cert.setCertificateIssueDate(validFrom);
+        cert.setCertificateExpiryDate(validTo);
+        cert.setCertificateIssuer(QString::fromUtf8(issuer)); // ### temporary
+        cert.setRawData(data);
+        cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
+        return cert;
+    } else {
+        KTestCertificate cert;
+        cert.setCountry(QStringLiteral("NL"));
+        cert.setDisease(QStringLiteral("COVID-19"));
+        cert.setResult(KTestCertificate::Negative);
+        cert.setName(name);
+        cert.setDateOfBirth(birthday);
+        cert.setCertificateIssueDate(validFrom);
+        cert.setCertificateExpiryDate(validTo);
+        cert.setCertificateIssuer(QString::fromUtf8(issuer)); // ### temporary
+        cert.setRawData(data);
+        cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
+        return cert;
+    }
 }
