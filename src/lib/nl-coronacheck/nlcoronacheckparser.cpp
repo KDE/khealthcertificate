@@ -95,8 +95,10 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
     metadataEntry = metadataEntry.next();
     const auto issuer = metadataEntry.readPrintableString();
 
-    // TODO isSpecimen needs to invalidate the certificate state
+    // isSpecimen invalidate the certificate state
     adisclosed = adisclosed.next();
+    const auto rawIsSpecimen = nlDecodeAsn1ByteArray(adisclosed);
+    const bool isSpecimen = rawIsSpecimen.size() != 1 || rawIsSpecimen[0] != '0';
     adisclosed = adisclosed.next();
 
     // valid time range
@@ -132,7 +134,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
     cert.setCertificateExpiryDate(validTo);
     cert.setCertificateIssuer(QString::fromUtf8(issuer)); // ### temporary
     cert.setRawData(data);
-    cert.setSignatureState(KHealthCertificate::UncheckedSignature); // TODO
+    cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
 
     return cert;
 }
