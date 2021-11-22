@@ -22,6 +22,8 @@ add_library(KHealthCertificate
 
     nl-coronacheck/nlcoronacheckparser.cpp
     nl-coronacheck/nlbase45.cpp
+    nl-coronacheck/irmapublickey.cpp
+    nl-coronacheck/keys/nl-public-keys.qrc
 
     openssl/verify.cpp
 

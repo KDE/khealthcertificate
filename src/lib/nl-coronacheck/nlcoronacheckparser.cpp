@@ -6,6 +6,7 @@
 #include "nlcoronacheckparser_p.h"
 #include "nlbase45_p.h"
 #include "logging.h"
+#include "irmapublickey_p.h"
 
 #include "openssl/asn1_p.h"
 
@@ -94,7 +95,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         return {};
     }
     metadataEntry = metadataEntry.next();
-    const auto issuer = metadataEntry.readPrintableString();
+    const auto issuer = QString::fromUtf8(metadataEntry.readPrintableString());
 
     // isSpecimen invalidate the certificate state
     adisclosed = adisclosed.next();
@@ -125,6 +126,9 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
     bd += QLatin1Char(' ') + QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
     const auto birthday = QDate::fromString(bd, QStringLiteral("d M"));
 
+    // signature
+    const auto publicKey = IrmaPublicKeyLoader::load(issuer);
+
     if (validFrom.secsTo(validTo) > 48 * 3600) {
         KVaccinationCertificate cert;
         cert.setCountry(QStringLiteral("NL"));
@@ -133,7 +137,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         cert.setDateOfBirth(birthday);
         cert.setCertificateIssueDate(validFrom);
         cert.setCertificateExpiryDate(validTo);
-        cert.setCertificateIssuer(QString::fromUtf8(issuer)); // ### temporary
+        cert.setCertificateIssuer(issuer); // ### temporary
         cert.setRawData(data);
         cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
         return cert;
@@ -146,7 +150,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         cert.setDateOfBirth(birthday);
         cert.setCertificateIssueDate(validFrom);
         cert.setCertificateExpiryDate(validTo);
-        cert.setCertificateIssuer(QString::fromUtf8(issuer)); // ### temporary
+        cert.setCertificateIssuer(issuer); // ### temporary
         cert.setRawData(data);
         cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
         return cert;

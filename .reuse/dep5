@@ -30,3 +30,7 @@ Copyright: https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp
 Files: src/lib/shc/certs/*.jwk
 License: CC0-1.0
 Copyright: none
+
+Files: src/lib/nl-coronacheck/keys/*.xml
+License: EUPL-1.2
+Copyright: The Dutch government

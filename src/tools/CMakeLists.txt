@@ -33,4 +33,12 @@ add_custom_command(
 )
 add_custom_target(update-shc-certs DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/shc/certs/dummy.jwk)
 
-add_custom_target(update-all DEPENDS update-eu-dgc-data update-eu-dgc-certs update-hl7-cvx update-shc-certs)
+add_custom_command(
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/data/nl-coronacheck/keys/dummy.xml
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update-nl-public-keys.py --output ${CMAKE_SOURCE_DIR}/src/lib/nl-coronacheck/keys
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Updating NL CoronaCheck public keys"
+)
+add_custom_target(update-nl-public-keys DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/nl-coronacheck/keys/dummy.xml)
+
+add_custom_target(update-all DEPENDS update-eu-dgc-data update-eu-dgc-certs update-hl7-cvx update-shc-certs update-nl-public-keys)

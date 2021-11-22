@@ -1,0 +1,10 @@
+<!--
+    SPDX-FileCopyrightText: none
+    SPDX-License-Identifier: CC0-1.0
+-->
+<RCC>
+  <qresource prefix="/org.kde.khealthcertificate/nl-coronacheck/keys">
+    <file>VWS-CC-1.xml</file>
+    <file>VWS-CC-2.xml</file>
+  </qresource>
+</RCC>
