@@ -138,6 +138,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
 
     // signature
     const auto publicKey = IrmaPublicKeyLoader::load(issuer);
+    IrmaVerifier::verify(proof, publicKey);
 
     if (validFrom.secsTo(validTo) > 48 * 3600) {
         KVaccinationCertificate cert;

@@ -28,4 +28,13 @@ public:
     std::vector <openssl::bn_ptr> ADisclosed;
 };
 
+/** Proof verifier for the Dutch IRMA system.
+ *  @note Only implemented to the point needed for the NL CoronaCheck system.
+ */
+class IrmaVerifier
+{
+public:
+    static bool verify(const IrmaProof &proof, const IrmaPublicKey &pubKey);
+};
+
 #endif // IRMAVERIFIER_H

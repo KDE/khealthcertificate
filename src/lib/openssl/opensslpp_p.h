@@ -21,6 +21,7 @@ namespace openssl {
     using asn1_integer_ptr = std::unique_ptr<ASN1_INTEGER, decltype(&ASN1_INTEGER_free)>;
     using asn1_octet_string_ptr = std::unique_ptr<ASN1_OCTET_STRING, decltype(&ASN1_OCTET_STRING_free)>;
     using asn1_printable_string_ptr = std::unique_ptr<ASN1_PRINTABLESTRING, decltype(&ASN1_PRINTABLESTRING_free)>;
+    using asn1_type_ptr = std::unique_ptr<ASN1_TYPE, decltype(&ASN1_TYPE_free)>;
     using bio_ptr = std::unique_ptr<BIO, decltype(&BIO_free_all)>;
     using bn_ptr = std::unique_ptr<BIGNUM, decltype(&BN_free)>;
     using bn_ctx_ptr = std::unique_ptr<BN_CTX, decltype(&BN_CTX_free)>;
