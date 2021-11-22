@@ -47,6 +47,28 @@ public:
     inline bool hasNext() const { return m_end < m_outerEnd && m_tag != V_ASN1_EOC; }
     inline Object next() const { return Object(end(), m_outerEnd); }
 
+    inline int64_t readInt64() const
+    {
+        if (tag() != V_ASN1_INTEGER) {
+            return {};
+        }
+        auto it = begin();
+        const auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, size()), &ASN1_INTEGER_free);
+        int64_t result = 0;
+        ASN1_INTEGER_get_int64(&result, ai.get());
+        return result;
+    }
+
+    inline openssl::bn_ptr readBignum() const
+    {
+        if (tag() != V_ASN1_INTEGER) {
+            return openssl::bn_ptr(nullptr, &BN_free);
+        }
+        auto it = begin();
+        const auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, size()), &ASN1_INTEGER_free);
+        return openssl::bn_ptr(ASN1_INTEGER_to_BN(ai.get(), nullptr), &BN_free);
+    }
+
     inline QByteArray readOctetString() const
     {
         if (tag() != V_ASN1_OCTET_STRING) {

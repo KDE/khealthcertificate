@@ -23,6 +23,7 @@ namespace openssl {
     using asn1_printable_string_ptr = std::unique_ptr<ASN1_PRINTABLESTRING, decltype(&ASN1_PRINTABLESTRING_free)>;
     using bio_ptr = std::unique_ptr<BIO, decltype(&BIO_free_all)>;
     using bn_ptr = std::unique_ptr<BIGNUM, decltype(&BN_free)>;
+    using bn_ctx_ptr = std::unique_ptr<BN_CTX, decltype(&BN_CTX_free)>;
     using ec_key_ptr = std::unique_ptr<EC_KEY, decltype(&EC_KEY_free)>;
     using ecdsa_sig_ptr = std::unique_ptr<ECDSA_SIG, decltype(&ECDSA_SIG_free)>;
     using evp_pkey_ptr = std::unique_ptr<EVP_PKEY, decltype(&EVP_PKEY_free)>;

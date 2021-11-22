@@ -7,6 +7,7 @@
 #include "nlbase45_p.h"
 #include "logging.h"
 #include "irmapublickey_p.h"
+#include "irmaverifier_p.h"
 
 #include "openssl/asn1_p.h"
 
@@ -48,20 +49,20 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         return {};
     }
 
-    // TODO signature verification
-    // DisclosureTimeSeconds: int
-    // C: int
-    // A: int
-    // EResponse: int
-    // VResponse: int
-    // AResponse: int
-    // ADisclosed: int[]
+    // read outer ASN1 sequence
+    IrmaProof proof;
     auto outer = root.firstChild();
+    proof.disclosureTime = outer.readInt64();
     outer = outer.next();
+    proof.C = outer.readBignum();
     outer = outer.next();
+    proof.A = outer.readBignum();
     outer = outer.next();
+    proof.EResponse = outer.readBignum();
     outer = outer.next();
+    proof.VResponse = outer.readBignum();
     outer = outer.next();
+    proof.AResponses.push_back(outer.readBignum());
     outer = outer.next();
     if (outer.tag() != V_ASN1_SEQUENCE) {
         qCWarning(Log) << "wrong ADisclosed field type" << outer.tagName();
@@ -78,6 +79,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
     // birthDay
     // birthMonth
     auto adisclosed = outer.firstChild();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
 
     // metadata: byte array containing another ASN1 sequence
     // version: OCTET STRING
@@ -99,30 +101,38 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
 
     // isSpecimen invalidate the certificate state
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
     const auto rawIsSpecimen = nlDecodeAsn1ByteArray(adisclosed);
     const bool isSpecimen = rawIsSpecimen.size() != 1 || rawIsSpecimen[0] != '0';
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
 
     // valid time range
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
     const auto validFrom = QDateTime::fromSecsSinceEpoch(nlDecodeAsn1ByteArray(adisclosed).toLongLong());
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
     const auto validTo = validFrom.addSecs(3600 * nlDecodeAsn1ByteArray(adisclosed).toInt());
 
     // name
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
     auto name = QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
     name += QLatin1Char(' ') + QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
 
     // birthday
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
     auto bd = QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
     if (!adisclosed.hasNext()) {
         qCWarning(Log) << "ADisclosed sequence too short";
         return {};
     }
     adisclosed = adisclosed.next();
+    proof.ADisclosed.push_back(adisclosed.readBignum());
     bd += QLatin1Char(' ') + QString::fromUtf8(nlDecodeAsn1ByteArray(adisclosed));
     const auto birthday = QDate::fromString(bd, QStringLiteral("d M"));
 
