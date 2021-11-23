@@ -18,6 +18,12 @@ IrmaPublicKey::IrmaPublicKey()
 {
 }
 
+bool IrmaPublicKey::isValid() const
+{
+    return N && Z && S && std::all_of(R.begin(), R.end(), [](const auto &r) { return r.get() != nullptr; });
+}
+
+
 IrmaPublicKey IrmaPublicKeyLoader::load(const QString &keyId)
 {
     IrmaPublicKey pk;

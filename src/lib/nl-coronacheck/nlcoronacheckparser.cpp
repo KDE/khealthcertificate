@@ -21,6 +21,10 @@ static QByteArray nlDecodeAsn1ByteArray(const ASN1::Object &obj)
 {
     auto it = obj.begin();
     auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, obj.size()), &ASN1_INTEGER_free);
+    if (!ai) {
+        qWarning() << "invalid ASN.1 structure";
+        return {};
+    }
     auto bn = openssl::bn_ptr(BN_new(), &BN_free);
     BN_zero(bn.get());
     for (auto i = 0; i < ai->length; ++i) {
@@ -138,7 +142,9 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
 
     // signature
     const auto publicKey = IrmaPublicKeyLoader::load(issuer);
-    IrmaVerifier::verify(proof, publicKey);
+    if (publicKey.isValid()) {
+        qDebug() << IrmaVerifier::verify(proof, publicKey);
+    }
 
     if (validFrom.secsTo(validTo) > 48 * 3600) {
         KVaccinationCertificate cert;

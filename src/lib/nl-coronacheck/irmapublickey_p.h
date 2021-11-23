@@ -20,6 +20,8 @@ class IrmaPublicKey
 public:
     explicit IrmaPublicKey();
 
+    bool isValid() const;
+
     openssl::bn_ptr N;
     openssl::bn_ptr Z;
     openssl::bn_ptr S;
