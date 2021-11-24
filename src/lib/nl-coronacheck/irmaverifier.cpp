@@ -23,6 +23,24 @@ IrmaProof::IrmaProof()
 }
 
 
+// see https://github.com/privacybydesign/gabi/blob/75a6590e506ce8e35b5f4f9f9823ba30e88e74a5/proofs.go#L171
+static bool checkResponseSize(const IrmaProof &proof, const IrmaPublicKey &pubKey)
+{
+    if (std::any_of(proof.AResponses.begin(), proof.AResponses.end(), [&pubKey](const auto &ares) {
+        return BN_num_bits(ares.get()) > pubKey.LmCommit();
+    })) {
+        qDebug() << "AResponse entry too large";
+        return false;
+    }
+
+    if (BN_num_bits(proof.EResponse.get()) > pubKey.LeCommit()) {
+        qDebug() << "EResponse too large";
+        return false;
+    }
+
+    return true;
+}
+
 // see https://github.com/minvws/nl-covid19-coronacheck-idemix/blob/main/common/common.go#L132
 // SHA-256 of the string representation of @p timestampe, cut of to a defined maximum length
 static openssl::bn_ptr calculateTimeBasedChallenge(int64_t timestamp)
@@ -123,6 +141,10 @@ static QByteArray asn1EncodeSequence(const std::vector<const BIGNUM*> &numbers)
 // see https://github.com/privacybydesign/gabi/blob/master/prooflist.go#L77
 bool IrmaVerifier::verify(const IrmaProof &proof, const IrmaPublicKey &pubKey)
 {
+    if (!checkResponseSize(proof, pubKey)) {
+        return false;
+    }
+
     openssl::bn_ptr context(BN_new(), &BN_free);
     BN_one(context.get());
 
