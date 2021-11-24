@@ -22,6 +22,12 @@ IrmaProof::IrmaProof()
 {
 }
 
+bool IrmaProof::isNull() const
+{
+    return !C || !A || !EResponse || !VResponse
+        || std::any_of(AResponses.begin(), AResponses.end(), [](const auto &n) -> bool { return !n; })
+        || std::any_of(ADisclosed.begin(), ADisclosed.end(), [](const auto &n) -> bool { return !n; });
+}
 
 // see https://github.com/privacybydesign/gabi/blob/75a6590e506ce8e35b5f4f9f9823ba30e88e74a5/proofs.go#L171
 static bool checkResponseSize(const IrmaProof &proof, const IrmaPublicKey &pubKey)

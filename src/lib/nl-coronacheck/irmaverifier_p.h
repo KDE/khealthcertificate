@@ -18,6 +18,7 @@ class IrmaProof
 {
 public:
     explicit IrmaProof();
+    bool isNull() const;
 
     int64_t disclosureTime;
     openssl::bn_ptr C;

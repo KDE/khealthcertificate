@@ -137,6 +137,9 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
     const auto birthday = QDate::fromString(bd, QStringLiteral("d M"));
 
     // signature
+    if (proof.isNull()) {
+        return {};
+    }
     const auto publicKey = IrmaPublicKeyLoader::load(issuer);
     if (publicKey.isValid()) {
         qDebug() << IrmaVerifier::verify(proof, publicKey);
