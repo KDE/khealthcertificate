@@ -14,29 +14,20 @@ arguments = parser.parse_args()
 
 os.makedirs(arguments.output, exist_ok = True)
 
-publicKeyUrls = [
-    'https://raw.githubusercontent.com/minvws/nl-covid19-coronacheck-mobile-core/main/testdata/public_keys.json'
-]
-excludedKeyIds = [
-    'testPk',
-    'TST-KEY-01',
-    'VWS-TEST-0'
-]
+publicKeyUrl = 'https://verifier-api.coronacheck.nl/v6/verifier/public_keys'
 
 publicKeyFileNames = []
-for publicKeyUrl in publicKeyUrls:
-    req = requests.get(publicKeyUrl)
-    pks = json.loads(req.text)
-    for keyId,key in pks['nl_keys'].items():
-        if keyId in excludedKeyIds:
-            continue
-
-        pkFileName = keyId + '.xml'
-        pkPath = os.path.join(arguments.output, pkFileName)
-        pkFile = open(pkPath, 'wb')
-        pkFile.write(base64.b64decode(key['public_key']))
-        pkFile.close()
-        publicKeyFileNames.append(pkFileName)
+req = requests.get(publicKeyUrl)
+# TODO verify signature
+envelope = json.loads(req.text)
+pks = json.loads(base64.b64decode(envelope['payload']))
+for key in pks['cl_keys']:
+    pkFileName = key['id'] + '.xml'
+    pkPath = os.path.join(arguments.output, pkFileName)
+    pkFile = open(pkPath, 'wb')
+    pkFile.write(base64.b64decode(key['public_key']))
+    pkFile.close()
+    publicKeyFileNames.append(pkFileName)
 
 qrcFile = open(os.path.join(arguments.output, 'nl-public-keys.qrc'), 'w')
 qrcFile.write("""<!--
