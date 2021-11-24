@@ -10,6 +10,7 @@
 #include "irmaverifier_p.h"
 
 #include "openssl/asn1_p.h"
+#include "openssl/bignum_p.h"
 
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
@@ -32,12 +33,7 @@ static QByteArray nlDecodeAsn1ByteArray(const ASN1::Object &obj)
         BN_add_word(bn.get(), ai->data[i]);
     }
     BN_div_word(bn.get(), 2);
-
-    QByteArray s;
-    s.resize(BN_num_bytes(bn.get()));
-    BN_bn2bin(bn.get(), reinterpret_cast<uint8_t*>(s.data()));
-
-    return s;
+    return Bignum::toByteArray(bn);
 }
 
 QVariant NLCoronaCheckParser::parse(const QByteArray &data)

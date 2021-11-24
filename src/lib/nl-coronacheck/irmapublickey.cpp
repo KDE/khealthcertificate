@@ -5,6 +5,8 @@
 
 #include "irmapublickey_p.h"
 
+#include "openssl/bignum_p.h"
+
 #include <QDebug>
 #include <QFile>
 #include <QXmlStreamReader>
@@ -38,28 +40,20 @@ IrmaPublicKey IrmaPublicKeyLoader::load(const QString &keyId)
     while (!reader.atEnd() && !reader.hasError()) {
         reader.readNextStartElement();
         if (reader.name() == QLatin1String("n")) {
-            BIGNUM *bn = nullptr;
-            BN_dec2bn(&bn, reader.readElementText().toUtf8().constData());
-            pk.N.reset(bn);
+            pk.N = Bignum::fromDecimalString(reader.readElementText());
         }
         else if (reader.name() == QLatin1String("Z")) {
-            BIGNUM *bn = nullptr;
-            BN_dec2bn(&bn, reader.readElementText().toUtf8().constData());
-            pk.Z.reset(bn);
+            pk.Z = Bignum::fromDecimalString(reader.readElementText());
         }
         else if (reader.name() == QLatin1String("S")) {
-            BIGNUM *bn = nullptr;
-            BN_dec2bn(&bn, reader.readElementText().toUtf8().constData());
-            pk.S.reset(bn);
+            pk.S = Bignum::fromDecimalString(reader.readElementText());
         }
         else if (reader.name() == QLatin1String("Bases")) {
             const auto num = reader.attributes().value(QLatin1String("num")).toInt();
             pk.R.reserve(num);
         }
         else if (reader.name().startsWith(QLatin1String("Base_"))) {
-            BIGNUM *bn = nullptr;
-            BN_dec2bn(&bn, reader.readElementText().toUtf8().constData());
-            pk.R.push_back(openssl::bn_ptr(bn, &BN_free));
+            pk.R.push_back(Bignum::fromDecimalString(reader.readElementText()));
         }
     }
 

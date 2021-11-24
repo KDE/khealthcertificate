@@ -5,6 +5,7 @@
 
 #include "nlbase45_p.h"
 
+#include "openssl/bignum_p.h"
 #include "openssl/opensslpp_p.h"
 
 #include <QByteArray>
@@ -36,10 +37,5 @@ QByteArray NLBase45::decode(const char *begin, const char *end)
         }
         BN_add_word(bn.get(), v);
     }
-
-    QByteArray out;
-    out.resize(BN_num_bytes(bn.get()));
-    BN_bn2bin(bn.get(), reinterpret_cast<uint8_t*>(out.data()));
-
-    return out;
+    return Bignum::toByteArray(bn);
 }

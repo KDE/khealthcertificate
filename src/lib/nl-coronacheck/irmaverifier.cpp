@@ -6,6 +6,8 @@
 #include "irmaverifier_p.h"
 #include "irmapublickey_p.h"
 
+#include "openssl/bignum_p.h"
+
 #include <QCryptographicHash>
 #include <QDebug>
 
@@ -27,23 +29,14 @@ static openssl::bn_ptr calculateTimeBasedChallenge(int64_t timestamp)
 {
     auto h = QCryptographicHash::hash(QByteArray::number((qlonglong)timestamp), QCryptographicHash::Sha256);
     h.truncate(16);
-
-    openssl::bn_ptr res(BN_new(), &BN_free);
-    BN_bin2bn(reinterpret_cast<const uint8_t*>(h.constData()), h.size(), res.get());
-    return res;
+    return Bignum::fromByteArray(h);
 }
 
 // SHA-256 on the binary data of the input number, returned as a number
 static openssl::bn_ptr bignum_sha256(const openssl::bn_ptr &in)
 {
-    QByteArray s;
-    s.resize(BN_num_bytes(in.get()));
-    BN_bn2bin(in.get(), reinterpret_cast<uint8_t*>(s.data()));
-
-    const auto h = QCryptographicHash::hash(s, QCryptographicHash::Sha256);
-    openssl::bn_ptr res(BN_new(), &BN_free);
-    BN_bin2bn(reinterpret_cast<const uint8_t*>(h.constData()), h.size(), res.get());
-    return res;
+    const auto h = QCryptographicHash::hash(Bignum::toByteArray(in), QCryptographicHash::Sha256);
+    return Bignum::fromByteArray(h);
 }
 
 // see https://github.com/privacybydesign/gabi/blob/master/proofs.go#L194
@@ -143,8 +136,6 @@ bool IrmaVerifier::verify(const IrmaProof &proof, const IrmaPublicKey &pubKey)
     const auto encoded = asn1EncodeSequence({numElements.get(), context.get(), proof.A.get(), Z.get(), timeBasedChallenge.get()});
     const auto challenge = QCryptographicHash::hash(encoded, QCryptographicHash::Sha256);
 
-    QByteArray proofC;
-    proofC.resize(BN_num_bytes(proof.C.get()));
-    BN_bn2bin(proof.C.get(), reinterpret_cast<uint8_t*>(proofC.data()));
+    const auto proofC = Bignum::toByteArray(proof.C);
     return proofC == challenge;
 }
