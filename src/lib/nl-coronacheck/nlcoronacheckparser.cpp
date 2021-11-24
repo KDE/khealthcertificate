@@ -141,8 +141,10 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         return {};
     }
     const auto publicKey = IrmaPublicKeyLoader::load(issuer);
+    auto sigState = KHealthCertificate::UnknownSignature;
     if (publicKey.isValid()) {
-        qDebug() << IrmaVerifier::verify(proof, publicKey);
+        const auto sigValid = IrmaVerifier::verify(proof, publicKey);
+        sigState = sigValid ? KHealthCertificate::ValidSignature : KHealthCertificate::InvalidSignature;
     }
 
     if (validFrom.secsTo(validTo) > 48 * 3600) {
@@ -153,9 +155,8 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         cert.setDateOfBirth(birthday);
         cert.setCertificateIssueDate(validFrom);
         cert.setCertificateExpiryDate(validTo);
-        cert.setCertificateIssuer(issuer); // ### temporary
         cert.setRawData(data);
-        cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
+        cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : sigState);
         return cert;
     } else {
         KTestCertificate cert;
@@ -166,9 +167,8 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         cert.setDateOfBirth(birthday);
         cert.setCertificateIssueDate(validFrom);
         cert.setCertificateExpiryDate(validTo);
-        cert.setCertificateIssuer(issuer); // ### temporary
         cert.setRawData(data);
-        cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : KHealthCertificate::UncheckedSignature); // TODO
+        cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : sigState);
         return cert;
     }
 }
