@@ -22,6 +22,14 @@ public:
 
     bool isValid() const;
 
+    int LePrime() const;
+    int Lh() const;
+    int Lm() const;
+    int Lstatzk() const;
+    int Le() const;
+    int LeCommit() const;
+    int LmCommit() const;
+
     openssl::bn_ptr N;
     openssl::bn_ptr Z;
     openssl::bn_ptr S;

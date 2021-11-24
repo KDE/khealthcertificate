@@ -46,7 +46,7 @@ static openssl::bn_ptr reconstructZ(const IrmaProof &proof, const IrmaPublicKey 
 
     openssl::bn_ptr numerator(BN_new(), &BN_free), tmp(BN_new(), &BN_free);
     BN_one(numerator.get());
-    BN_lshift(tmp.get(), numerator.get(), 596); // "Le-1"
+    BN_lshift(tmp.get(), numerator.get(), pubKey.Le() - 1);
     std::swap(tmp, numerator);
 
     BN_mod_exp(tmp.get(), proof.A.get(), numerator.get(), pubKey.N.get(), bnCtx.get());
@@ -54,7 +54,7 @@ static openssl::bn_ptr reconstructZ(const IrmaProof &proof, const IrmaPublicKey 
 
     for (std::size_t i = 0; i < proof.ADisclosed.size(); ++i) {
         openssl::bn_ptr exp(nullptr, &BN_free);
-        if (BN_num_bits(proof.ADisclosed[i].get()) > 256) { // "Lm"
+        if (BN_num_bits(proof.ADisclosed[i].get()) > pubKey.Lm()) {
             exp = bignum_sha256(proof.ADisclosed[i]);
         }
 
