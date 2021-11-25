@@ -15,6 +15,7 @@
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
 
+#include <QCryptographicHash>
 #include <QDebug>
 #include <QVariant>
 
@@ -147,6 +148,9 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         sigState = sigValid ? KHealthCertificate::ValidSignature : KHealthCertificate::InvalidSignature;
     }
 
+    // proof identifier (used in the revocation list)
+    const auto proofId = QCryptographicHash::hash(Bignum::toByteArray(proof.C), QCryptographicHash::Sha256).left(16).toBase64();
+
     if (validFrom.secsTo(validTo) > 48 * 3600) {
         KVaccinationCertificate cert;
         cert.setCountry(QStringLiteral("NL"));
@@ -157,6 +161,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         cert.setCertificateExpiryDate(validTo);
         cert.setRawData(data);
         cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : sigState);
+        cert.setCertificateId(QString::fromLatin1(proofId));
         return cert;
     } else {
         KTestCertificate cert;
@@ -169,6 +174,7 @@ QVariant NLCoronaCheckParser::parse(const QByteArray &data)
         cert.setCertificateExpiryDate(validTo);
         cert.setRawData(data);
         cert.setSignatureState(isSpecimen ? KHealthCertificate::InvalidSignature : sigState);
+        cert.setCertificateId(QString::fromLatin1(proofId));
         return cert;
     }
 }
