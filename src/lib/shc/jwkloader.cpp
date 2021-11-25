@@ -6,6 +6,8 @@
 #include "jwkloader_p.h"
 #include "logging.h"
 
+#include "openssl/bignum_p.h"
+
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonObject>
@@ -44,10 +46,10 @@ openssl::evp_pkey_ptr JwkLoader::loadPublicKey(const QJsonObject &keyObj)
         }
 
         const auto xData = QByteArray::fromBase64(keyObj.value(QLatin1String("x")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
-        const auto x = BN_bin2bn(reinterpret_cast<const uint8_t*>(xData.constData()), xData.size(), nullptr);
+        const auto x = Bignum::fromByteArray(xData);
         const auto yData = QByteArray::fromBase64(keyObj.value(QLatin1String("y")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
-        const auto y = BN_bin2bn(reinterpret_cast<const uint8_t*>(yData.constData()), xData.size(), nullptr);
-        EC_KEY_set_public_key_affine_coordinates(ecKey.get(), x, y);
+        const auto y = Bignum::fromByteArray(yData);
+        EC_KEY_set_public_key_affine_coordinates(ecKey.get(), x.get(), y.get());
 
         evp.reset(EVP_PKEY_new());
         EVP_PKEY_assign_EC_KEY(evp.get(), ecKey.release());

@@ -6,6 +6,8 @@
 #include "verify_p.h"
 #include "logging.h"
 
+#include "openssl/bignum_p.h"
+
 #include <openssl/err.h>
 
 bool Verify::verifyECDSA(
@@ -30,12 +32,12 @@ bool Verify::verifyECDSA(
     }
 
     // unpack the signature field
-    const auto r = BN_bin2bn(reinterpret_cast<const uint8_t*>(signature), signatureSize / 2, nullptr);
-    const auto s = BN_bin2bn(reinterpret_cast<const uint8_t*>(signature + signatureSize / 2) , signatureSize / 2, nullptr);
+    auto r = Bignum::fromByteArray(signature, signatureSize / 2);
+    auto s = Bignum::fromByteArray(signature + signatureSize / 2, signatureSize / 2);
 
     // verify
     const openssl::ecdsa_sig_ptr sig(ECDSA_SIG_new(), &ECDSA_SIG_free);
-    ECDSA_SIG_set0(sig.get(), r, s);
+    ECDSA_SIG_set0(sig.get(), r.release(), s.release());
     const auto verifyResult = ECDSA_do_verify(digestData, digestSize, sig.get(), ecKey.get());
     switch (verifyResult) {
         case -1: // technical issue

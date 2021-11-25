@@ -16,9 +16,13 @@ class Bignum
 {
 public:
     /** @see BN_bin2bn */
+    static inline openssl::bn_ptr fromByteArray(const char *bin, std::size_t size)
+    {
+        return openssl::bn_ptr(BN_bin2bn(reinterpret_cast<const uint8_t*>(bin), size, nullptr), &BN_free);
+    }
     static inline openssl::bn_ptr fromByteArray(const QByteArray &bin)
     {
-        return openssl::bn_ptr(BN_bin2bn(reinterpret_cast<const uint8_t*>(bin.constData()), bin.size(), nullptr), &BN_free);
+        return fromByteArray(bin.constData(), bin.size());
     }
 
     /** @see BN_bn2bin */
