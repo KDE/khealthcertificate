@@ -12,9 +12,11 @@ class QVariant;
 /** Parser for DIVOC certificates, such as used in India.
  *  @see https://divoc.egov.org.in/
  */
-namespace DivocParser
+class DivocParser
 {
-    QVariant parse(const QByteArray &data);
-}
+public:
+    static void init();
+    static QVariant parse(const QByteArray &data);
+};
 
 #endif // DIVOCPARSER_P_H

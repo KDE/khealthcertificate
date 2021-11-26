@@ -19,20 +19,14 @@
 #include <QLocale>
 #include <QVariant>
 
+EuDgcParser::EuDgcParser() = default;
+EuDgcParser::~EuDgcParser() = default;
 
-static bool initResources()
+void EuDgcParser::init()
 {
     Q_INIT_RESOURCE(eu_dgc_data);
     Q_INIT_RESOURCE(eu_dgc_certs);
-    return true;
 }
-
-EuDgcParser::EuDgcParser()
-{
-    [[maybe_unused]] static bool s_init = initResources();
-}
-
-EuDgcParser::~EuDgcParser() = default;
 
 static QString translateValue(const QString &type, const QString &key)
 {

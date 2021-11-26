@@ -13,6 +13,7 @@ class QVariant;
 class NLCoronaCheckParser
 {
 public:
+    static void init();
     static QVariant parse(const QByteArray &data);
 };
 

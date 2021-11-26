@@ -26,6 +26,8 @@ public:
     ~EuDgcParser();
     QVariant parse(const QByteArray &data) const;
 
+    static void init();
+
 private:
     void parseCertificate(QCborStreamReader &reader) const;
     void parseCertificateV1(QCborStreamReader &reader) const;

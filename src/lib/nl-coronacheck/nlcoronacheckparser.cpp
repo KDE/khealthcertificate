@@ -19,6 +19,11 @@
 #include <QDebug>
 #include <QVariant>
 
+void NLCoronaCheckParser::init()
+{
+    Q_INIT_RESOURCE(nl_public_keys);
+}
+
 static QByteArray nlDecodeAsn1ByteArray(const ASN1::Object &obj)
 {
     auto it = obj.begin();

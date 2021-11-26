@@ -14,6 +14,11 @@
 #include <QJsonObject>
 #include <QVariant>
 
+void DivocParser::init()
+{
+    Q_INIT_RESOURCE(divoc_data);
+}
+
 QVariant DivocParser::parse(const QByteArray &data)
 {
     QJsonParseError error;

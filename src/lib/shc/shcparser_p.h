@@ -18,6 +18,7 @@ class QVariant;
 class ShcParser
 {
 public:
+    static void init();
     static QVariant parse(const QByteArray &data);
 
 private:

@@ -16,6 +16,13 @@
 #include <QJsonObject>
 #include <QVariant>
 
+void ShcParser::init()
+{
+    Q_INIT_RESOURCE(shc_certs);
+    Q_INIT_RESOURCE(shc_certs_manual);
+    Q_INIT_RESOURCE(shc_data);
+}
+
 QVariant ShcParser::parse(const QByteArray &data)
 {
     if (!data.startsWith("shc:/")) {

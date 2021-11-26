@@ -15,8 +15,20 @@
 #include <QByteArray>
 #include <QVariant>
 
+static bool initResources()
+{
+    DivocParser::init();
+    EuDgcParser::init();
+    NLCoronaCheckParser::init();
+    ShcParser::init();
+
+    return true;
+}
+
 QVariant KHealthCertificateParser::parse(const QByteArray &data)
 {
+    [[maybe_unused]] static bool s_init = initResources();
+
     EuDgcParser eudcg;
     auto result = eudcg.parse(data);
     if (!result.isNull()) {
