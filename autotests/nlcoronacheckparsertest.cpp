@@ -48,6 +48,8 @@ private Q_SLOTS:
         QCOMPARE(t.validationState(), KHealthCertificate::Invalid);
         QCOMPARE(t.certificateId(), QLatin1String("6MkhqwdOJa40zJUr8RtM+Q=="));
         QCOMPARE(t.rawData(), readFile(u"nl-coronacheck/sample-one-day.txt"));
+
+        QCOMPARE(KHealthCertificate::relevantUntil(t), QDateTime({2021, 7, 29}, {13, 0}, QTimeZone("Europe/Amsterdam")));
     }
 };
 

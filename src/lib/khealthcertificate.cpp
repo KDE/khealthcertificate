@@ -23,6 +23,12 @@ QDateTime KHealthCertificate::relevantUntil(const QVariant &certificate)
 
     if (certificate.userType() == qMetaTypeId<KTestCertificate>()) {
         const auto test = certificate.value<KTestCertificate>();
+        if (test.certificateExpiryDate().isValid() && test.date().isValid()) {
+            return std::min(test.certificateExpiryDate(), QDateTime(test.date().addDays(2), {0, 0}));
+        }
+        if (test.certificateExpiryDate().isValid()) {
+            return test.certificateExpiryDate();
+        }
         return QDateTime(test.date().addDays(2), {0, 0});
     }
 
