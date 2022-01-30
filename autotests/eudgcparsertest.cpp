@@ -55,8 +55,8 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
-        QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
-        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::FullyVaccinated);
+        QCOMPARE(vac.validationState(), KHealthCertificate::Invalid); // expired by now
+        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Invalid); // expired by now
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination.txt"));
         QCOMPARE(KHealthCertificate::relevantUntil(vac), QDateTime({2022, 1, 28}, {7, 47, 53}));
 
@@ -78,8 +78,8 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
         QCOMPARE(vac.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
-        QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
-        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::PartiallyVaccinated);
+        QCOMPARE(vac.validationState(), KHealthCertificate::Invalid); // expired by now
+        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Invalid); // expired by now
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/partial-vaccination.txt"));
 
         // Swiss certificates use another signature algorithm
@@ -112,7 +112,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
         QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
-        QCOMPARE(test.validationState(), KHealthCertificate::Partial); // expired
+        QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired
         QCOMPARE(test.isCurrent(), false);
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/negative-test.txt"));
         QCOMPARE(KHealthCertificate::relevantUntil(test), QDateTime({2021, 6, 1}, {}));
@@ -147,7 +147,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateIssueDate(), QDateTime({2021, 5, 29}, {19, 21, 13}));
         QCOMPARE(test.certificateExpiryDate(), QDateTime({2022, 1, 28}, {7, 47, 53}));
         QCOMPARE(test.signatureState(), KHealthCertificate::ValidSignature);
-        QCOMPARE(test.validationState(), KHealthCertificate::Unknown); // not implemented yet
+        QCOMPARE(test.validationState(), KHealthCertificate::Invalid); // expired by now
         QCOMPARE(test.rawData(), readFile(u"eu-dgc/recovery.txt"));
         QCOMPARE(KHealthCertificate::relevantUntil(test), QDateTime({2021, 6, 15}, {}));
     }
