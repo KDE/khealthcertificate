@@ -8,6 +8,8 @@
 
 #include <QString>
 
+#include <vector>
+
 class QIODevice;
 
 /** Universal RDF Dataset Normalization Algorithm 2015 (URDNA2015)
