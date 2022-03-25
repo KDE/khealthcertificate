@@ -83,7 +83,7 @@ int main(int argc, char **argv)
     const auto in = f.readAll();
 
     // strip prefix
-    if (!in.startsWith("HC1:")) {
+    if (!in.startsWith("HC1:") && !in.startsWith("DK3:")) {
         return 1;
     }
 

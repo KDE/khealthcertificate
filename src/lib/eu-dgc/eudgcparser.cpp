@@ -19,6 +19,17 @@
 #include <QLocale>
 #include <QVariant>
 
+// std::variant visitor skipping std::monostate alternative
+template <typename T>
+struct visitor {
+    visitor(T _f) : func(_f) {}
+    void operator()(std::monostate) {};
+    template <typename Arg>
+    void operator()(Arg &a) { func(a); }
+
+    T func;
+};
+
 EuDgcParser::EuDgcParser() = default;
 EuDgcParser::~EuDgcParser() = default;
 
@@ -51,7 +62,7 @@ static QString translateValue(const QString &type, const QString &key)
 
 QVariant EuDgcParser::parse(const QByteArray &data) const
 {
-    if (!data.startsWith("HC1:")) {
+    if (!data.startsWith("HC1:") && !data.startsWith("DK3:")) {
         return {};
     }
 
@@ -94,8 +105,8 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
         }
     }
     reader.leaveContainer();
-    std::visit([&issueDt](auto &cert) { cert.setCertificateIssueDate(issueDt); }, m_cert);
-    std::visit([&expiryDt](auto &cert) { cert.setCertificateExpiryDate(expiryDt); }, m_cert);
+    std::visit(visitor([&issueDt](auto &cert) { cert.setCertificateIssueDate(issueDt); }), m_cert);
+    std::visit(visitor([&expiryDt](auto &cert) { cert.setCertificateExpiryDate(expiryDt); }), m_cert);
 
     // signature validation
     auto sigState = cose.signatureState();
@@ -106,16 +117,16 @@ QVariant EuDgcParser::parse(const QByteArray &data) const
     // (seems unused so far?)
     switch (sigState) {
         case CoseParser::InvalidSignature:
-            std::visit([](auto &cert) { cert.setSignatureState(KHealthCertificate::InvalidSignature); }, m_cert);
+            std::visit(visitor([](auto &cert) { cert.setSignatureState(KHealthCertificate::InvalidSignature); }), m_cert);
             break;
         case CoseParser::ValidSignature:
-            std::visit([](auto &cert) { cert.setSignatureState(KHealthCertificate::ValidSignature); }, m_cert);
+            std::visit(visitor([](auto &cert) { cert.setSignatureState(KHealthCertificate::ValidSignature); }), m_cert);
             break;
         default:
-            std::visit([](auto &cert) { cert.setSignatureState(KHealthCertificate::UnknownSignature); }, m_cert);
+            std::visit(visitor([](auto &cert) { cert.setSignatureState(KHealthCertificate::UnknownSignature); }), m_cert);
             break;
     }
-    std::visit([&data](auto &cert) { cert.setRawData(data); }, m_cert);
+    std::visit(visitor([&data](auto &cert) { cert.setRawData(data); }), m_cert);
     return std::visit([](const auto &cert) { return QVariant::fromValue(cert); }, m_cert);
 }
 
@@ -163,13 +174,13 @@ void EuDgcParser::parseCertificateV1(QCborStreamReader &reader) const
     }
     reader.leaveContainer();
 
-    std::visit([&name](auto &cert) { cert.setName(name); }, m_cert);
-    std::visit([&dob](auto &cert) { cert.setDateOfBirth(dob); }, m_cert);
+    std::visit(visitor([&name](auto &cert) { cert.setName(name); }), m_cert);
+    std::visit(visitor([&dob](auto &cert) { cert.setDateOfBirth(dob); }), m_cert);
 }
 
 void EuDgcParser::parseCertificateArray(QCborStreamReader &reader, void (EuDgcParser::*func)(QCborStreamReader&) const) const
 {
-    if (!reader.isArray()) {
+    if (!reader.isArray() || !std::holds_alternative<std::monostate>(m_cert)) {
         return;
     }
     reader.enterContainer();

@@ -37,7 +37,7 @@ private:
     void parseRecoveryCertificate(QCborStreamReader &reader) const;
     QString parseName(QCborStreamReader &reader) const;
 
-    mutable std::variant<KVaccinationCertificate, KTestCertificate, KRecoveryCertificate> m_cert;
+    mutable std::variant<std::monostate, KVaccinationCertificate, KTestCertificate, KRecoveryCertificate> m_cert;
 };
 
 #endif // EUDGCPARSER_P_H
