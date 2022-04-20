@@ -48,7 +48,7 @@ if (BUILD_TESTING)
     add_subdirectory(tests)
 endif()
 
-set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/KHealthCertificate")
+set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KHealthCertificate")
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/KHealthCertificateConfig.cmake.in"
     "${CMAKE_CURRENT_BINARY_DIR}/KHealthCertificateConfig.cmake"

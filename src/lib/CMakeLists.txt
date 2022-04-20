@@ -74,7 +74,7 @@ ecm_generate_headers(KHealthCertificate_FORWARDING_HEADERS
     REQUIRED_HEADERS KHealthCertificate_HEADERS
 )
 
-install(TARGETS KHealthCertificate EXPORT KHealthCertificateTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KHealthCertificate EXPORT KHealthCertificateTargets ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES
     ${KHealthCertificate_FORWARDING_HEADERS}
     DESTINATION ${KDE_INSTALL_INCLUDEDIR}/KHealthCertificate
