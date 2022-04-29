@@ -10,7 +10,7 @@ set (RELEASE_SERVICE_VERSION_MICRO "00")
 set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 project(KHealthCertificate VERSION ${RELEASE_SERVICE_VERSION})
 
-set(KF5_MIN_VERSION 5.85) # for KDECompilerSettings
+set(KF5_MIN_VERSION 5.90) # for KDECompilerSettings
 find_package(ECM ${KF5_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
@@ -33,7 +33,7 @@ ecm_setup_version(PROJECT
 
 # build-time dependencies
 set(QT_MIN_VERSION 5.15)
-find_package(Qt5 ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Network Qml Test)
+find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Network Qml Test)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs)
 find_package(OpenSSL)
 set_package_properties("OpenSSL" PROPERTIES TYPE REQUIRED PURPOSE "Needed for signature verification.")
