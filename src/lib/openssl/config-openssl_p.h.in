@@ -1,0 +1,11 @@
+/*
+ * SPDX-FileCopyrightText: 2021 Volker Krause <vkrause@kde.org>
+ * SPDX-License-Identifier: LGPL-2.0-or-later
+ */
+
+#ifndef KHEALTHCERTIFICATE_CONFIG_OPENSSL_P_H
+#define KHEALTHCERTIFICATE_CONFIG_OPENSSL_P_H
+
+#cmakedefine01 HAVE_LIBRESSL
+
+#endif

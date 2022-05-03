@@ -6,9 +6,11 @@
 #ifndef KHEALTHCERTIFICATE_ASN1_P_H
 #define KHEALTHCERTIFICATE_ASN1_P_H
 
+#include "config-openssl_p.h"
 #include "opensslpp_p.h"
 
 #include <QByteArray>
+#include <QtEndian>
 
 #include <openssl/asn1.h>
 
@@ -55,8 +57,17 @@ public:
         auto it = begin();
         const auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, size()), &ASN1_INTEGER_free);
         int64_t result = 0;
+#if HAVE_LIBRESSL
+        const auto bn = readBignum();
+        if (BN_num_bytes(bn.get()) > (int)sizeof(result)) {
+            return {};
+        }
+        BN_bn2binpad(bn.get(), reinterpret_cast<uint8_t*>(&result), sizeof(result));
+        return qFromBigEndian((qint64)result);
+#else
         ASN1_INTEGER_get_int64(&result, ai.get());
         return result;
+#endif
     }
 
     inline openssl::bn_ptr readBignum() const
