@@ -59,7 +59,7 @@ target_link_libraries(KHealthCertificate PRIVATE
     KF5::Archive
     KF5::Codecs
     Qt::Network
-    OpenSSL::SSL
+    OpenSSL::Crypto
     ZLIB::ZLIB
 )
 

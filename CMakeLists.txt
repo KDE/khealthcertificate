@@ -35,7 +35,7 @@ ecm_setup_version(PROJECT
 set(QT_MIN_VERSION 5.15)
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Network Qml Test)
 find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs)
-find_package(OpenSSL)
+find_package(OpenSSL REQUIRED COMPONENTS Crypto)
 set_package_properties("OpenSSL" PROPERTIES TYPE REQUIRED PURPOSE "Needed for signature verification.")
 find_package(ZLIB)
 set_package_properties("ZLIB" PROPERTIES TYPE REQUIRED PURPOSE "Needed for decoding EU DGC data.")
