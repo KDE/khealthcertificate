@@ -6,6 +6,7 @@
 #include "khealthcertificateparser.h"
 #include "divoc/divocparser_p.h"
 #include "eu-dgc/eudgcparser_p.h"
+#include "icao/icaovdsparser_p.h"
 #include "nl-coronacheck/nlcoronacheckparser_p.h"
 #include "shc/shcparser_p.h"
 
@@ -39,6 +40,10 @@ QVariant KHealthCertificateParser::parse(const QByteArray &data)
         return result;
     }
     result = ShcParser::parse(data);
+    if (!result.isNull()) {
+        return result;
+    }
+    result = IcaoVdsParser::parse(data);
     if (!result.isNull()) {
         return result;
     }

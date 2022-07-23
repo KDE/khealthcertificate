@@ -25,6 +25,8 @@ add_library(KHealthCertificate
     eu-dgc/data/eu-dgc-data.qrc
     eu-dgc/certs/eu-dgc-certs.qrc
 
+    icao/icaovdsparser.cpp
+
     nl-coronacheck/nlcoronacheckparser.cpp
     nl-coronacheck/nlbase45.cpp
     nl-coronacheck/irmapublickey.cpp

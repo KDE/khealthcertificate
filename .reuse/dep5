@@ -23,6 +23,10 @@ Files: autotests/data/shc/*.txt autotests/data/shc/*.jwk
 License: CC-BY-4.0
 Copyright: Computational Health Informatics Program, Boston Children's Hospital, Boston, MA
 
+Files: autotests/data/icao/*.txt
+License: CC0-1.0
+Copyright: https://github.com/Path-Check/paper-cred-demo
+
 Files: src/lib/shc/data/*.json
 License: CC0-1.0
 Copyright: https://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp
