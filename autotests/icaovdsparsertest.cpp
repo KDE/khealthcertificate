@@ -43,9 +43,9 @@ private Q_SLOTS:
         QCOMPARE(vac.dose(), 1);
         QCOMPARE(vac.totalDoses(), 0);
         QCOMPARE(vac.date(), QDate(2021, 3, 3));
-        QCOMPARE(vac.disease(), QLatin1String("RA01.0"));
+        QCOMPARE(vac.disease(), QLatin1String("COVID-19"));
         QCOMPARE(vac.vaccine(), QLatin1String("Comirnaty"));
-        QCOMPARE(vac.vaccineType(), QLatin1String("XM68M6"));
+        QCOMPARE(vac.vaccineType(), QLatin1String("COVID-19 vaccines"));
         QCOMPARE(vac.manufacturer(), QString());
         QCOMPARE(vac.certificateIssuer(), QString());
         QCOMPARE(vac.certificateId(), QLatin1String("U32870"));

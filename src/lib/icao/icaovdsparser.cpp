@@ -9,6 +9,7 @@
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
 
+#include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -34,6 +35,32 @@ static int jsonValueToInt(const QJsonValue &v)
         return v.toString().toInt();
     }
     return 0;
+}
+
+static QString lookupDisease(const QString &code)
+{
+    QFile f(QLatin1String(":/org.kde.khealthcertificate/icao/diseases.json"));
+    if (!f.open(QFile::ReadOnly)) {
+        qCWarning(Log) << f.fileName() << f.errorString();
+        return code;
+    }
+
+    const auto obj = QJsonDocument::fromJson(f.readAll()).object();
+    const auto name = obj.value(code.left(4)).toString();
+    return name.isEmpty() ? code : name;
+}
+
+static QString lookupVaccine(const QString &code)
+{
+    QFile f(QLatin1String(":/org.kde.khealthcertificate/icao/vaccines.json"));
+    if (!f.open(QFile::ReadOnly)) {
+        qCWarning(Log) << f.fileName() << f.errorString();
+        return code;
+    }
+
+    const auto obj = QJsonDocument::fromJson(f.readAll()).object();
+    const auto name = obj.value(code).toString();
+    return name.isEmpty() ? code : name;
 }
 
 QVariant IcaoVdsParser::parse(const QByteArray &data)
@@ -66,8 +93,8 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
             return {};
         }
         const auto veObj = veArray.at(0).toObject(); // TODO multiple entries?
-        cert.setVaccineType(veObj.value(QLatin1String("des")).toString()); // TODO WHO ICD-11 lookup
-        cert.setDisease(veObj.value(QLatin1String("dis")).toString()); // TODO WHO ICD-11 lookup
+        cert.setVaccineType(lookupVaccine(veObj.value(QLatin1String("des")).toString()));
+        cert.setDisease(lookupDisease(veObj.value(QLatin1String("dis")).toString()));
         cert.setVaccine(veObj.value(QLatin1String("nam")).toString());
 
         const auto vdArray = veObj.value(QLatin1String("vd")).toArray();
