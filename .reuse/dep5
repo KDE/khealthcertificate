@@ -38,3 +38,7 @@ Copyright: none
 Files: src/lib/nl-coronacheck/keys/*.xml
 License: EUPL-1.2
 Copyright: The Dutch government
+
+Files: src/lib/icao/data/*.json
+License: CC-BY-3.0
+Copyright: WHO

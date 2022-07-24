@@ -13,6 +13,11 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+void IcaoVdsParser::init()
+{
+    Q_INIT_RESOURCE(icaovds_data);
+}
+
 template <typename Cert>
 static void parsePersonalInformation(Cert &cert, const QJsonObject &pidObj)
 {

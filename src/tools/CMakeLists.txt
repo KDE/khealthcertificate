@@ -34,6 +34,14 @@ add_custom_command(
 add_custom_target(update-shc-certs DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/shc/certs/dummy.jwk)
 
 add_custom_command(
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/icao/data/diseases.json
+    COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update-icd-11-data.py --output ${CMAKE_SOURCE_DIR}/src/lib/icao/data
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Updating WHO ICD-11 data"
+)
+add_custom_target(update-icd-11-data DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/icao/data/diseases.json)
+
+add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/data/nl-coronacheck/keys/dummy.xml
     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update-nl-public-keys.py --output ${CMAKE_SOURCE_DIR}/src/lib/nl-coronacheck/keys
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
@@ -41,4 +49,11 @@ add_custom_command(
 )
 add_custom_target(update-nl-public-keys DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/nl-coronacheck/keys/dummy.xml)
 
-add_custom_target(update-all DEPENDS update-eu-dgc-data update-eu-dgc-certs update-hl7-cvx update-shc-certs update-nl-public-keys)
+add_custom_target(update-all DEPENDS
+    update-eu-dgc-data
+    update-eu-dgc-certs
+    update-hl7-cvx
+    update-shc-certs
+    update-icd-11-data
+    update-nl-public-keys
+)

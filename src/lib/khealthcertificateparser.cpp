@@ -20,6 +20,7 @@ static bool initResources()
 {
     DivocParser::init();
     EuDgcParser::init();
+    IcaoVdsParser::init();
     NLCoronaCheckParser::init();
     ShcParser::init();
 

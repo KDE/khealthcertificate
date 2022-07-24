@@ -2,7 +2,9 @@
 # SPDX-FileCopyrightText: 2021 Volker Krause <vkrause@kde.org>
 # SPDX-License-Identifier: LGPL-2.0-or-later
 
+import argparse
 import csv
+import json
 import os
 import requests
 import zipfile
@@ -41,6 +43,10 @@ def toCodeMap(node):
         l += toCodeMap(node.get('children', []))
     return l
 
+
+parser = argparse.ArgumentParser(description='Download and filter WHO ICD-11 data.')
+parser.add_argument('--output', type=str, required=True, help='Path to which the output should be written to')
+arguments = parser.parse_args()
 
 # download WHO ICD-11 archive
 icd11archive = 'simpletabulation.zip'
@@ -92,13 +98,11 @@ diseaseCodes = toCodeMap(diseases)
 diseaseCodes = list(filter(lambda entry: len(entry[0]) == 4, diseaseCodes)) # drop sub-categories
 diseaseCodes.sort(key=lambda entry: entry[0])
 print("Diseases: ", len(diseaseCodes))
-for diseaseCode in diseaseCodes:
-    print(diseaseCode)
+writeToFile(os.path.join(arguments.output, 'diseases.json'), json.dumps(dict(diseaseCodes)).encode('utf-8'))
 
 # extract relevant medication codes
 vaccines = findNodes(root, lambda n: n['kind'] == 'block' and n['name'] == 'Vaccines')
 vaccineCodes = toCodeMap(vaccines)
 vaccineCodes.sort(key=lambda entry: entry[0])
 print("Vaccines:", len(vaccineCodes))
-for vacineCode in vaccineCodes:
-    print(vacineCode)
+writeToFile(os.path.join(arguments.output, 'vaccines.json'), json.dumps(dict(vaccineCodes)).encode('utf-8'))
