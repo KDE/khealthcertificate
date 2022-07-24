@@ -6,6 +6,9 @@
 #include "icaovdsparser_p.h"
 #include "logging.h"
 
+#include <openssl/opensslpp_p.h>
+#include <openssl/verify_p.h>
+
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
 
@@ -82,6 +85,30 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         return {};
     }
 
+    const auto sigObj = rootObj.value(QLatin1String("sig")).toObject();
+    const auto cert = QByteArray::fromBase64(sigObj.value(QLatin1String("cer")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
+    const uint8_t *certData = reinterpret_cast<const uint8_t*>(cert.data());
+    const openssl::x509_ptr x509Cert(d2i_X509(nullptr, &certData, cert.size()), &X509_free);
+    const openssl::evp_pkey_ptr pkey(X509_get_pubkey(x509Cert.get()), &EVP_PKEY_free);
+    // TODO we need to verify that certificate is actually trusted!
+
+    const auto alg = sigObj.value(QLatin1String("alg")).toString();
+    const auto signature = QByteArray::fromBase64(sigObj.value(QLatin1String("sigvl")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
+
+    // this need RFC 8785 JSON canonicalization
+    const auto signedData = QJsonDocument(dataObj).toJson(QJsonDocument::Compact);
+
+    bool valid = false;
+    if (alg == QLatin1String("ES256")) {
+        valid = Verify::verifyECDSA(pkey, EVP_sha256(), signedData.constData(), signedData.size(), signature.constData(), signature.size());
+    } else if (alg == QLatin1String("ES384")) {
+        valid = Verify::verifyECDSA(pkey, EVP_sha384(), signedData.constData(), signedData.size(), signature.constData(), signature.size());
+    } else if (alg == QLatin1String("ES512")) {
+        valid = Verify::verifyECDSA(pkey, EVP_sha512(), signedData.constData(), signedData.size(), signature.constData(), signature.size());
+    } else {
+        qCWarning(Log) << "signature algorithm not supported:" << alg;
+    }
+
     const auto type = hdrObj.value(QLatin1String("t")).toString();
     if (type == QLatin1String("icao.vacc")) {
         KVaccinationCertificate cert;
@@ -110,7 +137,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         }
 
         cert.setRawData(data);
-        cert.setSignatureState(KHealthCertificate::UncheckedSignature); // TODO
+        cert.setSignatureState(valid ? KHealthCertificate::UncheckedSignature : KHealthCertificate::InvalidSignature); // TODO
         return cert;
     }
 
@@ -139,7 +166,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         }
 
         cert.setRawData(data);
-        cert.setSignatureState(KHealthCertificate::UncheckedSignature); // TODO
+        cert.setSignatureState(valid ? KHealthCertificate::UncheckedSignature : KHealthCertificate::InvalidSignature); // TODO
         return cert;
     }
 
