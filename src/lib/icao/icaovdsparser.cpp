@@ -19,6 +19,7 @@
 
 void IcaoVdsParser::init()
 {
+    Q_INIT_RESOURCE(icao_csca_certs);
     Q_INIT_RESOURCE(icaovds_data);
 }
 
@@ -42,7 +43,7 @@ static int jsonValueToInt(const QJsonValue &v)
 
 static QString lookupDisease(const QString &code)
 {
-    QFile f(QLatin1String(":/org.kde.khealthcertificate/icao/diseases.json"));
+    QFile f(QLatin1String(":/org.kde.khealthcertificate/icao/data/diseases.json"));
     if (!f.open(QFile::ReadOnly)) {
         qCWarning(Log) << f.fileName() << f.errorString();
         return code;
@@ -55,7 +56,7 @@ static QString lookupDisease(const QString &code)
 
 static QString lookupVaccine(const QString &code)
 {
-    QFile f(QLatin1String(":/org.kde.khealthcertificate/icao/vaccines.json"));
+    QFile f(QLatin1String(":/org.kde.khealthcertificate/icao/data/vaccines.json"));
     if (!f.open(QFile::ReadOnly)) {
         qCWarning(Log) << f.fileName() << f.errorString();
         return code;
@@ -86,12 +87,32 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
     }
 
     const auto sigObj = rootObj.value(QLatin1String("sig")).toObject();
+
+    // certificate used for the signature
+    KHealthCertificate::SignatureValidation sigState = KHealthCertificate::UncheckedSignature;
     const auto cert = QByteArray::fromBase64(sigObj.value(QLatin1String("cer")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
     const uint8_t *certData = reinterpret_cast<const uint8_t*>(cert.data());
     const openssl::x509_ptr x509Cert(d2i_X509(nullptr, &certData, cert.size()), &X509_free);
     const openssl::evp_pkey_ptr pkey(X509_get_pubkey(x509Cert.get()), &EVP_PKEY_free);
-    // TODO we need to verify that certificate is actually trusted!
 
+    // find issuer certificate for that
+    QFile issuerCertFile(QLatin1String(":/org.kde.khealthcertificate/icao/certs/") + QString::asprintf("%02lx", X509_issuer_name_hash(x509Cert.get())) + QLatin1String(".der"));
+    if (issuerCertFile.open(QFile::ReadOnly)) {
+        // verify the signature certificate
+        const auto issuerCert = issuerCertFile.readAll();
+        const uint8_t *issuerCertData = reinterpret_cast<const uint8_t*>(issuerCert.data());
+        const openssl::x509_ptr x509IssuerCert(d2i_X509(nullptr, &issuerCertData, issuerCert.size()), &X509_free);
+        const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()), &EVP_PKEY_free);
+        const auto certValid = X509_verify(x509Cert.get(), issuerPkey.get());
+        if (certValid != 1) {
+            sigState = KHealthCertificate::InvalidSignature;
+        }
+    } else {
+        qCWarning(Log) << issuerCertFile.fileName() << issuerCertFile.errorString();
+        sigState = KHealthCertificate::UnknownSignature;
+    }
+
+    // verify that the content signature is correct
     const auto alg = sigObj.value(QLatin1String("alg")).toString();
     const auto signature = QByteArray::fromBase64(sigObj.value(QLatin1String("sigvl")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
 
@@ -107,6 +128,9 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         valid = Verify::verifyECDSA(pkey, EVP_sha512(), signedData.constData(), signedData.size(), signature.constData(), signature.size());
     } else {
         qCWarning(Log) << "signature algorithm not supported:" << alg;
+    }
+    if (valid && sigState == KHealthCertificate::UncheckedSignature) {
+        sigState = KHealthCertificate::ValidSignature;
     }
 
     const auto type = hdrObj.value(QLatin1String("t")).toString();
@@ -137,7 +161,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         }
 
         cert.setRawData(data);
-        cert.setSignatureState(valid ? KHealthCertificate::UncheckedSignature : KHealthCertificate::InvalidSignature); // TODO
+        cert.setSignatureState(sigState);
         return cert;
     }
 
@@ -166,7 +190,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         }
 
         cert.setRawData(data);
-        cert.setSignatureState(valid ? KHealthCertificate::UncheckedSignature : KHealthCertificate::InvalidSignature); // TODO
+        cert.setSignatureState(sigState);
         return cert;
     }
 

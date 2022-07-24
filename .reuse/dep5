@@ -42,3 +42,7 @@ Copyright: The Dutch government
 Files: src/lib/icao/data/*.json
 License: CC-BY-3.0
 Copyright: WHO
+
+Files: src/lib/icao/certs/*.der
+License: CC0-1.0
+Copyright: none

@@ -3,8 +3,7 @@
     SPDX-License-Identifier: CC0-1.0
 -->
 <RCC>
-  <qresource prefix="/org.kde.khealthcertificate/icao/data">
-    <file>diseases.json</file>
-    <file>vaccines.json</file>
+  <qresource prefix="/org.kde.khealthcertificate/icao/certs">
+    <file>99ac3a9e.der</file>
   </qresource>
 </RCC>

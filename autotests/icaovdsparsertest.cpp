@@ -50,8 +50,8 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssuer(), QString());
         QCOMPARE(vac.certificateId(), QLatin1String("U32870"));
         QCOMPARE(vac.certificateIssueDate(), QDateTime());
-        QCOMPARE(vac.signatureState(), KHealthCertificate::UncheckedSignature);
-        QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
+        QCOMPARE(vac.signatureState(), KHealthCertificate::UnknownSignature);
+        QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
         QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Vaccinated);
         QCOMPARE(vac.rawData(), readFile(u"icao/single-vaccine.txt"));
     }
@@ -72,7 +72,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateIssuer(), QString());
         QCOMPARE(test.certificateId(), QLatin1String("U01932"));
         QCOMPARE(test.certificateIssueDate(), QDateTime());
-        QCOMPARE(test.signatureState(), KHealthCertificate::UncheckedSignature);
+        QCOMPARE(test.signatureState(), KHealthCertificate::UnknownSignature);
         QCOMPARE(test.rawData(), readFile(u"icao/test.txt"));
     }
 };

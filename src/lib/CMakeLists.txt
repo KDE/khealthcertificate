@@ -27,6 +27,7 @@ add_library(KHealthCertificate
 
     icao/icaovdsparser.cpp
     icao/data/icaovds-data.qrc
+    icao/certs/icao-csca-certs.qrc
 
     nl-coronacheck/nlcoronacheckparser.cpp
     nl-coronacheck/nlbase45.cpp
