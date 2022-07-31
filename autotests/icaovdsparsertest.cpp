@@ -4,6 +4,7 @@
 */
 
 #include <QFile>
+#include <QJsonDocument>
 #include <QTest>
 
 #include <KHealthCertificate/KHealthCertificateParser>
@@ -74,7 +75,7 @@ private Q_SLOTS:
         QCOMPARE(vac.signatureState(), KHealthCertificate::UnknownSignature);
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
         QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Vaccinated);
-        QCOMPARE(vac.rawData(), readFile(u"icao/jpn-triple-vaccine.txt"));
+        QCOMPARE(vac.rawData(), QJsonDocument::fromJson(readFile(u"icao/jpn-triple-vaccine.txt")).toJson(QJsonDocument::Compact));
     }
 
     void testTestCertificate()

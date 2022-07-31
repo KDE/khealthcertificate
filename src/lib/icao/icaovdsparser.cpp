@@ -162,7 +162,12 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
             }
         }
 
-        cert.setRawData(data);
+        const auto compactData = doc.toJson(QJsonDocument::Compact);
+        if (compactData.size() < data.size()) {
+            cert.setRawData(compactData);
+        } else {
+            cert.setRawData(data);
+        }
         cert.setSignatureState(sigState);
         return cert;
     }
