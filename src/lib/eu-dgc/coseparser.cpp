@@ -6,7 +6,9 @@
 #include "coseparser_p.h"
 #include "cborutils_p.h"
 #include "logging.h"
-#include "openssl/verify_p.h"
+
+#include <openssl/verify_p.h>
+#include <openssl/x509loader_p.h>
 
 #include <QCborMap>
 #include <QCborStreamReader>
@@ -63,7 +65,7 @@ void CoseParser::parse(const QByteArray &data)
     m_signature = CborUtils::readByteArray(reader);
 
     // find and load certificate
-    QFile certFile(QLatin1String(":/org.kde.khealthcertificate/eu-dgc/certs/") + QString::fromUtf8(m_kid.toHex()) + QLatin1String(".pem"));
+    QFile certFile(QLatin1String(":/org.kde.khealthcertificate/eu-dgc/certs/") + QString::fromUtf8(m_kid.toHex()) + QLatin1String(".der"));
     if (!certFile.open(QFile::ReadOnly)) {
         qCWarning(Log) << "unable to find certificate for key id:" << m_kid.toHex();
         m_signatureState = UnknownCertificate;
@@ -71,8 +73,7 @@ void CoseParser::parse(const QByteArray &data)
     }
 
     const auto certData = certFile.readAll();
-    const openssl::bio_ptr bio(BIO_new_mem_buf(certData.constData(), certData.size()), &BIO_free_all);
-    const openssl::x509_ptr cert(PEM_read_bio_X509(bio.get(), nullptr, nullptr, nullptr), &X509_free);
+    const auto cert = X509Loader::readFromDER(certData);
     if (!cert) {
         qCWarning(Log) << "failed to read X509 certificate";
         m_signatureState = UnknownCertificate;
@@ -84,7 +85,7 @@ void CoseParser::parse(const QByteArray &data)
         m_signatureState = UnknownCertificate;
         return;
     }
-    m_certificate = QSslCertificate(certData);
+    m_certificate = QSslCertificate(certData, QSsl::Der);
 
     switch (algorithm) {
         case CoseAlgorithmECDSA_SHA256:

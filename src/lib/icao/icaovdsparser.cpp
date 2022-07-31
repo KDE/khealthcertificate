@@ -8,6 +8,7 @@
 
 #include <openssl/opensslpp_p.h>
 #include <openssl/verify_p.h>
+#include <openssl/x509loader_p.h>
 
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
@@ -107,9 +108,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
     QFile issuerCertFile(QLatin1String(":/org.kde.khealthcertificate/icao/certs/") + QString::asprintf("%02lx", X509_issuer_name_hash(x509Cert.get())) + QLatin1String(".der"));
     if (issuerCertFile.open(QFile::ReadOnly)) {
         // verify the signature certificate
-        const auto issuerCert = issuerCertFile.readAll();
-        const uint8_t *issuerCertData = reinterpret_cast<const uint8_t*>(issuerCert.data());
-        const openssl::x509_ptr x509IssuerCert(d2i_X509(nullptr, &issuerCertData, issuerCert.size()), &X509_free);
+        const auto x509IssuerCert = X509Loader::readFromDER(issuerCertFile.readAll());
         const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()), &EVP_PKEY_free);
         const auto certValid = X509_verify(x509Cert.get(), issuerPkey.get());
         if (certValid != 1) {

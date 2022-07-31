@@ -36,6 +36,7 @@ add_library(KHealthCertificate
     nl-coronacheck/keys/nl-public-keys.qrc
 
     openssl/verify.cpp
+    openssl/x509loader.cpp
 
     shc/jwkloader.cpp
     shc/jwtparser.cpp

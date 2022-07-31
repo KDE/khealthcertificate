@@ -7,6 +7,15 @@ import base64
 import json
 import os
 import requests
+import subprocess
+
+def runOpenSsl(args, data = None):
+    proc = subprocess.Popen(f"openssl {args}", shell=True, stdout=subprocess.PIPE, stdin=subprocess.PIPE)
+    if data != None:
+        proc.stdin.write(data)
+        proc.stdin.close()
+    return proc.stdout.read()
+
 
 parser = argparse.ArgumentParser(description='Download certificates for validating EU DGCs')
 parser.add_argument('--output', type=str, required=True, help='Path to which the output should be written to')
@@ -21,21 +30,19 @@ certs = json.loads(str(req.content)[jsonStart:-1])
 
 # remove all existing certs so we clean up revoked/expired ones
 for certFile in os.listdir(arguments.output):
-    if certFile.endswith(".pem"):
+    if certFile.endswith(".pem") or certFile.endswith('.der'):
         os.remove(os.path.join(arguments.output, certFile))
 
-pemFileNames = []
+derFileNames = []
 for cert in certs['certificates']:
-    pemFileName = base64.b64decode(cert['kid']).hex() + ".pem"
-    pemPath = os.path.join(arguments.output, pemFileName)
-    pemFile = open(pemPath, 'w')
-    pemFile.write('-----BEGIN CERTIFICATE-----\n')
-    pemFile.write(cert['rawData'])
-    pemFile.write('\n-----END CERTIFICATE-----')
-    pemFile.close()
-    pemFileNames.append(pemFileName)
+    pemData = f"-----BEGIN CERTIFICATE-----\n{cert['rawData']}\n-----END CERTIFICATE-----"
 
-pemFileNames.sort()
+    derFileName = base64.b64decode(cert['kid']).hex() + ".der"
+    derPath = os.path.join(arguments.output, derFileName)
+    runOpenSsl(f"x509 -outform der -out {derPath}", pemData.encode('utf-8'))
+    derFileNames.append(derFileName)
+
+derFileNames.sort()
 
 # write out qrc file
 qrcFile = open(os.path.join(arguments.output, 'eu-dgc-certs.qrc'), 'w')
@@ -46,8 +53,8 @@ qrcFile.write("""<!--
 <RCC>
   <qresource prefix="/org.kde.khealthcertificate/eu-dgc/certs">
 """)
-for pemFileName in pemFileNames:
-    qrcFile.write(f"    <file>{pemFileName}</file>\n")
+for derFileName in derFileNames:
+    qrcFile.write(f"    <file>{derFileName}</file>\n")
 qrcFile.write("""  </qresource>
 </RCC>""")
 qrcFile.close()
