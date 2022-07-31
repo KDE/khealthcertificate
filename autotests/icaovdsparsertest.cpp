@@ -40,7 +40,7 @@ private Q_SLOTS:
         auto vac = cert.value<KVaccinationCertificate>();
         QCOMPARE(vac.name(), QLatin1String("Smith Bill"));
         QCOMPARE(vac.dateOfBirth(), QDate(1990, 1, 2));
-        QCOMPARE(vac.country(), QLatin1String("AUS"));
+        QCOMPARE(vac.country(), QLatin1String("AU"));
         QCOMPARE(vac.dose(), 1);
         QCOMPARE(vac.totalDoses(), 0);
         QCOMPARE(vac.date(), QDate(2021, 3, 3));
@@ -61,7 +61,7 @@ private Q_SLOTS:
         vac = cert.value<KVaccinationCertificate>();
         QCOMPARE(vac.name(), QLatin1String("MIYAKE SHOTA"));
         QCOMPARE(vac.dateOfBirth(), QDate(1991, 2, 18));
-        QCOMPARE(vac.country(), QLatin1String("JPN"));
+        QCOMPARE(vac.country(), QLatin1String("JP"));
         QCOMPARE(vac.dose(), 3);
         QCOMPARE(vac.totalDoses(), 0);
         QCOMPARE(vac.date(), QDate(2021, 12, 1));
@@ -85,7 +85,7 @@ private Q_SLOTS:
         auto test = cert.value<KTestCertificate>();
         QCOMPARE(test.name(), QLatin1String("Cook Gerald"));
         QCOMPARE(test.dateOfBirth(), QDate(1990, 1, 29));
-        QCOMPARE(test.country(), QLatin1String("AUS"));
+        QCOMPARE(test.country(), QLatin1String("AU"));
         QCOMPARE(test.testCenter(), QLatin1String("General Hospital"));
         QCOMPARE(test.date(), QDate(2020, 12, 12));
         QCOMPARE(test.result(), KTestCertificate::Negative);

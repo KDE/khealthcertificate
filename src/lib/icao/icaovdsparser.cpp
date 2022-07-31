@@ -12,6 +12,8 @@
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
 
+#include <KCountry>
+
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -65,6 +67,12 @@ static QString lookupVaccine(const QString &code)
     const auto obj = QJsonDocument::fromJson(f.readAll()).object();
     const auto name = obj.value(code).toString();
     return name.isEmpty() ? code : name;
+}
+
+static QString alpha3ToAlpha2(const QString &alpha3)
+{
+    const auto c = KCountry::fromAlpha3(alpha3);
+    return c.isValid() ? c.alpha2() : alpha3;
 }
 
 QVariant IcaoVdsParser::parse(const QByteArray &data)
@@ -158,7 +166,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
                 }
                 cert.setDose(seq);
                 cert.setDate(QDate::fromString(vdObj.value(QLatin1String("dvc")).toString(), Qt::ISODate));
-                cert.setCountry(vdObj.value(QLatin1String("ctr")).toString());
+                cert.setCountry(alpha3ToAlpha2(vdObj.value(QLatin1String("ctr")).toString()));
             }
         }
 
@@ -179,7 +187,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
 
         const auto spObj = msgObj.value(QLatin1String("sp")).toObject();
         cert.setTestCenter(spObj.value(QLatin1String("spn")).toString());
-        cert.setCountry(spObj.value(QLatin1String("ctr")).toString());
+        cert.setCountry(alpha3ToAlpha2(spObj.value(QLatin1String("ctr")).toString()));
 
         const auto datObj = msgObj.value(QLatin1String("dat")).toObject();
         cert.setDate(QDateTime::fromString(datObj.value(QLatin1String("sc")).toString(), Qt::ISODate).date());

@@ -30,6 +30,7 @@ class KHEALTHCERTIFICATE_EXPORT KTestCertificate
     KHEALTHCERTIFICATE_PROPERTY(QUrl, testUrl, setTestUrl)
     KHEALTHCERTIFICATE_PROPERTY(QString, resultString, setResultString)
     KHEALTHCERTIFICATE_PROPERTY(QString, testCenter, setTestCenter)
+    /** Country the certificate was issued in, as ISO 3166-1 alpha 2 code. */
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
     /** The entity that issued this certificate. */
     KHEALTHCERTIFICATE_PROPERTY(QString, certificateIssuer, setCertificateIssuer)

@@ -32,6 +32,7 @@ class KHEALTHCERTIFICATE_EXPORT KVaccinationCertificate
     KHEALTHCERTIFICATE_PROPERTY(QString, manufacturer, setManufacturer)
     KHEALTHCERTIFICATE_PROPERTY(int, dose, setDose)
     KHEALTHCERTIFICATE_PROPERTY(int, totalDoses, setTotalDoses)
+    /** Country the certificate was issued in, as ISO 3166-1 alpha 2 code. */
     KHEALTHCERTIFICATE_PROPERTY(QString, country, setCountry)
     /** The entity that issued this certificate. */
     KHEALTHCERTIFICATE_PROPERTY(QString, certificateIssuer, setCertificateIssuer)
