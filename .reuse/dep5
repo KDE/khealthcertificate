@@ -7,11 +7,11 @@ Files: src/lib/eu-dgc/data/*.json
 License: Apache-2.0
 Copyright: https://github.com/ehn-dcc-development/ehn-dcc-valuesets
 
-Files: src/lib/eu-dgc/certs/*.pem
+Files: src/lib/eu-dgc/certs/*.der
 License: Apache-2.0
 Copyright: https://github.com/Digitaler-Impfnachweis/covpass-android
 
-Files: autotests/data/eu-dgc/*.txt autotests/data/eu-dgc/*.pem
+Files: autotests/data/eu-dgc/*.txt autotests/data/eu-dgc/*.der
 License: Apache-2.0
 Copyright: https://github.com/eu-digital-green-certificates/dgc-testdata
 
