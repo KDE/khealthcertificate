@@ -143,21 +143,23 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         if (veArray.isEmpty()) {
             return {};
         }
-        const auto veObj = veArray.at(0).toObject(); // TODO multiple entries?
-        cert.setVaccineType(lookupVaccine(veObj.value(QLatin1String("des")).toString()));
-        cert.setDisease(lookupDisease(veObj.value(QLatin1String("dis")).toString()));
-        cert.setVaccine(veObj.value(QLatin1String("nam")).toString());
+        for (const auto &veVal : veArray) {
+            const auto veObj = veVal.toObject();
+            cert.setVaccineType(lookupVaccine(veObj.value(QLatin1String("des")).toString()));
+            cert.setDisease(lookupDisease(veObj.value(QLatin1String("dis")).toString()));
+            cert.setVaccine(veObj.value(QLatin1String("nam")).toString());
 
-        const auto vdArray = veObj.value(QLatin1String("vd")).toArray();
-        for (const auto &vdVal : vdArray) {
-            const auto vdObj = vdVal.toObject();
-            const auto seq = jsonValueToInt(vdObj.value(QLatin1String("seq")));
-            if (seq < cert.dose()) {
-                continue;
+            const auto vdArray = veObj.value(QLatin1String("vd")).toArray();
+            for (const auto &vdVal : vdArray) {
+                const auto vdObj = vdVal.toObject();
+                const auto seq = jsonValueToInt(vdObj.value(QLatin1String("seq")));
+                if (seq < cert.dose()) {
+                    continue;
+                }
+                cert.setDose(seq);
+                cert.setDate(QDate::fromString(vdObj.value(QLatin1String("dvc")).toString(), Qt::ISODate));
+                cert.setCountry(vdObj.value(QLatin1String("ctr")).toString());
             }
-            cert.setDose(seq);
-            cert.setDate(QDate::fromString(vdObj.value(QLatin1String("dvc")).toString(), Qt::ISODate));
-            cert.setCountry(vdObj.value(QLatin1String("ctr")).toString());
         }
 
         cert.setRawData(data);

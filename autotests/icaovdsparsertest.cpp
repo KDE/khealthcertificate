@@ -54,6 +54,27 @@ private Q_SLOTS:
         QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
         QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Vaccinated);
         QCOMPARE(vac.rawData(), readFile(u"icao/single-vaccine.txt"));
+
+        cert = KHealthCertificateParser::parse(readFile(u"icao/jpn-triple-vaccine.txt"));
+        QCOMPARE(cert.userType(), qMetaTypeId<KVaccinationCertificate>());
+        vac = cert.value<KVaccinationCertificate>();
+        QCOMPARE(vac.name(), QLatin1String("MIYAKE SHOTA"));
+        QCOMPARE(vac.dateOfBirth(), QDate(1991, 2, 18));
+        QCOMPARE(vac.country(), QLatin1String("JPN"));
+        QCOMPARE(vac.dose(), 3);
+        QCOMPARE(vac.totalDoses(), 0);
+        QCOMPARE(vac.date(), QDate(2021, 12, 1));
+        QCOMPARE(vac.disease(), QLatin1String("COVID-19"));
+        QCOMPARE(vac.vaccine(), QLatin1String("COMIRNATY"));
+        QCOMPARE(vac.vaccineType(), QLatin1String("COVID-19 vaccine, RNA based"));
+        QCOMPARE(vac.manufacturer(), QString());
+        QCOMPARE(vac.certificateIssuer(), QString());
+        QCOMPARE(vac.certificateId(), QLatin1String("6U5RSWMBASG2"));
+        QCOMPARE(vac.certificateIssueDate(), QDateTime());
+        QCOMPARE(vac.signatureState(), KHealthCertificate::UnknownSignature);
+        QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
+        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Vaccinated);
+        QCOMPARE(vac.rawData(), readFile(u"icao/jpn-triple-vaccine.txt"));
     }
 
     void testTestCertificate()

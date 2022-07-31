@@ -1,0 +1,69 @@
+[
+    {
+        "data": {
+            "hdr": {
+                "is": "JPN",
+                "t": "icao.vacc",
+                "v": 1
+            },
+            "msg": {
+                "pid": {
+                    "ai": "JPN90000120211209200002",
+                    "dob": "1991-02-18",
+                    "i": "TK0000000",
+                    "n": "MIYAKE SHOTA"
+                },
+                "uvci": "6U5RSWMBASG2",
+                "ve": [
+                    {
+                        "des": "XM0GQ8",
+                        "dis": "RA01.0",
+                        "nam": "COMIRNATY",
+                        "vd": [
+                            {
+                                "adm": "MHLW_Gov_of_JAPAN",
+                                "ctr": "JPN",
+                                "dvc": "2021-03-01",
+                                "lot": "FC9880",
+                                "seq": 1
+                            }
+                        ]
+                    },
+                    {
+                        "des": "XM0GQ8",
+                        "dis": "RA01.0",
+                        "nam": "COMIRNATY",
+                        "vd": [
+                            {
+                                "adm": "MHLW_Gov_of_JAPAN",
+                                "ctr": "JPN",
+                                "dvc": "2021-03-23",
+                                "lot": "FE8206",
+                                "seq": 2
+                            }
+                        ]
+                    },
+                    {
+                        "des": "XM0GQ8",
+                        "dis": "RA01.0",
+                        "nam": "COMIRNATY",
+                        "vd": [
+                            {
+                                "adm": "MHLW_Gov_of_JAPAN",
+                                "ctr": "JPN",
+                                "dvc": "2021-12-01",
+                                "lot": "FE9787",
+                                "seq": 3
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "sig": {
+            "alg": "ES256",
+            "cer": "MIIDFTCCApqgAwIBAgICAQwwDAYIKoZIzj0EAwMFADBuMQswCQYDVQQGEwJKUDEcMBoGA1UECgwTSmFwYW5lc2UgR292ZXJubWVudDEoMCYGA1UECwwfVGhlIE1pbmlzdHJ5IG9mIEZvcmVpZ24gQWZmYWlyczEXMBUGA1UEAwwOZS1wYXNzcG9ydENTQ0EwHhcNMjExMTE2MDI0OTU5WhcNMzExMTE2MDI0OTU5WjAqMQswCQYDVQQGEwJKUDEbMBkGA1UEAwwSVGhlIERpZ2l0YWwgQWdlbmN5MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE3WM_e6EW0NtSSdccxor0EKlJ5uIVaYEdP5gzwr7cy_qLWBlDgXJGSC2N7KkFD5LeOwgbC1qalIAMJjtb2KLOjKOCAWgwggFkMCsGA1UdEgQkMCKBDnBraUBtb2ZhLmdvLmpwpBAwDjEMMAoGA1UEBwwDSlBOMB8GA1UdIwQYMBaAFGq08pKCvZZH9v8qAveUTXSel4RjMA4GA1UdDwEB_wQEAwIHgDArBgNVHRAEJDAigA8yMDIxMTExNjAyNDk1OVqBDzIwMjMwMjE2MDI0OTU5WjA5BgNVHREEMjAwgRxkaWdpdGFsdmFjY2luZUBkaWdpdGFsLmdvLmpwpBAwDjEMMAoGA1UEBwwDSlBOMBYGB2eBCAEBBgIECzAJAgEAMQQTAk5WMG0GA1UdHwRmMGQwMKAuoCyGKmh0dHBzOi8vcGtkZG93bmxvYWQxLmljYW8uaW50L0NSTHMvSlBOLmNybDAwoC6gLIYqaHR0cHM6Ly9wa2Rkb3dubG9hZDIuaWNhby5pbnQvQ1JMcy9KUE4uY3JsMBUGA1UdJQEB_wQLMAkGB2eBCAEBDgIwDAYIKoZIzj0EAwMFAANnADBkAjBnUDBEajFTdFDY5Rb1jfWbkjyXw6-B_WSX8ZOUIvbIUM3n4upUt7XSupJI79YmuVYCMGsStTQF-uLf6P6isPMUi2G4k-mojayxd90ft3sYd-uKFzl-K_qdINmExR34mknQyA==",
+            "sigvl": "CyTjQGe5TyLrMoaJ72KRmmfehRDi_xHNP72FkvT5r7mDz1bZdWN7JIq1X16rY2pgS__IZvyVfRfNNSWJhLauSg"
+        }
+    }
+]
