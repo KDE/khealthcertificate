@@ -170,11 +170,7 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
         }
 
         const auto compactData = doc.toJson(QJsonDocument::Compact);
-        if (compactData.size() < data.size()) {
-            cert.setRawData(compactData);
-        } else {
-            cert.setRawData(data);
-        }
+        cert.setRawData(compactData.size() < data.size() ? compactData : data);
         cert.setSignatureState(sigState);
         return cert;
     }
@@ -203,7 +199,8 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
             cert.setResult(KTestCertificate::Unknown);
         }
 
-        cert.setRawData(data);
+        const auto compactData = doc.toJson(QJsonDocument::Compact);
+        cert.setRawData(compactData.size() < data.size() ? compactData : data);
         cert.setSignatureState(sigState);
         return cert;
     }
