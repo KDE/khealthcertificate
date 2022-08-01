@@ -10,11 +10,14 @@
 #include <openssl/verify_p.h>
 #include <openssl/x509loader_p.h>
 
+#include <openssl/x509v3.h>
+
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
 
 #include <KCountry>
 
+#include <QDirIterator>
 #include <QFile>
 #include <QJsonDocument>
 #include <QJsonArray>
@@ -76,6 +79,50 @@ static QString alpha3ToAlpha2(const QString &alpha3)
     return c.isValid() ? c.alpha2() : alpha3;
 }
 
+static KHealthCertificate::SignatureValidation verifyCertificate(const openssl::x509_ptr &x509Cert)
+{
+    const auto keyId = X509_get0_authority_key_id(x509Cert.get());
+    if (!keyId) {
+        return KHealthCertificate::InvalidSignature;
+    }
+    const auto keyIdStr = QString::fromUtf8(QByteArray(reinterpret_cast<const char*>(keyId->data), keyId->length).toHex());
+    qCDebug(Log) << keyIdStr;
+
+    // single certificate file for keyId
+    QFile issuerCertFile(QLatin1String(":/org.kde.khealthcertificate/icao/certs/") + keyIdStr + QLatin1String(".der"));
+    if (issuerCertFile.open(QFile::ReadOnly)) {
+        const auto x509IssuerCert = X509Loader::readFromDER(issuerCertFile.readAll());
+        const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()), &EVP_PKEY_free);
+        const auto certValid = X509_verify(x509Cert.get(), issuerPkey.get());
+        if (certValid == 1) {
+            return KHealthCertificate::UncheckedSignature;
+        }
+        return KHealthCertificate::InvalidSignature;
+    }
+
+    // multiple certificates for keyId, try all of them
+    bool foundInvalid = false;
+    for (QDirIterator it(QLatin1String(":/org.kde.khealthcertificate/icao/certs/") + keyIdStr, QDir::Files); it.hasNext();) {
+        QFile issuerCertFile(it.next());
+        if (issuerCertFile.open(QFile::ReadOnly)) {
+            const auto x509IssuerCert = X509Loader::readFromDER(issuerCertFile.readAll());
+            const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()), &EVP_PKEY_free);
+            const auto certValid = X509_verify(x509Cert.get(), issuerPkey.get());
+            if (certValid == 1) {
+                return KHealthCertificate::UncheckedSignature;
+            }
+            foundInvalid = true;
+        } else {
+            qCWarning(Log) << issuerCertFile.fileName() << issuerCertFile.errorString();
+        }
+    }
+
+    if (!foundInvalid) {
+        qCWarning(Log) << "No CSCA certificate found for key id" << keyId;
+    }
+    return foundInvalid ? KHealthCertificate::InvalidSignature : KHealthCertificate::UnknownSignature;
+}
+
 QVariant IcaoVdsParser::parse(const QByteArray &data)
 {
     const auto doc = QJsonDocument::fromJson(data);
@@ -97,29 +144,14 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
 
     const auto sigObj = rootObj.value(QLatin1String("sig")).toObject();
 
-    // certificate used for the signature
-    KHealthCertificate::SignatureValidation sigState = KHealthCertificate::UncheckedSignature;
+    // verify certificate used for the signature
     const auto cert = QByteArray::fromBase64(sigObj.value(QLatin1String("cer")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
     const uint8_t *certData = reinterpret_cast<const uint8_t*>(cert.data());
     const openssl::x509_ptr x509Cert(d2i_X509(nullptr, &certData, cert.size()), &X509_free);
-    const openssl::evp_pkey_ptr pkey(X509_get_pubkey(x509Cert.get()), &EVP_PKEY_free);
-
-    // find issuer certificate for that
-    QFile issuerCertFile(QLatin1String(":/org.kde.khealthcertificate/icao/certs/") + QString::asprintf("%02lx", X509_issuer_name_hash(x509Cert.get())) + QLatin1String(".der"));
-    if (issuerCertFile.open(QFile::ReadOnly)) {
-        // verify the signature certificate
-        const auto x509IssuerCert = X509Loader::readFromDER(issuerCertFile.readAll());
-        const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()), &EVP_PKEY_free);
-        const auto certValid = X509_verify(x509Cert.get(), issuerPkey.get());
-        if (certValid != 1) {
-            sigState = KHealthCertificate::InvalidSignature;
-        }
-    } else {
-        qCWarning(Log) << issuerCertFile.fileName() << issuerCertFile.errorString();
-        sigState = KHealthCertificate::UnknownSignature;
-    }
+    KHealthCertificate::SignatureValidation sigState = verifyCertificate(x509Cert);
 
     // verify that the content signature is correct
+    const openssl::evp_pkey_ptr pkey(X509_get_pubkey(x509Cert.get()), &EVP_PKEY_free);
     const auto alg = sigObj.value(QLatin1String("alg")).toString();
     const auto signature = QByteArray::fromBase64(sigObj.value(QLatin1String("sigvl")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
 

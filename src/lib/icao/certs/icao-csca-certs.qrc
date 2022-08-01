@@ -1,9 +1,12 @@
 <!--
-    SPDX-FileCopyrightText: 2021 Volker Krause <vkrause@kde.org>
+    SPDX-FileCopyrightText: none
     SPDX-License-Identifier: CC0-1.0
 -->
 <RCC>
   <qresource prefix="/org.kde.khealthcertificate/icao/certs">
-    <file>99ac3a9e.der</file>
+    <file>3617c1e7f56795712e3775708e55833186e9380e/16f2.der</file>
+    <file>3617c1e7f56795712e3775708e55833186e9380e/16f5.der</file>
+    <file>6ab4f29282bd9647f6ff2a02f7944d749e978463/e3.der</file>
+    <file>6ab4f29282bd9647f6ff2a02f7944d749e978463/e5.der</file>
   </qresource>
 </RCC>

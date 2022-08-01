@@ -51,8 +51,8 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssuer(), QString());
         QCOMPARE(vac.certificateId(), QLatin1String("U32870"));
         QCOMPARE(vac.certificateIssueDate(), QDateTime());
-        QCOMPARE(vac.signatureState(), KHealthCertificate::UnknownSignature);
-        QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
+        QCOMPARE(vac.signatureState(), KHealthCertificate::InvalidSignature);
+        QCOMPARE(vac.validationState(), KHealthCertificate::Invalid);
         QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Vaccinated);
         QCOMPARE(vac.rawData(), readFile(u"icao/single-vaccine.txt"));
 
@@ -72,8 +72,8 @@ private Q_SLOTS:
         QCOMPARE(vac.certificateIssuer(), QString());
         QCOMPARE(vac.certificateId(), QLatin1String("6U5RSWMBASG2"));
         QCOMPARE(vac.certificateIssueDate(), QDateTime());
-        QCOMPARE(vac.signatureState(), KHealthCertificate::UnknownSignature);
-        QCOMPARE(vac.validationState(), KHealthCertificate::Partial);
+        QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
+        QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
         QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::Vaccinated);
         QCOMPARE(vac.rawData(), QJsonDocument::fromJson(readFile(u"icao/jpn-triple-vaccine.txt")).toJson(QJsonDocument::Compact));
     }
@@ -94,7 +94,7 @@ private Q_SLOTS:
         QCOMPARE(test.certificateIssuer(), QString());
         QCOMPARE(test.certificateId(), QLatin1String("U01932"));
         QCOMPARE(test.certificateIssueDate(), QDateTime());
-        QCOMPARE(test.signatureState(), KHealthCertificate::UnknownSignature);
+        QCOMPARE(test.signatureState(), KHealthCertificate::InvalidSignature);
         QCOMPARE(test.rawData(), readFile(u"icao/test.txt"));
     }
 };
