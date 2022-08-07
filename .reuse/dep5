@@ -1,7 +1,7 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: KHealthCertificate
 Upstream-Contact: Volker Krause <vkrause@kde.org>
-Source: https://invent.kde.org/vkrause/khealthcertificate
+Source: https://invent.kde.org/pim/khealthcertificate
 
 Files: src/lib/eu-dgc/data/*.json
 License: Apache-2.0
