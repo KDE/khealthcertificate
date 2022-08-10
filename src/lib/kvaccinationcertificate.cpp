@@ -71,7 +71,7 @@ KVaccinationCertificate::VaccinationState KVaccinationCertificate::vaccinationSt
         return KVaccinationCertificate::Invalid;
     }
 
-    if (d->date.addDays(14) >= QDate::currentDate()) {
+    if (d->date.addDays(14) >= QDate::currentDate() && (d->dose == 1 || (d->dose == 2 && d->totalDoses == 2))) {
         return KVaccinationCertificate::VaccinationTooRecent;
     }
     if (d->dose < d->totalDoses) {
