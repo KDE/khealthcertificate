@@ -14,7 +14,6 @@
 #include <QCborStreamReader>
 #include <QCborStreamWriter>
 #include <QCborValue>
-#include <QDebug>
 #include <QFile>
 
 #include <openssl/bn.h>

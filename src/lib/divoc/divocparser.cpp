@@ -8,10 +8,8 @@
 #include "kvaccinationcertificate.h"
 
 #include <QByteArray>
-#include <QDebug>
-#include <QJsonArray>
 #include <QJsonDocument>
-#include <QJsonObject>
+#include <QJsonArray>
 #include <QVariant>
 
 void DivocParser::init()

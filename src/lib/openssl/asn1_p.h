@@ -10,7 +10,6 @@
 #include "opensslpp_p.h"
 
 #include <QByteArray>
-#include <QtEndian>
 
 #include <openssl/asn1.h>
 

@@ -8,7 +8,6 @@
 #include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
 
-#include <QDebug>
 #include <QFile>
 #include <QMetaProperty>
 #include <QVariant>

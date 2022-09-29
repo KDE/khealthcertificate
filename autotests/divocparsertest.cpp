@@ -8,8 +8,6 @@
 #include <QTest>
 
 #include <KHealthCertificate/KHealthCertificateParser>
-#include <KHealthCertificate/KRecoveryCertificate>
-#include <KHealthCertificate/KTestCertificate>
 #include <KHealthCertificate/KVaccinationCertificate>
 
 void initLocale()

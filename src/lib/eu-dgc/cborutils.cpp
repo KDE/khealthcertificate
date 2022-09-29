@@ -7,7 +7,6 @@
 #include "logging.h"
 
 #include <QCborStreamReader>
-#include <QDebug>
 
 int64_t CborUtils::readInteger(QCborStreamReader &reader)
 {

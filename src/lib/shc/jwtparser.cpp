@@ -9,7 +9,6 @@
 #include "openssl/verify_p.h"
 #include "zlib/zlib_p.h"
 
-#include <QDebug>
 #include <QJsonDocument>
 #include <QJsonObject>
 

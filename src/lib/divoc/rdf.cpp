@@ -7,7 +7,6 @@
 
 #include <QBuffer>
 #include <QCryptographicHash>
-#include <QDebug>
 #include <QHash>
 #include <QMap>
 #include <QIODevice>

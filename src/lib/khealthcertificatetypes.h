@@ -8,7 +8,6 @@
 
 #include "khealthcertificate.h"
 
-#include <QMetaType>
 #include <QSharedDataPointer>
 
 #include <type_traits>

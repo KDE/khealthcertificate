@@ -11,7 +11,6 @@
 #include <KHealthCertificate/KVaccinationCertificate>
 
 #include <QCoreApplication>
-#include <QQmlContext>
 #include <QQmlEngine>
 #include <QQmlExtensionPlugin>
 
