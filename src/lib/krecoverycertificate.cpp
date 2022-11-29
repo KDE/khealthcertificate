@@ -50,6 +50,18 @@ KHealthCertificate::CertificateValidation KRecoveryCertificate::validationState(
         return KHealthCertificate::Partial;
     }
 
+    const auto today = QDate::currentDate();
+    if (d->validFrom.isValid() && d->validFrom > today) {
+        return KHealthCertificate::Invalid;
+    }
+    if (d->validUntil.isValid() && d->validUntil < today) {
+        return KHealthCertificate::Invalid;
+    }
+
+    if (d->validFrom.isValid() && d->validFrom <= today && d->validUntil.isValid() && d->validUntil >= today) {
+        return KHealthCertificate::Valid;
+    }
+
     return KHealthCertificate::Unknown;
 }
 
