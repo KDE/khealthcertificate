@@ -10,4 +10,4 @@ Dependencies:
     'frameworks/ki18n': '@stable'
 
 Options:
-  require-passing-tests-on: [ 'Linux', 'FreeBSD' ]
+  require-passing-tests-on: [ '@all' ]
