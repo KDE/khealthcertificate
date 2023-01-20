@@ -33,6 +33,8 @@ public: \
     K ## Class ## Certificate& operator=(K ## Class ## Certificate &&) noexcept; \
     K ## Class ## Certificate& operator=(const K ## Class ## Certificate &); \
     operator QVariant () const; \
+    bool operator==(const K ## Class ## Certificate &other) const; \
+    bool operator!=(const K ## Class ## Certificate &other) const; \
 private: \
     KHealthCertificate::CertificateType type() const; \
     friend class K ## Class ## CertificatePrivate; \
