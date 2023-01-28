@@ -34,8 +34,14 @@ ecm_setup_version(PROJECT
 
 # build-time dependencies
 set(QT_MIN_VERSION 5.15)
+if (QT_MAJOR_VERSION STREQUAL "6")
+    set(KF_MAJOR_VERSION "6")
+else()
+    set(KF_MAJOR_VERSION "5")
+endif()
+
 find_package(Qt${QT_MAJOR_VERSION} ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Network Qml Test)
-find_package(KF5 ${KF5_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs I18n)
+find_package(KF${KF_MAJOR_VERSION} ${KF5_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs I18n)
 find_package(OpenSSL REQUIRED COMPONENTS Crypto)
 set_package_properties("OpenSSL" PROPERTIES TYPE REQUIRED PURPOSE "Needed for signature verification.")
 find_package(ZLIB)

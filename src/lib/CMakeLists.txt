@@ -66,9 +66,9 @@ target_link_libraries(KHealthCertificate PUBLIC
     Qt::Core
 )
 target_link_libraries(KHealthCertificate PRIVATE
-    KF5::Archive
-    KF5::Codecs
-    KF5::I18nLocaleData
+    KF${KF_MAJOR_VERSION}::Archive
+    KF${KF_MAJOR_VERSION}::Codecs
+    KF${KF_MAJOR_VERSION}::I18nLocaleData
     Qt::Network
     OpenSSL::Crypto
     ZLIB::ZLIB
