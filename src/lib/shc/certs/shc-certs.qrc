@@ -6,6 +6,8 @@
   <qresource prefix="/org.kde.khealthcertificate/shc/certs">
     <file>2XlWk1UQMqavMtLt-aX35q_q9snFtGgdjH4-Y1gfH1M.jwk</file>
     <file>sZ5ca2a73SgPl7aC9v4PyA4cR5zk9A6BhHX8I2CVNwM.jwk</file>
+    <file>q-jdwRFL7uv9SihJOTHpQUoqUiRecfxfsTuoGQstogU.jwk</file>
+    <file>DhcL94F0tr5BJuaEBc-ZLgpEYS97_mNOzbAnJuZ4hdE.jwk</file>
     <file>XCqxdhhS7SWlPqihaUXovM_FjU65WeoBFGc_ppent0Q.jwk</file>
   </qresource>
 </RCC>
