@@ -78,7 +78,7 @@ bool JwsVerifier::verify() const
     EVP_Digest(reinterpret_cast<const uint8_t*>(signedData.constData()), signedData.size(), digestData, &digestSize, digest, nullptr);
 
     // verify
-    openssl::evp_pkey_ctx_ptr ctx(EVP_PKEY_CTX_new(evp.get(), nullptr), &EVP_PKEY_CTX_free);
+    openssl::evp_pkey_ctx_ptr ctx(EVP_PKEY_CTX_new(evp.get(), nullptr));
     if (!ctx || EVP_PKEY_verify_init(ctx.get()) <= 0) {
         return false;
     }
@@ -101,23 +101,21 @@ openssl::evp_pkey_ptr JwsVerifier::loadPublicKey() const
 {
     // ### for now there is only one key, longer term we probably need to actually
     // implement finding the right key here
-    openssl::evp_pkey_ptr evp(nullptr, &EVP_PKEY_free);
-
     QFile pemFile(QLatin1String(":/org.kde.khealthcertificate/divoc/did-india.pem"));
     if (!pemFile.open(QFile::ReadOnly)) {
         qCWarning(Log) << "unable to load public key file:" << pemFile.errorString();
-        return evp;
+        return {};
     }
 
     const auto pemData = pemFile.readAll();
-    const openssl::bio_ptr bio(BIO_new_mem_buf(pemData.constData(), pemData.size()), &BIO_free_all);
-    openssl::rsa_ptr rsa(PEM_read_bio_RSA_PUBKEY(bio.get(), nullptr, nullptr, nullptr), &RSA_free);
+    const openssl::bio_ptr bio(BIO_new_mem_buf(pemData.constData(), pemData.size()));
+    openssl::rsa_ptr rsa(PEM_read_bio_RSA_PUBKEY(bio.get(), nullptr, nullptr, nullptr));
     if (!rsa) {
         qCWarning(Log) << "Failed to read public key." << ERR_error_string(ERR_get_error(), nullptr);
-        return evp;
+        return {};
     }
 
-    evp.reset(EVP_PKEY_new());
+    openssl::evp_pkey_ptr evp(EVP_PKEY_new());
     EVP_PKEY_assign_RSA(evp.get(), rsa.release());
     return evp;
 }

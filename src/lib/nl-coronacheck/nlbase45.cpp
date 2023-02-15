@@ -27,7 +27,7 @@ static int8_t nlBase45MapFromChar(char c)
 
 QByteArray NLBase45::decode(const char *begin, const char *end)
 {
-    openssl::bn_ptr bn(BN_new(), &BN_free);
+    openssl::bn_ptr bn(BN_new());
     BN_zero(bn.get());
     for (auto it = begin; it != end; ++it) {
         BN_mul_word(bn.get(), 45);

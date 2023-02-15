@@ -13,12 +13,7 @@
 
 // see https://pkg.go.dev/github.com/privacybydesign/gabi@v0.0.0-20210816093228-75a6590e506c/gabikeys#PublicKey
 
-IrmaPublicKey::IrmaPublicKey()
-    : N(openssl::bn_ptr(nullptr, &BN_free))
-    , Z(openssl::bn_ptr(nullptr, &BN_free))
-    , S(openssl::bn_ptr(nullptr, &BN_free))
-{
-}
+IrmaPublicKey::IrmaPublicKey() = default;
 
 bool IrmaPublicKey::isValid() const
 {

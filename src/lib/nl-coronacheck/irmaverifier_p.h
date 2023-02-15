@@ -20,7 +20,7 @@ public:
     explicit IrmaProof();
     bool isNull() const;
 
-    int64_t disclosureTime;
+    int64_t disclosureTime = 0;
     openssl::bn_ptr C;
     openssl::bn_ptr A;
     openssl::bn_ptr EResponse;

@@ -78,7 +78,7 @@ void CoseParser::parse(const QByteArray &data)
         m_signatureState = UnknownCertificate;
         return;
     }
-    const openssl::evp_pkey_ptr pkey(X509_get_pubkey(cert.get()), &EVP_PKEY_free);
+    const openssl::evp_pkey_ptr pkey(X509_get_pubkey(cert.get()));
     if (!pkey) {
         qCWarning(Log) << "failed to load public key";
         m_signatureState = UnknownCertificate;
@@ -130,7 +130,7 @@ void CoseParser::clear()
 
 void CoseParser::validateECDSA(const openssl::evp_pkey_ptr &pkey, int algorithm)
 {
-    const openssl::ec_key_ptr ecKey(EVP_PKEY_get1_EC_KEY(pkey.get()), &EC_KEY_free);
+    const openssl::ec_key_ptr ecKey(EVP_PKEY_get1_EC_KEY(pkey.get()));
 
     const EVP_MD *digest = nullptr;
     switch (algorithm) {
@@ -173,7 +173,7 @@ void CoseParser::validateRSAPSS(const openssl::evp_pkey_ptr &pkey, int algorithm
     EVP_Digest(reinterpret_cast<const uint8_t*>(signedData.constData()), signedData.size(), digestData, &digestSize, digest, nullptr);
 
     // verify
-    openssl::evp_pkey_ctx_ptr ctx(EVP_PKEY_CTX_new(pkey.get(), nullptr), &EVP_PKEY_CTX_free);
+    openssl::evp_pkey_ctx_ptr ctx(EVP_PKEY_CTX_new(pkey.get(), nullptr));
     if (!ctx || EVP_PKEY_verify_init(ctx.get()) <= 0) {
         return;
     }

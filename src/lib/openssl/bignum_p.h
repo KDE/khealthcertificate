@@ -18,7 +18,7 @@ public:
     /** @see BN_bin2bn */
     static inline openssl::bn_ptr fromByteArray(const char *bin, std::size_t size)
     {
-        return openssl::bn_ptr(BN_bin2bn(reinterpret_cast<const uint8_t*>(bin), size, nullptr), &BN_free);
+        return openssl::bn_ptr(BN_bin2bn(reinterpret_cast<const uint8_t*>(bin), size, nullptr));
     }
     static inline openssl::bn_ptr fromByteArray(const QByteArray &bin)
     {
@@ -39,7 +39,7 @@ public:
     {
         BIGNUM *bn = nullptr;
         BN_dec2bn(&bn, dec.constData());
-        return openssl::bn_ptr(bn, &BN_free);
+        return openssl::bn_ptr(bn);
     }
     static inline openssl::bn_ptr fromDecimalString(const QString &dec)
     {

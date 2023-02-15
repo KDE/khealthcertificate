@@ -13,14 +13,7 @@
 
 #include <cstring>
 
-IrmaProof::IrmaProof()
-    : disclosureTime(0)
-    , C(openssl::bn_ptr(nullptr, &BN_free))
-    , A(openssl::bn_ptr(nullptr, &BN_free))
-    , EResponse(openssl::bn_ptr(nullptr, &BN_free))
-    , VResponse(openssl::bn_ptr(nullptr, &BN_free))
-{
-}
+IrmaProof::IrmaProof() = default;
 
 bool IrmaProof::isNull() const
 {
@@ -66,9 +59,9 @@ static openssl::bn_ptr bignum_sha256(const openssl::bn_ptr &in)
 // see https://github.com/privacybydesign/gabi/blob/master/proofs.go#L194
 static openssl::bn_ptr reconstructZ(const IrmaProof &proof, const IrmaPublicKey &pubKey)
 {
-    openssl::bn_ctx_ptr bnCtx(BN_CTX_new(), &BN_CTX_free);
+    openssl::bn_ctx_ptr bnCtx(BN_CTX_new());
 
-    openssl::bn_ptr numerator(BN_new(), &BN_free), tmp(BN_new(), &BN_free);
+    openssl::bn_ptr numerator(BN_new()), tmp(BN_new());
     BN_one(numerator.get());
     BN_lshift(tmp.get(), numerator.get(), pubKey.Le() - 1);
     std::swap(tmp, numerator);
@@ -77,41 +70,41 @@ static openssl::bn_ptr reconstructZ(const IrmaProof &proof, const IrmaPublicKey 
     std::swap(tmp, numerator);
 
     for (std::size_t i = 0; i < proof.ADisclosed.size(); ++i) {
-        openssl::bn_ptr exp(nullptr, &BN_free);
+        openssl::bn_ptr exp;
         if (BN_num_bits(proof.ADisclosed[i].get()) > pubKey.Lm()) {
             exp = bignum_sha256(proof.ADisclosed[i]);
         }
 
         BN_mod_exp(tmp.get(), pubKey.R[i+1].get(), exp ? exp.get() : proof.ADisclosed[i].get(), pubKey.N.get(), bnCtx.get());
-        openssl::bn_ptr tmp2(BN_new(), &BN_free);
+        openssl::bn_ptr tmp2(BN_new());
         BN_mul(tmp2.get(), numerator.get(), tmp.get(), bnCtx.get());
         std::swap(tmp2, numerator);
     }
 
-    openssl::bn_ptr known(BN_new(), &BN_free);
+    openssl::bn_ptr known(BN_new());
     BN_mod_inverse(known.get(), numerator.get(), pubKey.N.get(), bnCtx.get());
     BN_mul(tmp.get(), pubKey.Z.get(), known.get(), bnCtx.get());
     std::swap(tmp, known);
 
-    openssl::bn_ptr knownC(BN_new(), &BN_free);
+    openssl::bn_ptr knownC(BN_new());
     BN_mod_inverse(tmp.get(), known.get(), pubKey.N.get(), bnCtx.get());
     BN_mod_exp(knownC.get(), tmp.get(), proof.C.get(), pubKey.N.get(), bnCtx.get());
 
-    openssl::bn_ptr Ae(BN_new(), &BN_free);
+    openssl::bn_ptr Ae(BN_new());
     BN_mod_exp(Ae.get(), proof.A.get(), proof.EResponse.get(), pubKey.N.get(), bnCtx.get());
-    openssl::bn_ptr Sv(BN_new(), &BN_free);
+    openssl::bn_ptr Sv(BN_new());
     BN_mod_exp(Sv.get(), pubKey.S.get(), proof.VResponse.get(), pubKey.N.get(), bnCtx.get());
 
-    openssl::bn_ptr Rs(BN_new(), &BN_free);
+    openssl::bn_ptr Rs(BN_new());
     BN_one(Rs.get());
     for (std::size_t i = 0; i < proof.AResponses.size(); ++i) {
-        openssl::bn_ptr tmp2(BN_new(), &BN_free);
+        openssl::bn_ptr tmp2(BN_new());
         BN_mod_exp(tmp2.get(), pubKey.R[i].get(), proof.AResponses[i].get(), pubKey.N.get(), bnCtx.get());
         BN_mul(tmp.get(), Rs.get(), tmp2.get(), bnCtx.get());
         std::swap(tmp, Rs);
     }
 
-    openssl::bn_ptr Z(BN_new(), &BN_free);
+    openssl::bn_ptr Z(BN_new());
     BN_mul(Z.get(), knownC.get(), Ae.get(), bnCtx.get());
 
     BN_mul(tmp.get(), Z.get(), Rs.get(), bnCtx.get());
@@ -126,8 +119,8 @@ static QByteArray asn1EncodeSequence(const std::vector<const BIGNUM*> &numbers)
 {
     QByteArray payloadBuffer;
     for (auto number : numbers) {
-        openssl::asn1_integer_ptr num(BN_to_ASN1_INTEGER(number, nullptr), &ASN1_INTEGER_free);
-        openssl::asn1_type_ptr obj(ASN1_TYPE_new(), &ASN1_TYPE_free);
+        openssl::asn1_integer_ptr num(BN_to_ASN1_INTEGER(number, nullptr));
+        openssl::asn1_type_ptr obj(ASN1_TYPE_new());
         ASN1_TYPE_set(obj.get(),  V_ASN1_INTEGER, num.release());
 
         uint8_t *buffer = nullptr;
@@ -151,14 +144,14 @@ bool IrmaVerifier::verify(const IrmaProof &proof, const IrmaPublicKey &pubKey)
         return false;
     }
 
-    openssl::bn_ptr context(BN_new(), &BN_free);
+    openssl::bn_ptr context(BN_new());
     BN_one(context.get());
 
     const auto timeBasedChallenge = calculateTimeBasedChallenge(proof.disclosureTime);
     const auto Z = reconstructZ(proof, pubKey);
 
     // create challenge: https://github.com/privacybydesign/gabi/blob/master/proofs.go#L27
-    openssl::bn_ptr numElements(BN_new(), &BN_free);
+    openssl::bn_ptr numElements(BN_new());
     BN_set_word(numElements.get(), 4);
 
     const auto encoded = asn1EncodeSequence({numElements.get(), context.get(), proof.A.get(), Z.get(), timeBasedChallenge.get()});

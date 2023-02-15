@@ -20,7 +20,7 @@ openssl::evp_pkey_ptr JwkLoader::loadPublicKey(const QString &fileName)
     QFile f(fileName);
     if (!f.open(QFile::ReadOnly)) {
         qCWarning(Log) << f.errorString();
-        return openssl::evp_pkey_ptr(nullptr, &EVP_PKEY_free);
+        return {};
     }
 
     return loadPublicKey(QJsonDocument::fromJson(f.readAll()).object());
@@ -28,21 +28,19 @@ openssl::evp_pkey_ptr JwkLoader::loadPublicKey(const QString &fileName)
 
 openssl::evp_pkey_ptr JwkLoader::loadPublicKey(const QJsonObject &keyObj)
 {
-    auto evp = openssl::evp_pkey_ptr(nullptr, &EVP_PKEY_free);
-
     const auto kty = keyObj.value(QLatin1String("kty")).toString();
     if (kty == QLatin1String("EC")) {
-        auto ecKey = openssl::ec_key_ptr(nullptr, &EC_KEY_free);
+        openssl::ec_key_ptr ecKey;
         const auto crv = keyObj.value(QLatin1String("crv")).toString();
         if (crv == QLatin1String("P-256")) {
-            ecKey = openssl::ec_key_ptr(EC_KEY_new_by_curve_name(NID_X9_62_prime256v1), &EC_KEY_free);
+            ecKey = openssl::ec_key_ptr(EC_KEY_new_by_curve_name(NID_X9_62_prime256v1));
         } else if (crv == QLatin1String("P-384")) {
-            ecKey = openssl::ec_key_ptr(EC_KEY_new_by_curve_name(NID_secp384r1), &EC_KEY_free);
+            ecKey = openssl::ec_key_ptr(EC_KEY_new_by_curve_name(NID_secp384r1));
         } else if (crv == QLatin1String("P-521")) {
-            ecKey = openssl::ec_key_ptr(EC_KEY_new_by_curve_name(NID_secp521r1), &EC_KEY_free);
+            ecKey = openssl::ec_key_ptr(EC_KEY_new_by_curve_name(NID_secp521r1));
         } else {
             qCWarning(Log) << "Unsupported curve type" << crv;
-            return evp;
+            return {};
         }
 
         const auto xData = QByteArray::fromBase64(keyObj.value(QLatin1String("x")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
@@ -51,11 +49,12 @@ openssl::evp_pkey_ptr JwkLoader::loadPublicKey(const QJsonObject &keyObj)
         const auto y = Bignum::fromByteArray(yData);
         EC_KEY_set_public_key_affine_coordinates(ecKey.get(), x.get(), y.get());
 
-        evp.reset(EVP_PKEY_new());
+        openssl::evp_pkey_ptr evp(EVP_PKEY_new());
         EVP_PKEY_assign_EC_KEY(evp.get(), ecKey.release());
+        return evp;
     } else {
         qCWarning(Log) << "unsuporrted key type:" << kty;
     }
 
-    return evp;
+    return {};
 }

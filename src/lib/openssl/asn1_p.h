@@ -54,7 +54,7 @@ public:
             return {};
         }
         auto it = begin();
-        const auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, size()), &ASN1_INTEGER_free);
+        const auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, size()));
         int64_t result = 0;
 #if HAVE_LIBRESSL
         const auto bn = readBignum();
@@ -72,11 +72,11 @@ public:
     inline openssl::bn_ptr readBignum() const
     {
         if (tag() != V_ASN1_INTEGER) {
-            return openssl::bn_ptr(nullptr, &BN_free);
+            return {};
         }
         auto it = begin();
-        const auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, size()), &ASN1_INTEGER_free);
-        return openssl::bn_ptr(ASN1_INTEGER_to_BN(ai.get(), nullptr), &BN_free);
+        const auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, size()));
+        return openssl::bn_ptr(ASN1_INTEGER_to_BN(ai.get(), nullptr));
     }
 
     inline QByteArray readOctetString() const
@@ -85,7 +85,7 @@ public:
             return {};
         }
         auto it = begin();
-        const auto os = openssl::asn1_octet_string_ptr(d2i_ASN1_OCTET_STRING(nullptr, &it, size()), &ASN1_PRINTABLESTRING_free);
+        const auto os = openssl::asn1_octet_string_ptr(d2i_ASN1_OCTET_STRING(nullptr, &it, size()));
         return QByteArray(reinterpret_cast<const char*>(os->data), os->length);
     }
 
@@ -95,7 +95,7 @@ public:
             return {};
         }
         auto it = begin();
-        const auto ps = openssl::asn1_printable_string_ptr(d2i_ASN1_PRINTABLESTRING(nullptr, &it, size()), &ASN1_PRINTABLESTRING_free);
+        const auto ps = openssl::asn1_printable_string_ptr(d2i_ASN1_PRINTABLESTRING(nullptr, &it, size()));
         return QByteArray(reinterpret_cast<const char*>(ps->data), ps->length);
     }
 private:

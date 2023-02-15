@@ -92,7 +92,7 @@ static KHealthCertificate::SignatureValidation verifyCertificate(const openssl::
     QFile issuerCertFile(QLatin1String(":/org.kde.khealthcertificate/icao/certs/") + keyIdStr + QLatin1String(".der"));
     if (issuerCertFile.open(QFile::ReadOnly)) {
         const auto x509IssuerCert = X509Loader::readFromDER(issuerCertFile.readAll());
-        const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()), &EVP_PKEY_free);
+        const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()));
         const auto certValid = X509_verify(x509Cert.get(), issuerPkey.get());
         if (certValid == 1) {
             return KHealthCertificate::UncheckedSignature;
@@ -106,7 +106,7 @@ static KHealthCertificate::SignatureValidation verifyCertificate(const openssl::
         QFile issuerCertFile(it.next());
         if (issuerCertFile.open(QFile::ReadOnly)) {
             const auto x509IssuerCert = X509Loader::readFromDER(issuerCertFile.readAll());
-            const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()), &EVP_PKEY_free);
+            const openssl::evp_pkey_ptr issuerPkey(X509_get_pubkey(x509IssuerCert.get()));
             const auto certValid = X509_verify(x509Cert.get(), issuerPkey.get());
             if (certValid == 1) {
                 return KHealthCertificate::UncheckedSignature;
@@ -147,11 +147,11 @@ QVariant IcaoVdsParser::parse(const QByteArray &data)
     // verify certificate used for the signature
     const auto cert = QByteArray::fromBase64(sigObj.value(QLatin1String("cer")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
     const uint8_t *certData = reinterpret_cast<const uint8_t*>(cert.data());
-    const openssl::x509_ptr x509Cert(d2i_X509(nullptr, &certData, cert.size()), &X509_free);
+    const openssl::x509_ptr x509Cert(d2i_X509(nullptr, &certData, cert.size()));
     KHealthCertificate::SignatureValidation sigState = verifyCertificate(x509Cert);
 
     // verify that the content signature is correct
-    const openssl::evp_pkey_ptr pkey(X509_get_pubkey(x509Cert.get()), &EVP_PKEY_free);
+    const openssl::evp_pkey_ptr pkey(X509_get_pubkey(x509Cert.get()));
     const auto alg = sigObj.value(QLatin1String("alg")).toString();
     const auto signature = QByteArray::fromBase64(sigObj.value(QLatin1String("sigvl")).toString().toUtf8(), QByteArray::Base64UrlEncoding);
 

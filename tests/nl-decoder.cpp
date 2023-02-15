@@ -12,9 +12,9 @@
 // creative string encoding...
 static QByteArray decodeByteArray(const uint8_t *&it, std::size_t length)
 {
-    auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, length), &ASN1_INTEGER_free);
+    auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, length));
 
-    auto bn = openssl::bn_ptr(BN_new(), &BN_free);
+    auto bn = openssl::bn_ptr(BN_new());
     BN_zero(bn.get());
     for (auto i = 0; i < ai->length; ++i) {
         BN_mul_word(bn.get(), 1 << 8);
@@ -46,11 +46,11 @@ static void dumpMetaData(const QByteArray &md)
         }
 //         qDebug() << length << tag << asn1Class << ASN1_tag2str(tag);
         if (tag == V_ASN1_OCTET_STRING) {
-            auto os = openssl::asn1_octet_string_ptr(d2i_ASN1_OCTET_STRING(nullptr, &it2, length + std::distance(it2, it)), &ASN1_PRINTABLESTRING_free);
+            auto os = openssl::asn1_octet_string_ptr(d2i_ASN1_OCTET_STRING(nullptr, &it2, length + std::distance(it2, it)));
             qDebug() << "version:" << QByteArray((const char*)os->data, os->length);
             it = it2;
         } else if (tag == V_ASN1_PRINTABLESTRING) {
-            auto ps = openssl::asn1_printable_string_ptr(d2i_ASN1_PRINTABLESTRING(nullptr, &it2, length + std::distance(it2, it)), &ASN1_PRINTABLESTRING_free);
+            auto ps = openssl::asn1_printable_string_ptr(d2i_ASN1_PRINTABLESTRING(nullptr, &it2, length + std::distance(it2, it)));
             qDebug() << "issuer key:" << QByteArray((const char*)ps->data, ps->length);
             it = it2;
         } else {

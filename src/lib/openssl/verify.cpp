@@ -20,7 +20,7 @@ bool Verify::verifyECDSA(
         return false;
     }
 
-    const openssl::ec_key_ptr ecKey(EVP_PKEY_get1_EC_KEY(pkey.get()), &EC_KEY_free);
+    const openssl::ec_key_ptr ecKey(EVP_PKEY_get1_EC_KEY(pkey.get()));
 
     // compute hash of the signed data
     uint8_t digestData[EVP_MAX_MD_SIZE];
@@ -36,7 +36,7 @@ bool Verify::verifyECDSA(
     auto s = Bignum::fromByteArray(signature + signatureSize / 2, signatureSize / 2);
 
     // verify
-    const openssl::ecdsa_sig_ptr sig(ECDSA_SIG_new(), &ECDSA_SIG_free);
+    const openssl::ecdsa_sig_ptr sig(ECDSA_SIG_new());
     ECDSA_SIG_set0(sig.get(), r.release(), s.release());
     const auto verifyResult = ECDSA_do_verify(digestData, digestSize, sig.get(), ecKey.get());
     switch (verifyResult) {

@@ -27,12 +27,12 @@ void NLCoronaCheckParser::init()
 static QByteArray nlDecodeAsn1ByteArray(const ASN1::Object &obj)
 {
     auto it = obj.begin();
-    auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, obj.size()), &ASN1_INTEGER_free);
+    auto ai = openssl::asn1_integer_ptr(d2i_ASN1_INTEGER(nullptr, &it, obj.size()));
     if (!ai) {
         qWarning() << "invalid ASN.1 structure";
         return {};
     }
-    auto bn = openssl::bn_ptr(BN_new(), &BN_free);
+    auto bn = openssl::bn_ptr(BN_new());
     BN_zero(bn.get());
     for (auto i = 0; i < ai->length; ++i) {
         BN_mul_word(bn.get(), 1 << 8);
