@@ -7,10 +7,10 @@
 #include <QFile>
 #include <QTest>
 
-#include <KHealthCertificate/KHealthCertificateParser>
-#include <KHealthCertificate/KRecoveryCertificate>
-#include <KHealthCertificate/KTestCertificate>
-#include <KHealthCertificate/KVaccinationCertificate>
+#include <KHealthCertificateParser>
+#include <KRecoveryCertificate>
+#include <KTestCertificate>
+#include <KVaccinationCertificate>
 
 void initLocale()
 {

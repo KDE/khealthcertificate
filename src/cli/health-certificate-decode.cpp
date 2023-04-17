@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: LGPL-2.0-or-later
  */
 
-#include <KHealthCertificate/KHealthCertificateParser>
-#include <KHealthCertificate/KRecoveryCertificate>
-#include <KHealthCertificate/KTestCertificate>
-#include <KHealthCertificate/KVaccinationCertificate>
+#include <KHealthCertificateParser>
+#include <KRecoveryCertificate>
+#include <KTestCertificate>
+#include <KVaccinationCertificate>
 
 #include <QFile>
 #include <QMetaProperty>

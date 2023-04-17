@@ -12,8 +12,8 @@
 
 #include <openssl/x509v3.h>
 
-#include <KHealthCertificate/KTestCertificate>
-#include <KHealthCertificate/KVaccinationCertificate>
+#include <KTestCertificate>
+#include <KVaccinationCertificate>
 
 #include <KCountry>
 

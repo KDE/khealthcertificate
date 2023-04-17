@@ -7,8 +7,8 @@
 #include <QTest>
 #include <QTimeZone>
 
-#include <KHealthCertificate/KHealthCertificateParser>
-#include <KHealthCertificate/KTestCertificate>
+#include <KHealthCertificateParser>
+#include <KTestCertificate>
 
 void initLocale()
 {

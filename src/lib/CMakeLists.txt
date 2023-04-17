@@ -53,6 +53,8 @@ set_target_properties(KHealthCertificate PROPERTIES
     EXPORT_NAME KHealthCertificate
 )
 
+target_include_directories(KHealthCertificate INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR}/KHealthCertificate>")
+
 generate_export_header(KHealthCertificate BASE_NAME KHealthCertificate)
 ecm_qt_declare_logging_category(KHealthCertificate
     HEADER logging.h
@@ -81,18 +83,14 @@ ecm_generate_headers(KHealthCertificate_FORWARDING_HEADERS
         KRecoveryCertificate
         KTestCertificate
         KVaccinationCertificate
-    PREFIX KHealthCertificate
     REQUIRED_HEADERS KHealthCertificate_HEADERS
 )
 
 install(TARGETS KHealthCertificate EXPORT KHealthCertificateTargets ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
 install(FILES
-    ${KHealthCertificate_FORWARDING_HEADERS}
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/KHealthCertificate
-)
-install(FILES
     ${KHealthCertificate_HEADERS}
+    ${KHealthCertificate_FORWARDING_HEADERS}
     khealthcertificatetypes.h
     ${CMAKE_CURRENT_BINARY_DIR}/khealthcertificate_export.h
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/khealthcertificate
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR}/KHealthCertificate
 )

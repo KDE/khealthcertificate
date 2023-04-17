@@ -12,8 +12,8 @@
 #include "openssl/asn1_p.h"
 #include "openssl/bignum_p.h"
 
-#include <KHealthCertificate/KTestCertificate>
-#include <KHealthCertificate/KVaccinationCertificate>
+#include <KTestCertificate>
+#include <KVaccinationCertificate>
 
 #include <QCryptographicHash>
 #include <QDebug>

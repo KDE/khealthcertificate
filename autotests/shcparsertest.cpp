@@ -6,8 +6,8 @@
 #include <QFile>
 #include <QTest>
 
-#include <KHealthCertificate/KHealthCertificateParser>
-#include <KHealthCertificate/KVaccinationCertificate>
+#include <KHealthCertificateParser>
+#include <KVaccinationCertificate>
 
 void initLocale()
 {

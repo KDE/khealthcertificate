@@ -7,9 +7,9 @@
 #include <QJsonDocument>
 #include <QTest>
 
-#include <KHealthCertificate/KHealthCertificateParser>
-#include <KHealthCertificate/KVaccinationCertificate>
-#include <KHealthCertificate/KTestCertificate>
+#include <KHealthCertificateParser>
+#include <KTestCertificate>
+#include <KVaccinationCertificate>
 
 void initLocale()
 {
