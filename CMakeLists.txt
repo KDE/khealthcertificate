@@ -47,8 +47,8 @@ set_package_properties("OpenSSL" PROPERTIES TYPE REQUIRED PURPOSE "Needed for si
 find_package(ZLIB)
 set_package_properties("ZLIB" PROPERTIES TYPE REQUIRED PURPOSE "Needed for decoding EU DGC data.")
 
-ecm_set_disabled_deprecation_versions(QT 5.15.2
-     KF 5.102.0
+ecm_set_disabled_deprecation_versions(QT 6.4
+     KF 5.105.0
     )
 
 add_subdirectory(src)
