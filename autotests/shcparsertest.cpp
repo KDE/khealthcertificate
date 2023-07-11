@@ -42,7 +42,7 @@ private Q_SLOTS:
         QCOMPARE(vac.totalDoses(), 0);
         QCOMPARE(vac.date(), QDate(2021, 1, 29));
         QCOMPARE(vac.disease(), QLatin1String("COVID-19"));
-        QCOMPARE(vac.vaccine(), QLatin1String("COVID-19, mRNA, LNP-S, PF, 100 mcg or 50 mcg dose"));
+        QCOMPARE(vac.vaccine(), QLatin1String("COVID-19, mRNA, LNP-S, PF, 100 mcg/0.5mL dose or 50 mcg/0.25mL dose"));
         QCOMPARE(vac.manufacturer(), QLatin1String("Moderna US, Inc."));
         QCOMPARE(vac.certificateIssuer(), QLatin1String("https://spec.smarthealth.cards/examples/issuer"));
         QCOMPARE(vac.certificateId(), QString());

@@ -18,12 +18,12 @@ add_custom_command(
 add_custom_target(update-eu-dgc-certs DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/data/eu-dgc/certs/dummy.pem)
 
 add_custom_command(
-    OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/data/shc/hl7-cvx-codes.json
+    OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/shc/data/hl7-cvx-codes.dummy
     COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/update-hl7-cvx-data.py --output ${CMAKE_SOURCE_DIR}/src/lib/shc/data/hl7-cvx-codes.json
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Updating HL7 CVX codes"
 )
-add_custom_target(update-hl7-cvx DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/shc/data/hl7-cvx-codes.json)
+add_custom_target(update-hl7-cvx DEPENDS ${CMAKE_SOURCE_DIR}/src/lib/shc/data/hl7-cvx-codes.dummy)
 
 add_custom_command(
     OUTPUT ${CMAKE_SOURCE_DIR}/src/lib/data/shc/certs/dummy.jwk

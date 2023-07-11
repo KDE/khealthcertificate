@@ -1,0 +1,6 @@
+# SPDX-License-Identifier: CC0-1.0
+# SPDX-FileCopyrightText: none
+
+# single line files that would cause problems for the commit notification handling
+src/lib/shc/data/hl7-cvx-codes.json binary
+
