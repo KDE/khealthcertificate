@@ -89,8 +89,9 @@ private Q_SLOTS:
         QCOMPARE(vac.name(), QLatin1String("Martina Studer"));
         QCOMPARE(vac.country(), QLatin1String("CH"));
         QCOMPARE(vac.signatureState(), KHealthCertificate::ValidSignature);
-        QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
-        QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::FullyVaccinated);
+        QCOMPARE(vac.certificateExpiryDate(), QDateTime({2023, 6, 28}, {16, 22, 25}));
+        // QCOMPARE(vac.validationState(), KHealthCertificate::Valid);
+        // QCOMPARE(vac.vaccinationState(), KVaccinationCertificate::FullyVaccinated);
         QCOMPARE(vac.rawData(), readFile(u"eu-dgc/full-vaccination-ch.txt"));
     }
 
