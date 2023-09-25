@@ -16,7 +16,9 @@ os.makedirs(arguments.output, exist_ok = True)
 issuerUrls = [
     'https://covid19.quebec.ca/PreuveVaccinaleApi/issuer',
     'https://smarthealthcard.phsa.ca/v1/issuer',
-    'https://myvaccinerecord.cdph.ca.gov/creds/'
+    'https://myvaccinerecord.cdph.ca.gov/creds/',
+    'https://api.cvshealth.com/public/',
+    'https://vaccinerecord.dc.gov/'
 ]
 
 jwkFileNames = []
