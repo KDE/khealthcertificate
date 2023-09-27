@@ -13,20 +13,33 @@ arguments = parser.parse_args()
 
 os.makedirs(arguments.output, exist_ok = True)
 
-issuerUrls = [
-    'https://covid19.quebec.ca/PreuveVaccinaleApi/issuer',
-    'https://smarthealthcard.phsa.ca/v1/issuer',
-    'https://myvaccinerecord.cdph.ca.gov/creds/',
-    'https://api.cvshealth.com/public/',
-    'https://vaccinerecord.dc.gov/'
-]
+vciDirectoryUrl = 'https://raw.githubusercontent.com/the-commons-project/vci-directory/main/vci-issuers.json'
+vciDirectoryReq = requests.get(vciDirectoryUrl)
+vciDirectory = json.loads(vciDirectoryReq.text)
+
+issuerUrls = []
+for issuer in vciDirectory['participating_issuers']:
+    issuerUrls.append(issuer['iss'])
 
 jwkFileNames = []
 for issuer in issuerUrls:
-    req = requests.get(issuer + '/.well-known/jwks.json')
-    if req.status_code == 404:
+    print(f"Downloading {issuer}...")
+    try:
+        req = requests.get(issuer + '/.well-known/jwks.json', timeout=10)
+    except Exception as ex:
+        print(f"    exception: {ex}")
         continue
-    jwks = json.loads(req.text)
+    if req.status_code != 200:
+        print(f"   failed: {req.status_code}")
+        continue
+    try:
+        jwks = json.loads(req.text)
+    except Exception as ex:
+        print(f"    exception: {ex} - {req.text}")
+        continue
+    if not jwks or 'keys' not in jwks:
+        print(f"    invalid JWKS:" << req.text)
+        continue
     for key in jwks['keys']:
         jwkFileName = key['kid'] + '.jwk'
         jwkPath = os.path.join(arguments.output, jwkFileName)
