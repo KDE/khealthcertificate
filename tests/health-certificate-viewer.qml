@@ -12,7 +12,6 @@ import org.kde.khealthcertificate 1.0
 
 Kirigami.ApplicationWindow {
     title: "Health Certificates"
-    reachableModeEnabled: false
 
     width: 640
     height: 720
