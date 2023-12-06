@@ -32,18 +32,10 @@ public:
 
 QVariant KHealthCertificateParserWrapper::parse(const QVariant &data) const
 {
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    if (data.type() == QVariant::ByteArray) {
-#else
     if (data.userType() == QMetaType::QByteArray) {
-#endif
       return KHealthCertificateParser::parse(data.toByteArray());
     }
-#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
-    if (data.type() == QVariant::String) {
-#else
     if (data.userType() == QMetaType::QString) {
-#endif
       return KHealthCertificateParser::parse(data.toString().toUtf8());
     }
     return {};
