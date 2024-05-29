@@ -154,6 +154,6 @@ private Q_SLOTS:
     }
 };
 
-QTEST_APPLESS_MAIN(EuDgcParserTest)
+QTEST_GUILESS_MAIN(EuDgcParserTest)
 
 #include "eudgcparsertest.moc"
