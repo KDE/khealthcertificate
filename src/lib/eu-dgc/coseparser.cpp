@@ -17,7 +17,7 @@
 #include <QFile>
 
 #include <openssl/bn.h>
-#include <openssl/engine.h>
+#include <openssl/evp.h>
 #include <openssl/err.h>
 #include <openssl/pem.h>
 
