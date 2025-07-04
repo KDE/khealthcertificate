@@ -10,7 +10,7 @@ set (RELEASE_SERVICE_VERSION_MICRO "70")
 set (RELEASE_SERVICE_VERSION "${RELEASE_SERVICE_VERSION_MAJOR}.${RELEASE_SERVICE_VERSION_MINOR}.${RELEASE_SERVICE_VERSION_MICRO}")
 project(KHealthCertificate VERSION ${RELEASE_SERVICE_VERSION})
 
-set(KF_MIN_VERSION 5.240)
+set(KF_MIN_VERSION 6.0.0)
 find_package(ECM ${KF_MIN_VERSION} REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 
@@ -40,9 +40,9 @@ set_package_properties("OpenSSL" PROPERTIES TYPE REQUIRED PURPOSE "Needed for si
 find_package(ZLIB)
 set_package_properties("ZLIB" PROPERTIES TYPE REQUIRED PURPOSE "Needed for decoding EU DGC data.")
 
-ecm_set_disabled_deprecation_versions(QT 6.4
-     KF 5.105.0
-    )
+ecm_set_disabled_deprecation_versions(QT 6.7
+     KF 6.0
+)
 
 add_subdirectory(src)
 if (BUILD_TESTING)
