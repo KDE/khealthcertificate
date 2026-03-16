@@ -12,4 +12,4 @@ set_property(TARGET khealthcertificateqmlplugin PROPERTY LIBRARY_OUTPUT_DIRECTOR
 file(COPY qmldir DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/org/kde/khealthcertificate)
 
 install(TARGETS khealthcertificateqmlplugin DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/khealthcertificate)
-install(FILES qmldir ${qml_SRC} DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/khealthcertificate)
+install(FILES qmldir DESTINATION ${KDE_INSTALL_QMLDIR}/org/kde/khealthcertificate)

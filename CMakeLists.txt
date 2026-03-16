@@ -33,6 +33,7 @@ ecm_setup_version(PROJECT
 )
 
 # build-time dependencies
+set(QT_MIN_VERSION 6.5)
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED COMPONENTS Core Network Qml Test)
 find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS Archive Codecs I18n)
 find_package(OpenSSL REQUIRED COMPONENTS Crypto)
