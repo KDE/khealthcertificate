@@ -86,7 +86,7 @@ public:
         }
         auto it = begin();
         const auto os = openssl::asn1_octet_string_ptr(d2i_ASN1_OCTET_STRING(nullptr, &it, size()));
-        return QByteArray(reinterpret_cast<const char*>(os->data), os->length);
+        return QByteArray(reinterpret_cast<const char*>(ASN1_STRING_get0_data(os.get())), ASN1_STRING_length(os.get()));
     }
 
     inline QByteArray readPrintableString() const
@@ -96,7 +96,7 @@ public:
         }
         auto it = begin();
         const auto ps = openssl::asn1_printable_string_ptr(d2i_ASN1_PRINTABLESTRING(nullptr, &it, size()));
-        return QByteArray(reinterpret_cast<const char*>(ps->data), ps->length);
+        return QByteArray(reinterpret_cast<const char*>(ASN1_STRING_get0_data(ps.get())), ASN1_STRING_length(ps.get()));
     }
 private:
     int m_tag = 0;

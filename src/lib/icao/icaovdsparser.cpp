@@ -85,7 +85,7 @@ static KHealthCertificate::SignatureValidation verifyCertificate(const openssl::
     if (!keyId) {
         return KHealthCertificate::InvalidSignature;
     }
-    const auto keyIdStr = QString::fromUtf8(QByteArray(reinterpret_cast<const char*>(keyId->data), keyId->length).toHex());
+    const auto keyIdStr = QString::fromUtf8(QByteArray(reinterpret_cast<const char*>(ASN1_STRING_get0_data(keyId)), ASN1_STRING_length(keyId)).toHex());
     qCDebug(Log) << keyIdStr;
 
     // single certificate file for keyId

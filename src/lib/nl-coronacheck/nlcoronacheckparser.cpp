@@ -34,9 +34,11 @@ static QByteArray nlDecodeAsn1ByteArray(const ASN1::Object &obj)
     }
     auto bn = openssl::bn_ptr(BN_new());
     BN_zero(bn.get());
-    for (auto i = 0; i < ai->length; ++i) {
+    const auto *aiData = ASN1_STRING_get0_data(ai.get());
+    const auto aiLength = ASN1_STRING_length(ai.get());
+    for (auto i = 0; i < aiLength; ++i) {
         BN_mul_word(bn.get(), 1 << 8);
-        BN_add_word(bn.get(), ai->data[i]);
+        BN_add_word(bn.get(), aiData[i]);
     }
     BN_div_word(bn.get(), 2);
     return Bignum::toByteArray(bn);
