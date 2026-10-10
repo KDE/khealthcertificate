@@ -253,7 +253,7 @@ void EuDgcParser::parseTestCertificate(QCborStreamReader &reader) const
             cert.setTestName(translateValue(QLatin1String("tcMa"), productId));
             cert.setTestUrl(QUrl(QLatin1String("https://covid-19-diagnostics.jrc.ec.europa.eu/devices/detail/") + productId));
         } else if (key == QLatin1String("sc")) {
-            cert.setDate(QDate::fromString(CborUtils::readString(reader), Qt::ISODate));
+            cert.setDate(QDate::fromString(QStringView(CborUtils::readString(reader)).left(10), Qt::ISODate));
         } else if (key == QLatin1String("tr")) {
             const auto value = CborUtils::readString(reader);
             cert.setResultString(translateValue(QLatin1String("tcTr"), value));
