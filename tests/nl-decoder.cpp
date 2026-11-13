@@ -16,9 +16,9 @@ static QByteArray decodeByteArray(const uint8_t *&it, std::size_t length)
 
     auto bn = openssl::bn_ptr(BN_new());
     BN_zero(bn.get());
-    for (auto i = 0; i < ai->length; ++i) {
+    for (auto i = 0; i < ASN1_STRING_length(ai.get()); ++i) {
         BN_mul_word(bn.get(), 1 << 8);
-        BN_add_word(bn.get(), ai->data[i]);
+        BN_add_word(bn.get(), ASN1_STRING_get0_data(ai.get())[i]);
     }
     BN_div_word(bn.get(), 2);
 
@@ -47,11 +47,11 @@ static void dumpMetaData(const QByteArray &md)
 //         qDebug() << length << tag << asn1Class << ASN1_tag2str(tag);
         if (tag == V_ASN1_OCTET_STRING) {
             auto os = openssl::asn1_octet_string_ptr(d2i_ASN1_OCTET_STRING(nullptr, &it2, length + std::distance(it2, it)));
-            qDebug() << "version:" << QByteArray((const char*)os->data, os->length);
+            qDebug() << "version:" << QByteArray(reinterpret_cast<const char*>(ASN1_STRING_get0_data(os.get())), ASN1_STRING_length(os.get()));
             it = it2;
         } else if (tag == V_ASN1_PRINTABLESTRING) {
             auto ps = openssl::asn1_printable_string_ptr(d2i_ASN1_PRINTABLESTRING(nullptr, &it2, length + std::distance(it2, it)));
-            qDebug() << "issuer key:" << QByteArray((const char*)ps->data, ps->length);
+            qDebug() << "issuer key:" << QByteArray(reinterpret_cast<const char*>(ASN1_STRING_get0_data(ps.get())), ASN1_STRING_length(ps.get()));
             it = it2;
         } else {
             it += length;
